@@ -31,6 +31,15 @@ everyday-writer uninstall
 
 After installing, open Claude Code and type `/ew` to get started.
 
+**Updating to a new version:**
+```bash
+npm version patch   # 0.1.0 → 0.1.1 (bug fixes)
+npm version minor   # 0.1.0 → 0.2.0 (new features)
+npm version major   # 0.1.0 → 1.0.0 (breaking changes)
+git push --follow-tags
+```
+Pushing a version tag automatically publishes to npm.
+
 ---
 
 ## Invocation Model
