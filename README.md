@@ -10,18 +10,32 @@ Install target: `~/.claude/plugins/ew/` (drop the full folder as-is).
 
 ## Installation
 
-**Via Claude Code plugin system (recommended):**
+### Claude Code
 
-Open Claude Code and run:
+Run this inside any Claude Code session:
 ```
 /install-plugin https://github.com/Deupaxx/EveryDay-Writer
 ```
-
-This is the native install path. Claude Code fetches the repo, registers the plugin, and makes `/ew` available immediately.
+Claude Code fetches the repo, registers the plugin, and makes `/ew` available immediately. All 13 sub-skills appear in the `/` command menu as `/ew:newsletter-creative`, `/ew:audit`, etc.
 
 ---
 
-**Via npm (manual fallback — for use outside Claude Code's plugin system):**
+### Claude.ai Cowork Mode
+
+Cowork mode doesn't support file-based plugins. Instead, paste the contents of `SKILL.md` directly into your Project Instructions (Settings → Project → Instructions). The skill will activate on every conversation in that project.
+
+1. Open the [Everyday Writer GitHub repo](https://github.com/Deupaxx/EveryDay-Writer)
+2. Open `SKILL.md` and copy the raw contents
+3. In Claude.ai, go to your Project → Settings → Instructions
+4. Paste the contents and save
+
+Cowork mode uses memory-based voice profiles — onboarding will infer your voice from samples you paste rather than writing to a file.
+
+---
+
+### npm (manual fallback)
+
+For manual installs outside Claude Code's plugin system:
 ```bash
 npx everyday-writer install
 ```
@@ -32,14 +46,12 @@ npm install -g everyday-writer
 everyday-writer install
 ```
 
-This copies the plugin files directly to `~/.claude/plugins/ew/`.
+Copies plugin files directly to `~/.claude/plugins/ew/`.
 
 **Uninstall:**
 ```bash
 everyday-writer uninstall
 ```
-
-After installing, open Claude Code and type `/ew` to get started.
 
 **Updating to a new version:**
 ```bash
