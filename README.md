@@ -87,24 +87,22 @@ EW/
 │   └── anti-ai-rules.md              ← Global writing rules applied by every sub-skill
 │
 ├── skills/
-│   ├── newsletter/
-│   │   ├── creative.md               ← Creative/narrative newsletter writing
-│   │   └── technical.md              ← Technical/informational newsletter writing
-│   ├── linkedin/
-│   │   └── linkedin.md               ← LinkedIn post and article writing
-│   ├── shortform/
-│   │   ├── tweets-x.md               ← X/Twitter post writing
-│   │   └── substack-notes.md         ← Substack Notes writing
-│   ├── copywriting/
-│   │   ├── web-copy.md               ← Website and landing page copy
-│   │   └── sales-copy.md             ← Sales pages, emails, direct response
-│   └── fiction/
-│       ├── scene-structure.md        ← Scene construction and pacing
-│       ├── script-writing.md         ← Screenplay and script format
-│       └── world-builder/
-│           ├── WORLD-BUILDER.md      ← Master file: questioner + skeleton generator overview
-│           ├── questioner.md         ← Layered question system for extracting world context
-│           └── skeleton-template.md  ← Structured markdown world bible output template
+│   ├── newsletter-creative/SKILL.md  ← Creative/narrative newsletter writing
+│   ├── newsletter-technical/SKILL.md ← Technical/informational newsletter writing
+│   ├── linkedin/SKILL.md             ← LinkedIn post and article writing
+│   ├── tweets/SKILL.md               ← X/Twitter post writing
+│   ├── substack-notes/SKILL.md       ← Substack Notes writing
+│   ├── web-copy/SKILL.md             ← Website and landing page copy
+│   ├── sales-copy/SKILL.md           ← Sales pages, emails, direct response
+│   ├── scene-structure/SKILL.md      ← Scene construction and pacing
+│   ├── script-writing/SKILL.md       ← Screenplay and script format
+│   ├── world-builder/
+│   │   ├── SKILL.md                  ← Master file: questioner + skeleton generator overview
+│   │   ├── questioner.md             ← Layered question system for extracting world context
+│   │   └── skeleton-template.md      ← Structured markdown world bible output template
+│   ├── audit/SKILL.md                ← Before/after rewrite comparison
+│   ├── outline/SKILL.md              ← Idea-to-outline engine
+│   └── failure-library/SKILL.md      ← Annotated AI-slop failure patterns
 │
 └── references/
     └── DROP-MD-FILES-HERE.md         ← Instructions for dropping existing .md files here

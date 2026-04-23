@@ -37,19 +37,19 @@ Section 0 of `anti-ai-rules.md` is the operating contract (A-Player standard). S
 
 ```
 skills/
-  newsletter/creative.md          # 5-beat Hero's Journey structure
-  newsletter/technical.md         # Tutorial/analysis format
-  linkedin/linkedin.md            # Posts and articles
-  shortform/tweets-x.md           # Twitter/X posts and threads
-  shortform/substack-notes.md     # Substack Notes format
-  copywriting/web-copy.md         # Landing pages
-  copywriting/sales-copy.md       # Direct response, sales pages
-  fiction/scene-structure.md      # Scene construction
-  fiction/script-writing.md       # Screenplays
-  fiction/world-builder/          # Multi-file world-building subsystem
-  tools/audit.md                  # Before/after rewrite comparison
-  tools/outline.md                # Idea-to-outline engine
-  tools/failure-library.md        # Annotated AI-slop failure patterns
+  newsletter-creative/SKILL.md   # 5-beat Hero's Journey structure
+  newsletter-technical/SKILL.md  # Tutorial/analysis format
+  linkedin/SKILL.md              # Posts and articles
+  tweets/SKILL.md                # Twitter/X posts and threads
+  substack-notes/SKILL.md        # Substack Notes format
+  web-copy/SKILL.md              # Landing pages
+  sales-copy/SKILL.md            # Direct response, sales pages
+  scene-structure/SKILL.md       # Scene construction
+  script-writing/SKILL.md        # Screenplays
+  world-builder/SKILL.md         # Multi-file world-building subsystem
+  audit/SKILL.md                 # Before/after rewrite comparison
+  outline/SKILL.md               # Idea-to-outline engine
+  failure-library/SKILL.md       # Annotated AI-slop failure patterns
 ```
 
 Direct invocation paths bypass routing (e.g., `/ew:newsletter-creative`, `/ew:audit`). Full list in `SKILL.md`.
