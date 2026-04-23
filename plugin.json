@@ -1,0 +1,7 @@
+{
+  "name": "ew",
+  "version": "0.1.0",
+  "description": "Everyday Writer — a Claude Code skill system for professional writers",
+  "entry": "SKILL.md",
+  "author": "uuradigital@gmail.com"
+}
