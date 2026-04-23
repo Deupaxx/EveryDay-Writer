@@ -8,6 +8,31 @@ Install target: `~/.claude/plugins/ew/` (drop the full folder as-is).
 
 ---
 
+## Installation
+
+**Via npm (recommended):**
+```bash
+npx everyday-writer install
+```
+
+**Or install globally:**
+```bash
+npm install -g everyday-writer
+everyday-writer install
+```
+
+**Manual install:**
+Clone the repo and copy the folder to `~/.claude/plugins/ew/`.
+
+**Uninstall:**
+```bash
+everyday-writer uninstall
+```
+
+After installing, open Claude Code and type `/ew` to get started.
+
+---
+
 ## Invocation Model
 
 | Command | Purpose |

@@ -1,0 +1,42 @@
+{
+  "name": "everyday-writer",
+  "version": "0.1.0",
+  "description": "A Claude Code skill plugin for professional writers. Enforces voice consistency, anti-AI writing rules, and 13 specialized writing sub-skills.",
+  "author": "deupaxx <uuradigital@gmail.com>",
+  "license": "MIT",
+  "bin": {
+    "everyday-writer": "./bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "core/",
+    "onboarding/",
+    "skills/",
+    "references/",
+    "resources/",
+    "assets/",
+    "SKILL.md",
+    "ONBOARDING.md",
+    "plugin.json",
+    "README.md"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "writing",
+    "ai-writing",
+    "skill",
+    "plugin",
+    "newsletter",
+    "copywriting",
+    "fiction"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Deupaxx/EveryDay-Writer.git"
+  },
+  "homepage": "https://github.com/Deupaxx/EveryDay-Writer#readme",
+  "engines": {
+    "node": ">=16"
+  }
+}
