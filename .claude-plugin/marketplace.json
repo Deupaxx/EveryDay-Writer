@@ -1,0 +1,20 @@
+{
+  "name": "everyday-writer",
+  "description": "Everyday Writer — a Claude Code skill plugin for professional writers",
+  "owner": {
+    "name": "deupaxx",
+    "email": "uuradigital@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "ew",
+      "description": "13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules. Invoke with /ew.",
+      "version": "0.1.0",
+      "source": "./",
+      "author": {
+        "name": "deupaxx",
+        "email": "uuradigital@gmail.com"
+      }
+    }
+  ]
+}

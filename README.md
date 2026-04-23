@@ -10,19 +10,29 @@ Install target: `~/.claude/plugins/ew/` (drop the full folder as-is).
 
 ## Installation
 
-**Via npm (recommended):**
+**Via Claude Code plugin system (recommended):**
+
+Open Claude Code and run:
+```
+/install-plugin https://github.com/Deupaxx/EveryDay-Writer
+```
+
+This is the native install path. Claude Code fetches the repo, registers the plugin, and makes `/ew` available immediately.
+
+---
+
+**Via npm (manual fallback — for use outside Claude Code's plugin system):**
 ```bash
 npx everyday-writer install
 ```
 
-**Or install globally:**
+Or install globally:
 ```bash
 npm install -g everyday-writer
 everyday-writer install
 ```
 
-**Manual install:**
-Clone the repo and copy the folder to `~/.claude/plugins/ew/`.
+This copies the plugin files directly to `~/.claude/plugins/ew/`.
 
 **Uninstall:**
 ```bash
