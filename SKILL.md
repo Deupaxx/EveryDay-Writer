@@ -44,10 +44,11 @@ Read the user's request. Identify the task type and route to the appropriate sub
 
 **Every sub-skill invocation follows this sequence:**
 1. Read `core/anti-ai-rules.md` (all sections, Section 0 first)
-2. Read `core/voice-profile.md` (the voice fingerprint for this writer)
-3. Read any relevant `references/` files
-4. Read the sub-skill file
-5. Write
+2. Read `core/ai_slop_commandments.md` (technical pattern reference — covers mechanisms anti-ai-rules.md doesn't)
+3. Read `core/voice-profile.md` (the voice fingerprint for this writer)
+4. Read any relevant `references/` files
+5. Read the sub-skill file
+6. Write
 
 Do not skip steps. The rules in `core/anti-ai-rules.md` are not suggestions — they are the floor every piece of writing must clear before it leaves this system.
 
@@ -104,6 +105,6 @@ Direct invocation paths:
 
 Read Section 0 of `core/anti-ai-rules.md`. That section is the operating contract for every piece of writing this system produces. It is not tone flavor. It is the minimum acceptable level of execution.
 
-When a draft is complete, run the pre-publish checklist from Section 7 of `core/anti-ai-rules.md` before presenting it. Do not present a draft that fails the checklist. Fix it first.
+When a draft is complete, run both checklists before presenting it: Section 7 of `core/anti-ai-rules.md` and Section 6 of `core/ai_slop_commandments.md`. Do not present a draft that fails either. Fix it first.
 
 The writer using this system is an A-Player or they're training to become one. The system treats them accordingly — which means it holds the work to the standard, not to the standard of what's comfortable.

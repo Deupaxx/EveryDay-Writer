@@ -28,6 +28,7 @@ Every `/ew` invocation in `SKILL.md` follows this mandatory sequence:
 | File | Purpose |
 |---|---|
 | `core/anti-ai-rules.md` | 8-section writing standard: banned words, banned sentence patterns, pre-publish checklist. Mandatory for all sub-skills. |
+| `core/ai_slop_commandments.md` | Technical companion: explains the mechanism behind each failure pattern, era-indexed slop vocabulary, and a diagnostic checklist covering patterns anti-ai-rules.md doesn't (copula avoidance, placeholder contamination, knowledge-cutoff bleed, etc.). Mandatory for all sub-skills. |
 | `core/voice-profile.md` | Writer's voice fingerprint. Set during onboarding; gates all output. |
 
 Section 0 of `anti-ai-rules.md` is the operating contract (A-Player standard). Section 7 is the pre-publish checklist every draft must pass before it ships.
@@ -56,7 +57,7 @@ Direct invocation paths bypass routing (e.g., `/ew:newsletter-creative`, `/ew:au
 ## Developing Skills
 
 When writing or editing skill files:
-- Every skill must read `core/anti-ai-rules.md` and `core/voice-profile.md` before generating output — this is non-negotiable.
+- Every skill must read `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then `core/voice-profile.md` before generating output — this is non-negotiable.
 - Skills are markdown instruction files, not code. There are no build steps, tests, or linting commands.
 - The `references/` folder is a user drop-zone — never add instructions there; only `DROP-MD-FILES-HERE.md` belongs there by default.
 - Root-level `.md` files (e.g., `ai slop writing.md`, `General Writing Commandments.md`) are reference material, not part of the skill dispatch system.
