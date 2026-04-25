@@ -64,6 +64,33 @@ Pushing a version tag automatically publishes to npm.
 
 ---
 
+### Updating an Existing Install
+
+The plugin is copied to your machine at install time. It does not auto-update when the repo changes.
+
+**Claude Code (plugin system):**
+```
+/install-plugin https://github.com/Deupaxx/EveryDay-Writer
+```
+Re-running the same install command overwrites the local copy with the latest version.
+
+**npm install:**
+```bash
+npm update -g everyday-writer
+everyday-writer install
+```
+Or in one step:
+```bash
+npm install -g everyday-writer@latest && everyday-writer install
+```
+
+Check your current installed version:
+```bash
+everyday-writer --version
+```
+
+---
+
 ## Invocation Model
 
 | Command | Purpose |
