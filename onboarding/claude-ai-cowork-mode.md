@@ -39,6 +39,7 @@ After inference, you should have a partial picture. Identify which required prof
 - Primary platforms not evident from memory
 - Current writing goals (these change — always ask even if you have prior context)
 - Any tone axis that isn't clearly established
+- Freewrite sample (ask for this if no writing samples exist in memory — see freewrite prompt below)
 
 **How to open the gap-fill:**
 
@@ -59,8 +60,14 @@ Do not dump all the gap-fill questions at once. One at a time. If the user confi
 Then proceed through the required fields one at a time, in this order:
 1. Platforms
 2. Goals
-3. Voice adjectives (ask them to describe their voice, or share a sentence they've written recently that felt like them)
-4. Tone axes (propose based on what you've learned and ask for confirmation)
+3. Freewrite — ask:
+
+> "Before I lock in your profile, write me 2–5 paragraphs (around 200 words) about anything you actually like. A hobby, something you've been thinking about, something you do. Doesn't have to be about writing. Just write like you'd explain it to a friend.
+>
+> This gives me a clean read on your natural voice."
+
+4. Voice adjectives (derived from the freewrite — propose 5 and confirm with the user)
+5. Tone axes (propose based on what you observed in the freewrite and ask for confirmation)
 
 ---
 

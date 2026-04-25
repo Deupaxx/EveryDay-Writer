@@ -58,7 +58,27 @@ Wait for the answer. One exchange, both questions together, because they're fast
 
 ---
 
-## STEP 4: CONFIRM VOICE ADJECTIVES
+## STEP 4: FREEWRITE SAMPLE
+
+After the goals/platforms answer, ask for a short freewrite. This is the most reliable voice signal because it's unguarded — the user isn't trying to impress anyone, just writing about something they care about.
+
+Say:
+
+> "One more thing before I lock in your profile — write me 2–5 paragraphs (around 200 words) about anything you actually like. A hobby, a habit, something you've been thinking about lately. Doesn't have to be writing-related. Just write like you'd explain it to a friend.
+>
+> This gives me a cleaner read on your natural voice than published samples alone."
+
+Wait for the response. When it arrives, add it to your analysis from Step 2. Look specifically for:
+- How they write when there's no audience pressure — does the register shift from their published samples?
+- Natural sentence rhythm and paragraph length under zero constraint
+- What they reach for first when explaining something they care about (story, fact, feeling, observation)
+- Whether their specificity level holds or drops when writing informally
+
+If the user pushes back or says they don't want to, accept the profile without it and note: `**Freewrite basis:** None — profile built from published samples only.`
+
+---
+
+## STEP 5: CONFIRM VOICE ADJECTIVES
 
 Based on what you observed in the samples and heard in their goals, propose 5 voice adjectives. These are not compliments — they are precise descriptions of how this writer sounds and what makes their writing distinctly theirs.
 
@@ -78,7 +98,7 @@ Do not accept "yes, those are all right" without pressing once: "Any of these fe
 
 ---
 
-## STEP 5: FILL THE TONE AXES
+## STEP 6: FILL THE TONE AXES
 
 If the samples made the tone axes clear, state them directly and ask for confirmation rather than asking cold:
 
@@ -93,7 +113,7 @@ If the samples weren't clear on one axis, ask about that axis specifically. Don'
 
 ---
 
-## STEP 6: WRITE AND SAVE THE PROFILE
+## STEP 7: WRITE AND SAVE THE PROFILE
 
 Compile everything into the voice fingerprint format from `core/voice-profile.md` and write it to that file — filling every field with the values derived from the samples and confirmed by the user.
 
@@ -118,7 +138,7 @@ If the user doesn't have samples, run a condensed question sequence instead:
 1. "Describe your writing voice in your own words — not how you want to sound, how you actually sound when you're writing well."
 2. "Give me a sentence or two you've written recently that felt like you. Doesn't have to be published."
 3. "What kind of writing do you admire — whose voice do you read and think 'I want that'? And what specifically do you want from it?"
-4. Then proceed to Step 3 (goals and platforms), Step 4 (confirm voice adjectives built from their descriptions), and Step 5 (tone axes).
+4. Then proceed to Step 3 (goals and platforms), Step 4 (freewrite — still ask for it even without prior samples), Step 5 (confirm voice adjectives built from the freewrite and their descriptions), and Step 6 (tone axes).
 
 The profile built without samples is less precise. Note this in the profile: `**Profile basis:** Questions only — no writing samples reviewed. Recalibrate after first session with sample output.`
 
@@ -130,4 +150,4 @@ The profile built without samples is less precise. Note this in the profile: `**
 - Do not ask more than two questions in a single message.
 - Do not propose voice adjectives that are just generic praise (passionate, authentic, engaging). These describe nobody and therefore calibrate nothing.
 - Do not rush to write the profile before the voice adjectives are confirmed by the user.
-- Do not skip Step 6 — the profile must be written to file before the first sub-skill is invoked.
+- Do not skip Step 7 — the profile must be written to file before the first sub-skill is invoked.
