@@ -4,7 +4,7 @@
 
 ## PURPOSE
 
-This file runs once, the first time a user invokes `/ew` without an existing voice profile. Its output is a completed `## [User] Voice Profile` section appended to `core/anti-ai-rules.md` (Claude Code) or stored in Claude.ai memory (Cowork mode).
+This file runs once, the first time a user invokes `/ew` without an existing voice profile. Its output is a completed voice fingerprint written to `core/voice-profile.md` (Claude Code) or stored in Claude.ai memory (Cowork mode).
 
 After onboarding, this file is never read again unless the user explicitly requests a voice profile reset.
 
@@ -54,24 +54,17 @@ Onboarding is complete when all of the following fields are populated. Partial p
 
 ## PROFILE STORAGE
 
-**Claude Code:** Append the completed profile to `core/anti-ai-rules.md` under `## 8. VOICE PROFILE` using this format:
+**Claude Code:** Write the completed profile to `core/voice-profile.md` using the format already defined in that file. At minimum, populate these fields:
 
-```markdown
-## 8. VOICE PROFILE
-
-**Confirmed voice adjectives:** [list]
-**Primary platforms:** [list]
-**Writing goals:** [brief statement]
-**Tone axes:**
-- Warm ↔ Clinical: [position and notes]
-- Confident ↔ Hedged: [position and notes]
-- Serious ↔ Playful: [position and notes]
-**Vocabulary favored:** [list or notes]
-**Vocabulary avoided:** [list or notes]
-**Rhythm patterns:** [observed patterns from samples or stated preferences]
-**Signature patterns:** [if identified]
-**Avoid pushing toward:** [types of writing the user dislikes or produces poorly]
-```
+- Confirmed voice adjectives
+- Primary platforms
+- Writing goals
+- Tone axes
+- Vocabulary favored and avoided
+- Rhythm patterns
+- Signature patterns, if identified
+- Avoid pushing toward
+- Profile status, with `Completed: Yes`
 
 **Claude.ai Cowork:** Store as a named memory with title "EW Voice Profile — [User]" containing the same fields. Tag it for retrieval on EW skill invocation.
 

@@ -1,6 +1,6 @@
 # EW World Builder — Phase 1: Questioner
 
-**Dependency:** This file is invoked from `WORLD-BUILDER.md`. Do not run it standalone without reading that file first.
+**Dependency:** This file is invoked from `skills/world-builder/SKILL.md`. Do not run it standalone without reading that file first.
 
 ---
 

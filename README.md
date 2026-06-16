@@ -152,7 +152,7 @@ EW/
 ## Design Decisions
 
 - **Plugin name is `ew`** not `everyday-writer` — shorter invocation path (`/ew` vs `/everyday-writer`)
-- **`world-builder/` lives inside `fiction/`** — world building serves the writing, not the reverse
+- **`world-builder/` lives as its own sub-skill folder** — world building serves the writing, not the reverse
 - **`core/anti-ai-rules.md` is a dependency**, not a skill — every sub-skill draws from it; it is never invoked directly
 - **`references/` is a user-facing drop zone** — the user dumps their existing instruction files here; Claude reads them when populating skills
 - **Onboarding splits by environment** — `claude-code-mode.md` (active, user pastes samples) vs `claude-ai-cowork-mode.md` (passive, memory inference)

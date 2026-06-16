@@ -60,19 +60,19 @@ Use this table to route requests to the correct sub-skill file.
 
 | User request type | Sub-skill file |
 |---|---|
-| Newsletter — story-led, personal essay, narrative, voice-driven | `skills/newsletter/creative.md` |
-| Newsletter — technical, tutorial, analysis, data, how-to | `skills/newsletter/technical.md` |
-| LinkedIn post or article | `skills/linkedin/linkedin.md` |
-| Tweet, X post, or thread | `skills/shortform/tweets-x.md` |
-| Substack Note | `skills/shortform/substack-notes.md` |
-| Website copy, landing page, homepage | `skills/copywriting/web-copy.md` |
-| Sales page, email sequence, direct response | `skills/copywriting/sales-copy.md` |
-| Fiction scene, chapter, or prose | `skills/fiction/scene-structure.md` |
-| Screenplay or script | `skills/fiction/script-writing.md` |
-| World-building for fiction | `skills/fiction/world-builder/WORLD-BUILDER.md` |
-| Audit / rewrite comparison / before-after | `skills/tools/audit.md` |
-| Idea → outline / stuck on structure / don't know what to write | `skills/tools/outline.md` |
-| What does AI writing look like / failure examples / slop examples | `skills/tools/failure-library.md` |
+| Newsletter — story-led, personal essay, narrative, voice-driven | `skills/newsletter-creative/SKILL.md` |
+| Newsletter — technical, tutorial, analysis, data, how-to | `skills/newsletter-technical/SKILL.md` |
+| LinkedIn post or article | `skills/linkedin/SKILL.md` |
+| Tweet, X post, or thread | `skills/tweets/SKILL.md` |
+| Substack Note | `skills/substack-notes/SKILL.md` |
+| Website copy, landing page, homepage | `skills/web-copy/SKILL.md` |
+| Sales page, email sequence, direct response | `skills/sales-copy/SKILL.md` |
+| Fiction scene, chapter, or prose | `skills/scene-structure/SKILL.md` |
+| Screenplay or script | `skills/script-writing/SKILL.md` |
+| World-building for fiction | `skills/world-builder/SKILL.md` |
+| Audit / rewrite comparison / before-after | `skills/audit/SKILL.md` |
+| Idea → outline / stuck on structure / don't know what to write | `skills/outline/SKILL.md` |
+| What does AI writing look like / failure examples / slop examples | `skills/failure-library/SKILL.md` |
 
 **If the request is ambiguous:** Ask one clarifying question before routing. "Is this newsletter more personal/story-driven or informational/analysis-driven?" is a routing question. Ask it directly and wait for the answer.
 
@@ -85,19 +85,19 @@ Use this table to route requests to the correct sub-skill file.
 When the user invokes a sub-skill directly (e.g., `/ew:linkedin`), skip the dispatch step and go straight to the sub-skill. Still run STEP 1 (profile check), STEP 3 (references check), and the 5-step invocation sequence above.
 
 Direct invocation paths:
-- `/ew:newsletter-creative` → `skills/newsletter/creative.md`
-- `/ew:newsletter-technical` → `skills/newsletter/technical.md`
-- `/ew:linkedin` → `skills/linkedin/linkedin.md`
-- `/ew:tweets` → `skills/shortform/tweets-x.md`
-- `/ew:substack-notes` → `skills/shortform/substack-notes.md`
-- `/ew:web-copy` → `skills/copywriting/web-copy.md`
-- `/ew:sales-copy` → `skills/copywriting/sales-copy.md`
-- `/ew:scene-structure` → `skills/fiction/scene-structure.md`
-- `/ew:script-writing` → `skills/fiction/script-writing.md`
-- `/ew:world-builder` → `skills/fiction/world-builder/WORLD-BUILDER.md`
-- `/ew:audit` → `skills/tools/audit.md`
-- `/ew:outline` → `skills/tools/outline.md`
-- `/ew:failure-library` → `skills/tools/failure-library.md`
+- `/ew:newsletter-creative` → `skills/newsletter-creative/SKILL.md`
+- `/ew:newsletter-technical` → `skills/newsletter-technical/SKILL.md`
+- `/ew:linkedin` → `skills/linkedin/SKILL.md`
+- `/ew:tweets` → `skills/tweets/SKILL.md`
+- `/ew:substack-notes` → `skills/substack-notes/SKILL.md`
+- `/ew:web-copy` → `skills/web-copy/SKILL.md`
+- `/ew:sales-copy` → `skills/sales-copy/SKILL.md`
+- `/ew:scene-structure` → `skills/scene-structure/SKILL.md`
+- `/ew:script-writing` → `skills/script-writing/SKILL.md`
+- `/ew:world-builder` → `skills/world-builder/SKILL.md`
+- `/ew:audit` → `skills/audit/SKILL.md`
+- `/ew:outline` → `skills/outline/SKILL.md`
+- `/ew:failure-library` → `skills/failure-library/SKILL.md`
 
 ---
 

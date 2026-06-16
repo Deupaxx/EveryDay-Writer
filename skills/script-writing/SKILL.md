@@ -1,6 +1,6 @@
 # EW Skill — Script Writing
 
-**Dependency:** Read `core/anti-ai-rules.md` (all 8 sections including Section 0) before writing anything. Also read `skills/fiction/scene-structure.md` — the scene mechanics apply here, filtered through the constraints of the screen format.
+**Dependency:** Read `core/anti-ai-rules.md` (all 8 sections including Section 0) before writing anything. Also read `skills/scene-structure/SKILL.md` — the scene mechanics apply here, filtered through the constraints of the screen format.
 
 ---
 

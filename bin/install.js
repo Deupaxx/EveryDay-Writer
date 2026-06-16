@@ -6,13 +6,16 @@ const os = require('os');
 
 const args = process.argv.slice(2);
 const command = args[0];
+const pkg = require('../package.json');
 
 if (!command || command === 'install') {
   install();
 } else if (command === 'uninstall') {
   uninstall();
+} else if (command === '--version' || command === '-v' || command === 'version') {
+  console.log(pkg.version);
 } else {
-  console.log('Usage: everyday-writer [install|uninstall]');
+  console.log('Usage: everyday-writer [install|uninstall|--version]');
   process.exit(1);
 }
 
