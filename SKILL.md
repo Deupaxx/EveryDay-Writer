@@ -73,6 +73,7 @@ Use this table to route requests to the correct sub-skill file.
 | Audit / rewrite comparison / before-after | `skills/audit/SKILL.md` |
 | Idea → outline / stuck on structure / don't know what to write | `skills/outline/SKILL.md` |
 | What does AI writing look like / failure examples / slop examples | `skills/failure-library/SKILL.md` |
+| Academic essay, dissertation chapter, journal article, research report, or explainer of academic material | `skills/academic-writing/SKILL.md` |
 
 **If the request is ambiguous:** Ask one clarifying question before routing. "Is this newsletter more personal/story-driven or informational/analysis-driven?" is a routing question. Ask it directly and wait for the answer.
 
@@ -98,6 +99,7 @@ Direct invocation paths:
 - `/ew:audit` → `skills/audit/SKILL.md`
 - `/ew:outline` → `skills/outline/SKILL.md`
 - `/ew:failure-library` → `skills/failure-library/SKILL.md`
+- `/ew:academic-writing` → `skills/academic-writing/SKILL.md`
 
 ---
 

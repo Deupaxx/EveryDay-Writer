@@ -106,6 +106,7 @@ everyday-writer --version
 | `/ew:scene-structure` | Direct sub-skill invocation |
 | `/ew:script-writing` | Direct sub-skill invocation |
 | `/ew:world-builder` | Direct sub-skill invocation |
+| `/ew:academic-writing` | Direct sub-skill invocation |
 
 ---
 

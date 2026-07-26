@@ -50,6 +50,7 @@ skills/
   audit/SKILL.md                 # Before/after rewrite comparison
   outline/SKILL.md               # Idea-to-outline engine
   failure-library/SKILL.md       # Annotated AI-slop failure patterns
+  academic-writing/SKILL.md      # Essays, dissertation chapters, journal articles, reports
 ```
 
 Direct invocation paths bypass routing (e.g., `/ew:newsletter-creative`, `/ew:audit`). Full list in `SKILL.md`.
