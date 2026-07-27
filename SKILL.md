@@ -1,3 +1,8 @@
+---
+name: ew
+description: Everyday Writer — one entry point for professional writing across newsletters, LinkedIn, tweets, Substack notes, web copy, sales copy, scenes, scripts, outlines, audits, world-building, and academic work. Applies the writer's voice fingerprint and anti-AI writing rules. Use when drafting, rewriting, outlining, or auditing prose for publication, or when the user invokes /ew.
+---
+
 # EW — Everyday Writer
 ## Master Entry Point
 
