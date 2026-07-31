@@ -25,12 +25,13 @@ function install() {
 
   const filesToCopy = [
     'SKILL.md',
-    'plugin.json',
+    '.claude-plugin',
     'core',
     'onboarding',
     'skills',
     'references',
     'resources',
+    'cowork',
     'assets',
   ];
 

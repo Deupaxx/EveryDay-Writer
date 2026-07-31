@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Substack Notes Skill
 description: Write Substack Notes that are genuine fragments with actual ideas inside them — not miniaturized newsletters. Enforces anti-AI rules and voice profile.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — SUBSTACK NOTES SKILL

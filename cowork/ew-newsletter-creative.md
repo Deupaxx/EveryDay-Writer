@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Newsletter Creative Skill
 description: Write story-driven, narrative-first newsletters using the 5-beat Hero's Journey structure. Enforces anti-AI rules and voice profile. For personal essays, voice-driven issues, and newsletters where the writing itself is the product.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — NEWSLETTER CREATIVE SKILL

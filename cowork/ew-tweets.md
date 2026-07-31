@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Tweets / X Skill
 description: Write standalone tweets and threads that carry actual ideas in minimal space. Enforces compression discipline, anti-AI rules, and voice profile.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — TWEETS / X SKILL

@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Web Copy Skill
 description: Write website copy, landing pages, and homepage writing that converts visitors without lying. Enforces anti-AI rules, specificity standards, and voice profile.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — WEB COPY SKILL

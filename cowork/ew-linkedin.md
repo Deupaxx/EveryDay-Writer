@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — LinkedIn Skill
 description: Write LinkedIn posts and articles that earn attention without performing for it. Enforces anti-AI rules, voice profile, and professional authenticity standards.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — LINKEDIN SKILL

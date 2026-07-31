@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Newsletter Technical Skill
 description: Write insight-driven technical newsletters — tutorials, analysis, industry breakdowns, how-tos, data-led explainers. Enforces anti-AI rules, specificity standards, and voice profile.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — NEWSLETTER TECHNICAL SKILL

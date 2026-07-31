@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "ew",
+  "description": "Everyday Writer — 13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules.",
+  "version": "0.2.0",
+  "author": {
+    "name": "deupaxx",
+    "email": "uuradigital@gmail.com"
+  },
+  "homepage": "https://github.com/Deupaxx/EveryDay-Writer#readme",
+  "repository": "https://github.com/Deupaxx/EveryDay-Writer",
+  "license": "MIT",
+  "keywords": [
+    "writing",
+    "ai-writing",
+    "newsletter",
+    "copywriting",
+    "fiction",
+    "voice",
+    "editing"
+  ]
+}

@@ -1,3 +1,16 @@
+---
+name: ew
+description: |
+  Everyday Writer master dispatcher. Use when the user invokes /ew or asks for help writing
+  anything for publication: newsletters, LinkedIn posts, tweets, Substack Notes, landing pages,
+  sales copy, fiction scenes, screenplays, outlines, or a rewrite of existing text. Runs
+  voice-profile onboarding on first use, then routes to the correct sub-skill under the anti-AI
+  writing rules.
+license: MIT
+metadata:
+  version: "0.2.0"
+---
+
 # EW — Everyday Writer
 ## Master Entry Point
 
@@ -101,10 +114,30 @@ Direct invocation paths:
 
 ---
 
+## INVOCATION MODES
+
+How EW was called changes what it hands back. The writing standard never changes; only the packaging does.
+
+**Interactive (default).** The user is talking to you in a session. Deliver the finished piece. Where a bracketed gap remains under Section 0.2, name it and ask for the detail.
+
+**File mode.** The user points at a file and asks you to rewrite it. Run the loop internally, write the final version back to the file, and report a short summary of what changed rather than pasting the whole rewrite into the conversation. Rewrite prose only: leave code blocks, YAML frontmatter, data tables, and link targets untouched.
+
+**Embedded mode.** Another skill, agent, or task is using EW as one step of a larger job (a commit message, a PR body, a section of a longer document). Output only the finished text. No preamble, no audit notes, no summary, no offer to revise. The caller wants prose, not ceremony.
+
+---
+
 ## THE STANDARD THIS SYSTEM HOLDS
 
 Read Section 0 of `core/anti-ai-rules.md`. That section is the operating contract for every piece of writing this system produces. It is not tone flavor. It is the minimum acceptable level of execution.
 
-When a draft is complete, run both checklists before presenting it: Section 7 of `core/anti-ai-rules.md` and Section 6 of `core/ai_slop_commandments.md`. Do not present a draft that fails either. Fix it first.
+Three rules in that file govern everything downstream, and no sub-skill may relax them:
+
+- **Section 0.1 (Precedence).** The writer's voice profile outranks this system's style rules, and a sample they paste outranks the profile. Strip machine defaults, not the writer.
+- **Section 0.2 (Fabrication).** Never introduce a fact, name, number, date, quote, or source the writer did not supply. Mark the gap with `[brackets]` or ask. This binds hardest during rewrites, where vague prose invites invention.
+- **Sections 9 and 10 (Restraint).** Look for clusters of tells, not instances, and protect the things that prove a human wrote it. An over-corrected draft is a failed draft.
+
+**Never present a first draft.** Run the two-pass loop in Section 7.1 of `core/anti-ai-rules.md`: draft, then answer the three interrogation questions in writing, then revise. Do not show the writer your interrogation answers unless they ask.
+
+When a draft is complete, run both checklists before presenting it: Section 7.2 of `core/anti-ai-rules.md` and Section 6 of `core/ai_slop_commandments.md`. Do not present a draft that fails either. Fix it first.
 
 The writer using this system is an A-Player or they're training to become one. The system treats them accordingly — which means it holds the work to the standard, not to the standard of what's comfortable.

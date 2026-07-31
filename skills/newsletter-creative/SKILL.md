@@ -1,6 +1,24 @@
+---
+name: newsletter-creative
+description: |
+  Write story-driven, narrative-first newsletters using a 5-beat Hero's Journey structure. Use for
+  personal essays, voice-driven issues, and any newsletter where the writing itself is the
+  product. Enforces the EW anti-AI rules and the writer's voice profile.
+license: MIT
+metadata:
+  version: "0.2.0"
+---
+
 # EW Skill — Creative Newsletter
 
-**Dependency:** Read `core/anti-ai-rules.md` (all 8 sections including Section 0) before writing anything.
+**Dependency chain. Read these in order before writing anything:**
+
+1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, 0.2 forbids fabrication, 9 and 10 stop over-correction)
+2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+3. `core/voice-profile.md` (this writer's voice fingerprint; if `Completed: No`, stop and run onboarding)
+4. Any `.md` files the user has dropped in `references/`
+
+This chain applies on direct invocation (`/ew:newsletter-creative`) exactly as it does on dispatch through `/ew`. Direct invocation skips routing, not constraints.
 
 ---
 

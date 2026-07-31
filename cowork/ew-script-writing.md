@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Script Writing Skill
 description: Write screenplays and scripts for film, television, and short-form video. Enforces format discipline, visual writing standards, anti-AI rules, and voice profile.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — SCRIPT WRITING SKILL

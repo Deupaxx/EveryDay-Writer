@@ -1,6 +1,26 @@
+---
+name: script-writing
+description: |
+  Write screenplays and scripts for film, television, and short-form video. Use for scripted
+  scenes, sketches, video essays, and screenplay formatting. Enforces format discipline, visual
+  writing standards, and the EW anti-AI rules.
+license: MIT
+metadata:
+  version: "0.2.0"
+---
+
 # EW Skill — Script Writing
 
-**Dependency:** Read `core/anti-ai-rules.md` (all 8 sections including Section 0) before writing anything. Also read `skills/scene-structure/SKILL.md` — the scene mechanics apply here, filtered through the constraints of the screen format.
+**Dependency chain. Read these in order before writing anything:**
+
+1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, 0.2 forbids fabrication, 9 and 10 stop over-correction)
+2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+3. `core/voice-profile.md` (this writer's voice fingerprint; if `Completed: No`, stop and run onboarding)
+4. Any `.md` files the user has dropped in `references/`
+
+This chain applies on direct invocation (`/ew:script-writing`) exactly as it does on dispatch through `/ew`. Direct invocation skips routing, not constraints.
+
+Also read `skills/scene-structure/SKILL.md`. The scene mechanics apply here, filtered through the constraints of the screen format.
 
 ---
 

@@ -1,6 +1,24 @@
+---
+name: world-builder
+description: |
+  Build the world a story hangs on: characters, locations, factions, rules, and history. Use
+  before or alongside fiction and screenwriting work when the setting needs to be consistent. Runs
+  a layered questioner and generates a structured world bible.
+license: MIT
+metadata:
+  version: "0.2.0"
+---
+
 # EW Sub-System — World Builder
 
-**Dependency:** Read `core/anti-ai-rules.md` (Section 0 especially) before starting. This sub-system serves the fiction skills — it does not write prose directly. It builds the scaffold the prose will hang on.
+**Dependency chain. Read these in order before starting:**
+
+1. `core/anti-ai-rules.md` (Section 0 especially)
+2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+3. `core/voice-profile.md` (this writer's voice fingerprint; if `Completed: No`, stop and run onboarding)
+4. Any `.md` files the user has dropped in `references/`
+
+This sub-system serves the fiction skills. It does not write prose directly. It builds the scaffold the prose will hang on.
 
 ---
 

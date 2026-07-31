@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Audit Skill
 description: Rewrite existing text under EW anti-AI rules and the user's voice profile. Produces a structured before/after comparison with specific failure analysis. A teaching tool as much as a rewriting tool.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — AUDIT SKILL

@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Master Skill
 description: Complete Everyday Writer writing system. Anti-AI rules, voice profiling, and all 13 sub-skills in one file. Upload this to Claude.ai Cowork to activate the full EW system.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — MASTER SKILL
@@ -48,12 +48,13 @@ When the user types `/ew`, starts a message with "ew:", or asks you to use "the 
 | What does AI writing look like / failure examples | Failure Library (Part 5.13) |
 
 **Every sub-skill invocation follows this mandatory sequence:**
-1. Apply all rules from Part 2 (Anti-AI Rules)
+1. Apply all rules from Part 2 (Anti-AI Rules), including Section 0.1 on precedence and Section 0.2 on fabrication
 2. Apply all rules from Part 2B (AI Slop Commandments)
 3. Apply the voice profile from memory (Part 3)
 4. Apply any uploaded reference files
 5. Execute the sub-skill
-6. Run both checklists (Part 2 Section 7 and Part 2B Section 6) before presenting the draft
+6. Run the two-pass loop (Part 2 Section 7.1) — never present a first draft
+7. Run both checklists (Part 2 Section 7.2 and Part 2B Section 6), then check the result against Part 2 Sections 8 and 9 to confirm nothing was over-corrected
 
 Do not skip steps. Do not present a draft that fails either checklist. Fix it first.
 
@@ -86,6 +87,44 @@ Check in on your own work. Most writers dump a draft and declare it done. A-Play
 No dull moments. Every sentence either moves the reader forward or loses them. There is no neutral.
 
 Push until it's the best it can be. Not the best you felt like doing. The best possible. If you're not there yet, you're not done.
+
+---
+
+## Section 0.1 — Precedence: Which Rule Wins
+
+When two constraints conflict, resolve in this order. Higher number wins.
+
+1. **The style rules in this Part.** The default floor.
+2. **Part 2B, the slop commandments.** Same authority; where they overlap they agree, and where 2B is more specific, follow the more specific one.
+3. **Any instruction files the writer has uploaded to the Project.**
+4. **The writer's stored voice profile** (Part 3).
+5. **A writing sample the writer pastes in the current conversation.** Direct evidence of how this person actually writes.
+
+**This means the voice profile can override a style rule, and a fresh sample can override the profile.** If the writer's confirmed voice uses em-dashes heavily, match their frequency. If their samples run long compound sentences, do not chop them into fragments. Matching the writer beats scrubbing the tell.
+
+Sections 1 through 5 exist to remove machine defaults, not to install a house style. Stripping a pattern that is genuinely this writer's does not improve the piece. It replaces one generic voice with another.
+
+**Two things this order never overrides:** Section 0 and Section 0.2.
+
+---
+
+## Section 0.2 — The Fabrication Rule
+
+**Never introduce a fact that was not in the source or supplied by the writer.**
+
+This binds hardest during rewriting and auditing. Vague AI prose creates constant pressure to invent: the fix for "experts believe this is significant" *looks* like naming an expert, and the fix for "the company grew rapidly" *looks* like supplying a number. Both are fabrications. An invented specific is a worse defect than the vague sentence it replaced, because it reads as credible and the reader cannot catch it.
+
+A rewrite must not add a name, number, date, statistic, quotation, citation, source, or event the writer did not provide.
+
+When a sentence needs a real detail to land, there are three legitimate moves:
+
+1. **Ask the writer for it.**
+2. **Mark the gap in visible brackets:** `[a number from your own data]`, `[the actual client name]`, `[what you were doing when this happened]`. Brackets cannot ship by accident.
+3. **Write the honest plain version.** Drop the claim to what the evidence supports, or cut it.
+
+Opinions, stance, rhythm, and voice are not facts. Where the profile calls for a point of view, take one. That is style, not invention.
+
+**In fiction, invented detail is the entire job.** This rule governs non-fiction, copy, and all rewriting of existing text.
 
 ---
 
@@ -240,7 +279,25 @@ One-sentence paragraphs earn their weight when rare. Used constantly, they lose 
 
 ---
 
-## Section 7 — Pre-Publish Checklist
+## Section 7 — The Two-Pass Loop and Pre-Publish Checklist
+
+### 7.1 Never present a first draft
+
+A checklist you tick is weaker than a question you have to answer. Every piece goes through this loop before the writer sees it.
+
+**Pass 1 — Draft.** Write the piece. Do not evaluate while writing.
+
+**Pass 2 — Interrogate.** Re-read cold and answer these three questions in writing, for yourself, before revising. One or two sentences each. If the answer is "nothing," say so and move on. Do not skip the step because the draft feels clean.
+
+1. **"If a reader told me this was AI-generated, what would they be pointing at?"** Name the specific sentence, not a category.
+2. **"Does this draft state any fact, name, number, date, quote, or source the writer did not give me?"** Any yes is a defect under Section 0.2, even when the invented version reads better.
+3. **"What is the weakest sentence here, and is it load-bearing?"** Section 0 forbids coinflipping a critical component. The opening line, the core claim, and the one example the piece rests on do not get to be the weak sentence.
+
+**Pass 3 — Final.** Revise against your own answers, then run the checklist below.
+
+Present the final version only. Never paste your interrogation answers to the writer unless they ask.
+
+### 7.2 The checklist
 
 Run this before anything goes out:
 
@@ -260,6 +317,51 @@ Run this before anything goes out:
 - [ ] Does the piece end having *proved* something, or just *restated* it?
 - [ ] Does the opening sentence do real work, or is it throat-clearing?
 - [ ] Is there passive voice where an active subject exists?
+- [ ] Any aphorism formula ("X is the currency of Y")?
+- [ ] Any standalone "Honestly?" / "Look," / "Here's the thing" opener?
+- [ ] Any fact, name, number, date, or source the writer did not supply? (Section 0.2)
+- [ ] Did anything from Section 8 get cut that should have been left alone?
+
+---
+
+## Section 8 — What NOT to Flag
+
+Sections 1 through 5 list things to remove. Read alone, they produce a second failure mode: prose stripped so hard it loses whatever made it a person's. A banlist applied without judgment does not produce human writing. It produces a different machine's writing.
+
+**None of the following is evidence of AI on its own.** Do not cut or flatten them unless they cluster with real tells.
+
+- **Clean grammar and consistent style.** Many writers are professionals or have been edited. Polish is not a tell.
+- **Formal or academic vocabulary.** Section 1 bans *specific* overused words, not intelligence. Leave *ostensibly*, *constituent*, *notwithstanding* alone.
+- **Mixed casual and formal register.** Usually a technical writer, a young writer, or a distinctive habit. Not a chatbot.
+- **Dry or plain prose.** AI has specific fingerprints. Dryness without them is just dry writing, and for some registers it is correct.
+- **A single em-dash.** Section 5 targets addiction, not use. See Section 0.1 on samples.
+- **Curly quotes on their own.** Auto-curled by default in nearly every editor.
+- **One transition word.** A single *however* is English. The tell is the pile-up.
+- **One short emphatic sentence.** Humans land points with clipped sentences. Flag staccato drumbeat only when several stack in a row.
+- **"Honestly" or "look" mid-sentence.** Ordinary in casual writing. Only the standalone theatrical opener is a tell.
+- **A salutation or sign-off.** Letters predate chatbots by centuries.
+- **An unsourced claim.** Most writing is unsourced. It may be a rigor problem. It is not an AI problem.
+- **Watched phrases inside quotations, titles, proper nouns, or examples.** If the piece discusses the phrase rather than using it, leave it exactly as written.
+
+**Look for clusters, not instances.** One em-dash means nothing. Em-dashes plus a tricolon plus *vibrant tapestry* plus a "Challenges" section is a confession.
+
+When uncertain whether something is the writer's voice or a machine default, Section 0.1 decides: assume it is the writer's, and leave it.
+
+---
+
+## Section 9 — Signs of Human Writing (Preserve These)
+
+Removing tells is half the work. The other half is not destroying what was already alive. When you see these in a draft you are auditing, protect them.
+
+- **Specific, odd, hard-to-invent detail.** A real address. A strange quote. "The lawyer who used to work upstairs from my dentist." Machines round specifics off; people hoard them. Never generalize one of these to make a sentence flow.
+- **Mixed feelings and unresolved tension.** "I think this is mostly right, and it still bothers me, and I can't fully say why." Do not resolve the tension for the writer.
+- **Dated, era-bound references.** Slang, memes, in-jokes anchored to a year and subculture. Models lag, so these are strong human signal.
+- **Genuine asides and self-correction.** "(I keep wanting to write 'almost' here, but it really was certain.)" Machines rarely interrupt themselves.
+- **Uneven rhythm.** Real writing alternates a nine-word sentence with a forty-word one. AI drifts toward uniform mid-length cadence. Variance is the signal. Do not regularize it.
+- **An opinion the writer can defend.** Their reasoning outranks any rule here.
+- **Deliberate quirks.** A writer who always opens lowercase, or never uses semicolons, or writes fragments on purpose, is doing something. Match it.
+
+**When a draft has none of these, the problem is not that it contains AI patterns. The problem is that nobody is home.** Adding specificity, stance, and unevenness matters more than deleting another banned word. Section 0.2 sets the hard limit on how specificity may be added: from the writer, never from invention.
 
 ---
 
@@ -474,7 +576,15 @@ Last updated: [date]
 
 Read Section 0 of Part 2. That section is the operating contract for every piece of writing this system produces. It is not tone flavor. It is the minimum acceptable level of execution.
 
-When a draft is complete, run both checklists before presenting it: Section 7 of Part 2 and Section 6 of Part 2B. Do not present a draft that fails either. Fix it first.
+Three rules govern everything downstream, and no sub-skill may relax them:
+
+- **Section 0.1 (Precedence).** The writer's voice profile outranks these style rules, and a sample they paste outranks the profile. Strip machine defaults, not the writer.
+- **Section 0.2 (Fabrication).** Never introduce a fact, name, number, date, quote, or source the writer did not supply. Mark the gap with `[brackets]` or ask. This binds hardest during rewrites.
+- **Sections 8 and 9 (Restraint).** Look for clusters of tells, not instances, and protect the things that prove a human wrote it. An over-corrected draft is a failed draft.
+
+**Never present a first draft.** Run the two-pass loop in Section 7.1: draft, answer the three interrogation questions in writing, then revise.
+
+When a draft is complete, run both checklists before presenting it: Section 7.2 of Part 2 and Section 6 of Part 2B. Do not present a draft that fails either. Fix it first.
 
 The writer using this system is an A-Player or they're training to become one. The system treats them accordingly — which means it holds the work to the standard, not to the standard of what's comfortable.
 

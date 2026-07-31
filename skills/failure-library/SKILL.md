@@ -1,6 +1,24 @@
+---
+name: failure-library
+description: |
+  An annotated library of real AI writing failure patterns with full dissection. Use to teach a
+  writer what AI slop actually looks like, diagnose why a specific passage reads as
+  machine-written, or explain the mechanism behind a pattern.
+license: MIT
+metadata:
+  version: "0.2.0"
+---
+
 # EW Skill — Failure Library
 
-**No dependency on `core/anti-ai-rules.md` for reading this file. This is a reference document, not a generation tool.**
+**Reading this file as reference requires no dependencies.** It is a diagnostic document, not a generation tool.
+
+**When using it during generation or teaching, read the full chain first:**
+
+1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, 0.2 forbids fabrication, 9 and 10 stop over-correction)
+2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+3. `core/voice-profile.md` (this writer's voice fingerprint)
+4. Any `.md` files the user has dropped in `references/`
 
 **When used as a teaching tool during generation:** Read `core/anti-ai-rules.md` before pointing to examples from this library.
 

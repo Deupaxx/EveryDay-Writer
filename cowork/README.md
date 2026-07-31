@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Cowork Folder Guide
 description: Instructions for uploading Everyday Writer skills to Claude.ai Cowork (Projects). Lists all available files and explains how to use them.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # EVERYDAY WRITER — CLAUDE.AI COWORK FOLDER
@@ -52,6 +52,7 @@ Upload `ew-master.md` plus any specific skill files you want. Each micro-skill f
 | `ew-sales-copy.md` | Sales pages, email sequences, direct response |
 | `ew-scene-structure.md` | Fiction scenes and prose passages |
 | `ew-script-writing.md` | Screenplays and scripts |
+| `ew-world-builder.md` | Layered world questioner and world bible generator |
 | `ew-audit.md` | Before/after rewrite with failure analysis |
 | `ew-outline.md` | Idea-to-outline engine for any format |
 | `ew-failure-library.md` | Real AI writing failure patterns with dissection |
@@ -63,7 +64,8 @@ Upload `ew-master.md` plus any specific skill files you want. Each micro-skill f
 These files **do not** replace the Claude Code version of Everyday Writer (`/ew` via the plugin). The Claude Code version has:
 - File system access (reads and writes voice profiles to disk)
 - Full skill dispatch via `SKILL.md`
-- World builder subsystem with multi-file questioner and bible generator
+- The world builder split across three files (`SKILL.md`, `questioner.md`, `skeleton-template.md`) rather than the single condensed `ew-world-builder.md` here
+- A `references/` drop zone where your own instruction files override skill defaults
 
 The Cowork files replicate the rules and sub-skills as faithfully as possible in a single-session context. Voice profiles are stored in Claude.ai memory between sessions rather than on disk.
 

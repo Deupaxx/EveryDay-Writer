@@ -1,6 +1,24 @@
+---
+name: linkedin
+description: |
+  Write LinkedIn posts and articles that earn attention without performing for it. Use for
+  professional social posts, thought-leadership pieces, and career or company announcements.
+  Enforces the EW anti-AI rules and the writer's voice profile.
+license: MIT
+metadata:
+  version: "0.2.0"
+---
+
 # EW Skill — LinkedIn
 
-**Dependency:** Read `core/anti-ai-rules.md` (all 8 sections including Section 0) before writing anything.
+**Dependency chain. Read these in order before writing anything:**
+
+1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, 0.2 forbids fabrication, 9 and 10 stop over-correction)
+2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+3. `core/voice-profile.md` (this writer's voice fingerprint; if `Completed: No`, stop and run onboarding)
+4. Any `.md` files the user has dropped in `references/`
+
+This chain applies on direct invocation (`/ew:linkedin`) exactly as it does on dispatch through `/ew`. Direct invocation skips routing, not constraints.
 
 ---
 
