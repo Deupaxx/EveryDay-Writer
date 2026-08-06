@@ -3,12 +3,13 @@ name: ew
 description: |
   Everyday Writer master dispatcher. Use when the user invokes /ew or asks for help writing
   anything for publication: newsletters, LinkedIn posts, tweets, Substack Notes, landing pages,
-  sales copy, fiction scenes, screenplays, outlines, or a rewrite of existing text. Runs
-  voice-profile onboarding on first use, then routes to the correct sub-skill under the anti-AI
+  sales copy, fiction scenes, screenplays, outlines, or a rewrite of existing text. Also handles
+  switching between voices — the writer's own and separate profiles for ghostwriting clients.
+  Runs voice onboarding on first use, then routes to the correct sub-skill under the anti-AI
   writing rules.
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # EW — Everyday Writer
@@ -16,16 +17,17 @@ metadata:
 
 ---
 
-## STEP 1: CHECK FOR VOICE PROFILE
+## STEP 1: RESOLVE THE VOICE
 
-Before anything else, check whether a completed EW voice fingerprint exists.
+Before anything else, work out which voice this piece is being written in and whether its fingerprint is complete.
 
-**In Claude Code:** Read `core/voice-profile.md`. Look for `Completed: Yes` in the PROFILE STATUS section. If it exists and is set to Yes, onboarding is complete.
+**In Claude Code:** Read `core/voice-profile.md`. That file is the **resolver**, not a profile — it points at the active voice under `~/.everyday-writer/`. Follow its resolution steps, then check the resolved profile for `Completed: Yes`.
 
-**In Claude.ai Cowork:** Check memory for any entries tagged EW or Everyday Writer. If a voice profile exists in memory, onboarding is complete.
+**In Claude.ai Cowork:** Read the "EW Active Voice" memory to get the active name, then the "EW Voice Profile — [Name]" memory for that voice.
 
-**If no profile exists or status is `Completed: No` → go to STEP 2.**
-**If profile is complete → go to STEP 3.**
+**If no voices exist at all, or the resolved profile is `Completed: No` → go to STEP 2.**
+**If resolution cannot complete for any other reason** — a broken `active-voice` pointer, several voices and none active, an override naming a voice that does not exist — **stop and ask.** Do not guess. Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error.
+**If a complete profile resolves → go to STEP 3.**
 
 ---
 
@@ -39,15 +41,19 @@ Tell the user:
 
 Then follow `onboarding/ONBOARDING.md`.
 
+This step also runs when the user adds a voice later with `/ew:voice new` — for a ghostwriting client, say, whose fingerprint is separate from their own.
+
 ---
 
 ## STEP 3: CHECK REFERENCES
 
-Before dispatching to a sub-skill, scan `references/` for any `.md` files the user has dropped there (other than `DROP-MD-FILES-HERE.md` itself).
+Before dispatching to a sub-skill, scan the **active voice's** references folder — `~/.everyday-writer/voices/<slug>/references/` — for any `.md` files the user has dropped there.
 
 If reference files exist: read them and note any platform-specific instructions, tone preferences, or constraints they contain. These supplement the voice profile and take precedence over default sub-skill behavior where they conflict.
 
 If no reference files exist: proceed.
+
+**Do not scan the plugin's own `references/` folder.** Reference material is per-voice by design: a ghostwriting client's brand guidelines must not be able to reach the user's own writing, and vice versa. A single shared folder cannot give that guarantee.
 
 ---
 
@@ -58,8 +64,8 @@ Read the user's request. Identify the task type and route to the appropriate sub
 **Every sub-skill invocation follows this sequence:**
 1. Read `core/anti-ai-rules.md` (all sections, Section 0 first)
 2. Read `core/ai_slop_commandments.md` (technical pattern reference — covers mechanisms anti-ai-rules.md doesn't)
-3. Read `core/voice-profile.md` (the voice fingerprint for this writer)
-4. Read any relevant `references/` files
+3. Read `core/voice-profile.md` — the resolver — and follow it to the active voice's fingerprint
+4. Read any `.md` files in that voice's `references/`
 5. Read the sub-skill file
 6. Write
 
@@ -86,6 +92,7 @@ Use this table to route requests to the correct sub-skill file.
 | Audit / rewrite comparison / before-after | `skills/audit/SKILL.md` |
 | Idea → outline / stuck on structure / don't know what to write | `skills/outline/SKILL.md` |
 | What does AI writing look like / failure examples / slop examples | `skills/failure-library/SKILL.md` |
+| Switch voice / add a client / list voices / "who am I writing as?" / recalibrate a voice | `skills/voice/SKILL.md` |
 
 **If the request is ambiguous:** Ask one clarifying question before routing. "Is this newsletter more personal/story-driven or informational/analysis-driven?" is a routing question. Ask it directly and wait for the answer.
 
@@ -95,7 +102,7 @@ Use this table to route requests to the correct sub-skill file.
 
 ## DIRECT INVOCATION
 
-When the user invokes a sub-skill directly (e.g., `/ew:linkedin`), skip the dispatch step and go straight to the sub-skill. Still run STEP 1 (profile check), STEP 3 (references check), and the 5-step invocation sequence above.
+When the user invokes a sub-skill directly (e.g., `/ew:linkedin`), skip the dispatch step and go straight to the sub-skill. Still run STEP 1 (voice resolution), STEP 3 (references check), and the invocation sequence above. Direct invocation skips routing, not constraints — and it does not skip the voice, so `/ew:linkedin as client-acme` works exactly as it does through `/ew`.
 
 Direct invocation paths:
 - `/ew:newsletter-creative` → `skills/newsletter-creative/SKILL.md`
@@ -111,6 +118,31 @@ Direct invocation paths:
 - `/ew:audit` → `skills/audit/SKILL.md`
 - `/ew:outline` → `skills/outline/SKILL.md`
 - `/ew:failure-library` → `skills/failure-library/SKILL.md`
+- `/ew:voice` → `skills/voice/SKILL.md`
+
+---
+
+## MULTI-VOICE
+
+EW holds any number of voices: the writer's own, plus one per ghostwriting client. Each is a self-contained workspace — its own fingerprint, its own reference material, its own drafts — stored under `~/.everyday-writer/voices/<slug>/`.
+
+**One voice is active at a time.** It persists across sessions until changed. `/ew:voice` lists what exists and which is active; `/ew:voice <name>` switches.
+
+**A single piece can be written in another voice without switching.** If the request names one — "write this as kaguura", "in client-acme's voice" — that voice applies to this invocation only and the active voice is untouched.
+
+**Nothing bleeds between voices.** Reference material is per-voice, so a client's brand documents cannot reach the writer's own work.
+
+**Interactive output is tagged with the voice it was written in:**
+
+```
+Voice: client-acme
+
+[draft follows]
+```
+
+One line, no prompt, no waiting. Suppressed in embedded mode. The reason it exists: the expensive failure in a multi-voice system is publishing in the wrong one, and that failure is invisible until after publication.
+
+Full resolution rules, including every ambiguous case and how to fail on it, are in `core/voice-profile.md`.
 
 ---
 
@@ -120,9 +152,9 @@ How EW was called changes what it hands back. The writing standard never changes
 
 **Interactive (default).** The user is talking to you in a session. Deliver the finished piece. Where a bracketed gap remains under Section 0.2, name it and ask for the detail.
 
-**File mode.** The user points at a file and asks you to rewrite it. Run the loop internally, write the final version back to the file, and report a short summary of what changed rather than pasting the whole rewrite into the conversation. Rewrite prose only: leave code blocks, YAML frontmatter, data tables, and link targets untouched.
+**File mode.** The user points at a file and asks you to rewrite it. Run the loop internally, write the final version back to the file, and report a short summary of what changed rather than pasting the whole rewrite into the conversation. Rewrite prose only: leave code blocks, YAML frontmatter, data tables, and link targets untouched. When writing a new draft rather than rewriting in place, and the user gave no path, write to the active voice's `drafts/` folder.
 
-**Embedded mode.** Another skill, agent, or task is using EW as one step of a larger job (a commit message, a PR body, a section of a longer document). Output only the finished text. No preamble, no audit notes, no summary, no offer to revise. The caller wants prose, not ceremony.
+**Embedded mode.** Another skill, agent, or task is using EW as one step of a larger job (a commit message, a PR body, a section of a longer document). Output only the finished text. No preamble, no audit notes, no summary, no offer to revise, **and no voice tag**. The caller wants prose, not ceremony.
 
 ---
 

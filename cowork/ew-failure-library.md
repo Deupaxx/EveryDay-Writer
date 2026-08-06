@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Failure Library
 description: A library of real AI writing failure patterns with full dissection. Use to teach writers what AI slop actually looks like, diagnose failures in existing text, or understand why specific patterns break reader trust.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — FAILURE LIBRARY

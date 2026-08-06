@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Scene Structure Skill
 description: Write fiction scenes, chapters, and prose passages using professional scene mechanics. Enforces anti-AI rules, show-don't-tell discipline, and voice profile.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — SCENE STRUCTURE SKILL

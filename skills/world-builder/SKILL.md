@@ -6,7 +6,7 @@ description: |
   a layered questioner and generates a structured world bible.
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # EW Sub-System — World Builder

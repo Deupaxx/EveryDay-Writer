@@ -6,7 +6,7 @@ description: |
   machine-written, or explain the mechanism behind a pattern.
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # EW Skill — Failure Library

@@ -6,7 +6,7 @@ description: |
   the writer's voice profile.
 license: MIT
 metadata:
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # EW Skill — X / Twitter

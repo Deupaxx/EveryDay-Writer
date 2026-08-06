@@ -4,9 +4,11 @@
 
 ## PURPOSE
 
-This file runs once, the first time a user invokes `/ew` without an existing voice profile. Its output is a completed voice fingerprint written to `core/voice-profile.md` (Claude Code) or stored in Claude.ai memory (Cowork mode).
+This file runs whenever a voice needs building: the first time a user invokes `/ew` with no voices at all, and every time they add one with `/ew:voice new`.
 
-After onboarding, this file is never read again unless the user explicitly requests a voice profile reset.
+Its output is a completed voice fingerprint written to `~/.everyday-writer/voices/<slug>/voice-profile.md` (Claude Code) or stored as a named Claude.ai memory (Cowork mode).
+
+EW supports any number of voices — the user's own, plus one per ghostwriting client. This file routes to the right flow for the voice being built.
 
 ---
 
@@ -24,10 +26,27 @@ Determine which environment you are running in before proceeding.
 - Prior conversation context and stored memories may be available
 - No file system access
 
-**If Claude Code → read `onboarding/claude-code-mode.md` and follow it.**
+**If Claude Code → go to WHOSE VOICE below.**
 **If Claude.ai Cowork → read `onboarding/claude-ai-cowork-mode.md` and follow it.**
 
 **If unclear:** Default to Claude Code mode. The active onboarding process works in both environments; the passive (memory inference) mode only works in Claude.ai with memory enabled. Defaulting to active is always safe.
+
+---
+
+## WHOSE VOICE
+
+Ask before running any flow. The answer changes which questions are askable at all.
+
+> "Whose voice is this?
+>
+> 1. **Mine** — your own writing voice.
+> 2. **Someone else's** — a ghostwriting client, or any voice that isn't yours."
+
+**If Mine → read `onboarding/claude-code-mode.md` and follow it.** Seven steps, freewrite included.
+
+**If Someone else's → read `onboarding/subject-mode.md` and follow it.** Sample analysis only. The freewrite is skipped because it cannot be obtained, and confirmation is recorded as second-hand.
+
+**On the very first run**, when no voices exist at all, skip the question and run `claude-code-mode.md`. The first voice someone sets up is their own. They can add clients afterwards with `/ew:voice new`.
 
 ---
 
@@ -54,8 +73,14 @@ Onboarding is complete when all of the following fields are populated. Partial p
 
 ## PROFILE STORAGE
 
-**Claude Code:** Write the completed profile to `core/voice-profile.md` using the format already defined in that file. At minimum, populate these fields:
+**Claude Code:** Copy `core/voice-profile-template.md` to `~/.everyday-writer/voices/<slug>/voice-profile.md` and fill it in there. Create the voice directory with its `references/`, `drafts/`, and `samples/` subfolders first.
 
+Never write a profile into `core/`. That directory is a cache the plugin replaces on update, and it is tracked by a public git repository. `core/voice-profile.md` is the resolver that finds voices — not a place to store one.
+
+At minimum, populate these fields:
+
+- Voice name, slug, and type (Self or Subject)
+- `Confirmed by`
 - Confirmed voice adjectives
 - Primary platforms
 - Writing goals
@@ -66,7 +91,7 @@ Onboarding is complete when all of the following fields are populated. Partial p
 - Avoid pushing toward
 - Profile status, with `Completed: Yes`
 
-**Claude.ai Cowork:** Store as a named memory with title "EW Voice Profile — [User]" containing the same fields. Tag it for retrieval on EW skill invocation.
+**Claude.ai Cowork:** Store as a named memory titled "EW Voice Profile — [Name]" containing the same fields, plus a separate "EW Active Voice" memory holding the active name. Tag both for retrieval on EW skill invocation.
 
 ---
 

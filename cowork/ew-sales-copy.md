@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Sales Copy Skill
 description: Write sales pages, email sequences, and direct response copy that converts through clarity and specificity — not manipulation. Enforces anti-AI rules, proof standards, and voice profile.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — SALES COPY SKILL

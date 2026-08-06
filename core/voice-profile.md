@@ -1,115 +1,130 @@
-# EW — Voice Fingerprint
+# EW — Voice Resolver
 
-This file is the writer's voice fingerprint. It is read at the start of every sub-skill invocation, after `core/anti-ai-rules.md`. It is not a form — it is a reference document that tells Claude how this specific writer sounds and what they are optimizing for.
-
----
-
-## HOW TO READ THIS FILE
-
-Every field below is a constraint. "Sentence length: short and punchy" means: generate no long compound sentences unless the content requires it. "Emotional temperature: dry" means: no warmth-signaling phrases, no exclamation points, no "I'm excited to share." Read these as hard constraints on output, not soft preferences.
-
-If a constraint conflicts with what the user just asked for, surface the conflict. Don't silently override the profile.
+> **This file is not a voice profile.** It is the pointer that finds one.
+>
+> Every sub-skill's dependency chain names `core/voice-profile.md`. That name is kept so the
+> chain stays intact, but the profile itself lives outside the plugin directory, one per voice.
+> Resolve the active voice here, then read that voice's profile and treat it as the fingerprint.
 
 ---
 
-## VOICE FINGERPRINT
+## WHY THE PROFILE IS NOT IN THIS DIRECTORY
 
-**Writer name:** [Populated during onboarding]
+The plugin directory is a cache. When EW is installed from the marketplace, an update replaces it wholesale — anything written here is destroyed. This repository is also public and published to npm, so a client's voice profile stored here would be one commit away from publication.
 
-**Profile basis:** [Writing samples reviewed / Questions only — recalibrate after first output session]
-
----
-
-### Sentence-level patterns
-
-**Average sentence length:** [Short / Medium / Long / Mixed — with note on variance]
-
-**Paragraph length:** [1–2 sentences / 3–5 sentences / Long blocks / Mixed]
-
-**Rhythm patterns:** [Short fragments for emphasis / Parallel structures / Long subordinate clauses / None dominant]
-
-**Punctuation tendencies:** [Em-dashes frequent / Oxford comma always/never / Ellipses / None noted]
+Voices live under the user's home directory instead. Plugin updates cannot touch them and git cannot see them.
 
 ---
 
-### Voice register
+## THE VOICE HOME
 
-**Vocabulary level:** [Conversational / Technical / Formal / Colloquial / Mixed]
+```
+~/.everyday-writer/                 Windows: %USERPROFILE%\.everyday-writer\
+  active-voice                      one line: the active voice slug
+  voices/
+    <slug>/
+      voice-profile.md              the fingerprint — this is what you read
+      references/                   this voice's drop-zone
+      drafts/                       file-mode output for this voice
+      samples/                      writing the profile was built from
+```
 
-**First-person use:** [Heavy — self at the center / Light — voice present but not intrusive / Absent]
-
-**Specificity level:** [High — writes in specifics and named examples / Medium / Abstract — tendency to generalize]
-
-**Emotional temperature:** [Clinical and dry / Warm and personal / Intense / Measured and contained]
-
----
-
-### Structural habits
-
-**How this writer opens pieces:** [Scene / Claim / Question / Statistic / Personal moment / Other]
-
-**How this writer closes pieces:** [Lesson / Challenge / Image / Punchline / Open question / Other]
-
-**What this writing is noticeably good at:** [Free text — 1–2 sentences from sample analysis]
-
-**What this writing noticeably avoids or struggles with:** [Free text — 1–2 sentences]
+Slugs are lowercase kebab-case and match their directory name.
 
 ---
 
-### Tone axes
+## RESOLUTION — RUN THIS EVERY INVOCATION
 
-**Warm ↔ Clinical:** [Position on the axis + one-sentence explanation]
+**Step 1 — Check for an inline override.**
 
-**Confident ↔ Hedged:** [Position on the axis + one-sentence explanation]
+If the user's request names a voice for this piece of writing — "as kaguura", "in client-acme's voice", "write this one as <name>" — that voice wins **for this invocation only**.
 
-**Serious ↔ Playful:** [Position on the axis + one-sentence explanation]
+Do not write `active-voice`. Do not treat the override as a switch. The next invocation goes back to the active voice.
 
----
+If the named voice does not exist, **stop**. List the voices that do exist and ask which was meant. Never guess at a near-match and never proceed in a voice you invented — writing under a fabricated identity is Section 0.2 of `core/anti-ai-rules.md` applied to the voice itself.
 
-### Goals and platforms
+**Step 2 — Otherwise, read the active voice.**
 
-**Primary platforms:** [Newsletter / LinkedIn / X / Long-form / Fiction / Other — list what matters]
+Read `~/.everyday-writer/active-voice` and trim whitespace. That string is the slug.
 
-**What the writer wants EW to push them toward:** [Free text from onboarding Step 3]
+**Step 3 — Read the profile.**
 
----
+Read `~/.everyday-writer/voices/<slug>/voice-profile.md`. **This file is the voice fingerprint.** Everything downstream in the dependency chain treats it exactly as it would have treated a profile stored here.
 
-### Voice adjectives (confirmed)
+If its `Completed:` field is not `Yes`, stop and run onboarding for that voice before writing.
 
-These 5 words describe how this writer sounds. They were proposed and confirmed during onboarding — not assumed.
+**Step 4 — Load that voice's references.**
 
-1. [Adjective] — [one sentence of evidence from the samples]
-2. [Adjective] — [one sentence of evidence]
-3. [Adjective] — [one sentence of evidence]
-4. [Adjective] — [one sentence of evidence]
-5. [Adjective] — [one sentence of evidence]
+Read every `.md` file in `~/.everyday-writer/voices/<slug>/references/`.
+
+These are that voice's reference material and no other voice's. The plugin's own `references/` folder is **not** scanned — see the clean-room rule below.
 
 ---
 
-### What NOT to write for this voice
+## EDGE CASES
 
-Derived from the samples and confirmed by the writer. These are patterns that appear in AI-generated text but also in writing that sounds like someone else, not this writer.
+| Condition | What to do |
+|---|---|
+| `~/.everyday-writer/` does not exist | First run. Route to `onboarding/ONBOARDING.md`, which creates the tree. |
+| `voices/` exists but is empty | Route to onboarding. |
+| Exactly one voice, no `active-voice` file | Set `active-voice` to that voice and continue. Do not prompt. |
+| Two or more voices, no `active-voice` file | Stop. List them and ask which to activate. |
+| `active-voice` names a voice that does not exist | Stop. Report the broken pointer, list what exists, ask. Do not silently pick one. |
+| Resolved profile has `Completed: No` | Run onboarding for that voice first. |
+| Inline override names an unknown voice | Stop and ask. See Step 1. |
 
-- [Pattern 1 to avoid]
-- [Pattern 2 to avoid]
-- [Pattern 3 to avoid]
-
----
-
-## RECALIBRATION LOG
-
-When the writer asks to update the profile, log the change here:
-
-| Date | Field changed | Old value | New value | Reason |
-|---|---|---|---|---|
-| [Date] | [Field] | [Old] | [New] | [Why] |
+The pattern in every failing case is the same: **stop and ask, never guess.** Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error message.
 
 ---
 
-## PROFILE STATUS
+## THE CLEAN-ROOM RULE
 
-**Completed:** [Yes / No — if No, onboarding must run before this system is used]
+A voice's `references/` folder is read only when that voice is active or named in an override.
 
-**Last updated:** [Date]
+The plugin's own `references/` directory is no longer a drop-zone and is not scanned. This is deliberate: a ghostwriting client's brand guidelines must not be able to reach the user's own writing, and the user's material must not leak into a client's. A single shared folder cannot give that guarantee.
 
-**Sessions run since last update:** [Number — recalibrate if >20 without update]
+---
+
+## STORED SAMPLES DO NOT OVERRIDE THE PROFILE
+
+Section 0.1 of `core/anti-ai-rules.md` gives precedence to a sample **pasted in the current conversation**. That is a live signal about what the writer wants right now.
+
+Files sitting in a voice's `samples/` folder are not that signal. They are provenance — the evidence the profile was built from, kept for recalibration. Do not load them into the dependency chain, and do not treat them as a standing override. Extending §0.1 to disk would mean every invocation quietly overrides the fingerprint onboarding worked to establish.
+
+---
+
+## WHERE DRAFTS GO
+
+When EW writes a draft to disk and the user has not given a path, write it to `~/.everyday-writer/voices/<slug>/drafts/` for the voice in effect.
+
+The `drafts/` folder inside the plugin directory is not used by this flow.
+
+---
+
+## THE VOICE TAG
+
+In **interactive mode**, print the voice on one line above the draft:
+
+```
+Voice: client-acme
+
+[draft follows]
+```
+
+Not a prompt and not a gate — do not wait for confirmation. It is a label.
+
+**Suppress it in embedded mode**, where another skill or agent is calling EW for prose and wants no ceremony.
+
+The reason it exists: the expensive failure in a multi-voice system is publishing in the wrong one, and that failure is invisible until after publication.
+
+---
+
+## MANAGING VOICES
+
+Creating, switching, importing, editing, and deleting voices is handled by `skills/voice/SKILL.md` (`/ew:voice`). Do not edit `active-voice` or the voice tree by hand from inside another skill — route the user there.
+
+---
+
+## THE BLANK TEMPLATE
+
+The empty fingerprint every new voice is stamped from lives at `core/voice-profile-template.md`. Onboarding copies it into the voice directory and fills it in. It is never filled in place.

@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Outline Engine Skill
 description: Turn a vague idea into a tight, format-specific outline through structured interrogation. Works for newsletters, sales pages, LinkedIn posts, tweets, fiction scenes, and screenplays.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — OUTLINE ENGINE SKILL

@@ -44,6 +44,9 @@ function install() {
   console.log('');
   console.log('Everyday Writer installed.');
   console.log('Plugin location: ' + dest);
+  console.log('Voice profiles:  ' + path.join(os.homedir(), '.everyday-writer'));
+  console.log('');
+  console.log('Installing overwrites the plugin directory but never touches your voices.');
   console.log('');
   console.log('Open Claude Code and type /ew to get started.');
   console.log('');
@@ -59,6 +62,14 @@ function uninstall() {
 
   fs.rmSync(dest, { recursive: true, force: true });
   console.log('Everyday Writer uninstalled.');
+
+  // Voices are the user's own writing calibration, not package data. Leave them.
+  const voices = path.join(os.homedir(), '.everyday-writer');
+  if (fs.existsSync(voices)) {
+    console.log('');
+    console.log('Your voice profiles were left in place at ' + voices);
+    console.log('Delete that folder yourself if you want them gone.');
+  }
 }
 
 function copyRecursive(src, dest) {

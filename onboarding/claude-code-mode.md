@@ -1,6 +1,8 @@
 # EW Onboarding — Claude Code Mode (Active)
 
-**When to use this:** Claude Code environment, file system available, no persistent memory between sessions.
+**When to use this:** Claude Code environment, file system available, and the voice being built is **the user's own**.
+
+**When not to use this:** the voice belongs to someone who is not in the conversation — a ghostwriting client. That is `onboarding/subject-mode.md`, which drops the freewrite and records confirmation as second-hand.
 
 ---
 
@@ -115,15 +117,31 @@ If the samples weren't clear on one axis, ask about that axis specifically. Don'
 
 ## STEP 7: WRITE AND SAVE THE PROFILE
 
-Compile everything into the voice fingerprint format from `core/voice-profile.md` and write it to that file — filling every field with the values derived from the samples and confirmed by the user.
+Ask what to call this voice if you do not already have a name, and derive a lowercase kebab-case slug from it.
 
-Set `Completed: Yes` and `Last updated: [today's date]` in the PROFILE STATUS section.
+Create `~/.everyday-writer/voices/<slug>/` with `references/`, `drafts/`, and `samples/`. Copy `core/voice-profile-template.md` into it as `voice-profile.md`, then fill every field with the values derived from the samples and confirmed by the user.
+
+**Do not write the profile into `core/`.** That directory is a cache the plugin replaces on update, and it is tracked by a public git repository. `core/voice-profile.md` is the resolver that finds voices, not a place to store one.
+
+Set these in the profile:
+
+```
+Voice type:       Self
+Confirmed by:     the writer
+Freewrite basis:  Included          (or: None — declined)
+Completed:        Yes
+Last updated:     [today's date]
+```
+
+Save the samples the user pasted to `samples/`, one file each, and say so in one line.
+
+If this is the first voice, write the slug to `~/.everyday-writer/active-voice`.
 
 After writing, confirm with the user:
 
-> "Profile saved to `core/voice-profile.md`. Every sub-skill will now use it.
+> "Profile saved as `kaguura`. Every sub-skill will now use it.
 >
-> One thing worth knowing: if you feel like EW isn't sounding like you at any point, tell me — I'll re-read the profile and recalibrate. The profile gets better over time as we work together.
+> Two things worth knowing. If EW ever stops sounding like you, say so — `/ew:voice edit` recalibrates, and the profile gets better over time. And if you ever write for someone else, `/ew:voice new` builds them their own profile so nothing bleeds between the two.
 >
 > What are we writing?"
 

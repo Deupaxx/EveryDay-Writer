@@ -7,6 +7,8 @@ Built on an A-Player standard: results over hours, own the outcome, no coinflipp
 
 13 specialized writing sub-skills, all constrained by a voice fingerprint taken from your own writing and a set of anti-AI rules that get applied before anything ships.
 
+Hold as many voices as you need — your own, plus a separate profile for every ghostwriting client. Switching is one command, and nothing bleeds between them.
+
 ---
 
 ## Installation
@@ -37,7 +39,7 @@ Cowork does not support file-based plugins. Use the pre-packaged files in [`cowo
 
 See [`cowork/README.md`](cowork/README.md) for the full file list.
 
-Cowork stores your voice profile in Claude.ai memory rather than on disk.
+Cowork stores your voice profiles in Claude.ai memory rather than on disk — one `EW Voice Profile — [Name]` memory per voice, plus an `EW Active Voice` memory holding the one in effect. Add `cowork/ew-voice.md` if you want the full voice-management flow.
 
 ---
 
@@ -79,6 +81,51 @@ npm install -g everyday-writer@latest && everyday-writer install
 
 Check your installed version with `everyday-writer --version`.
 
+**Upgrading from 0.2.0 →** your voice profile used to live at `core/voice-profile.md` inside the plugin. Updating replaces that directory, so copy the file somewhere safe first, then bring it across:
+
+```
+/ew:voice import <path-to-your-old-voice-profile.md>
+```
+
+If you've already updated and lost it, onboarding rebuilds it in about five minutes. Profiles now live in `~/.everyday-writer/`, which updates cannot touch.
+
+---
+
+## Multi-voice
+
+One voice is active at a time and persists across sessions.
+
+```
+/ew:voice                     List voices, show which is active
+/ew:voice kaguura             Switch — everything writes in this voice until changed
+/ew:voice new                 Add a voice (yours, or a ghostwriting client's)
+/ew:voice edit                Recalibrate the active voice
+/ew:voice import <path>       Bring in a profile you already have
+/ew:voice delete <name>       Remove one
+```
+
+**Write a single piece in another voice without switching:**
+
+```
+/ew:linkedin as client-acme
+```
+
+That applies to one invocation. The active voice is untouched.
+
+**Adding a client.** `/ew:voice new` asks whose voice it is. Your own runs the standard seven-step onboarding, freewrite included. Someone else's runs a sample-analysis flow instead — you paste their published writing and confirm the read as their ghostwriter. There's no freewrite, because you can't ask an absent person for one, and the profile records `Confirmed by: ghostwriter, not subject` so that distinction survives.
+
+Anything their samples don't support stays visibly `[bracketed]` rather than being filled in with a plausible guess. Prose shows how someone writes; it doesn't show what they want.
+
+**Nothing bleeds.** Each voice owns its `references/`, `drafts/`, and `samples/`. A client's brand guidelines are read when their voice is active and at no other time.
+
+**Drafts are tagged** with the voice they were written in — one line, no prompt:
+
+```
+Voice: client-acme
+
+[draft follows]
+```
+
 ---
 
 ## Invocation
@@ -98,6 +145,7 @@ Check your installed version with `everyday-writer --version`.
 | `/ew:world-builder` | World bible questioner and generator |
 | `/ew:audit` | Before/after rewrite with failure analysis |
 | `/ew:outline` | Idea to outline, for any format |
+| `/ew:voice` | List, switch, add, import, recalibrate, or delete voices |
 | `/ew:failure-library` | Annotated AI-slop failure patterns |
 
 You do not have to use the slash commands. Each skill carries a description, so asking for "a LinkedIn post about X" routes to the right one on its own.
@@ -110,10 +158,10 @@ Direct invocation skips routing, not constraints. Every sub-skill still reads th
 
 Every invocation runs the same sequence:
 
-1. **Profile check.** Looks for `Completed: Yes` in `core/voice-profile.md`. If it's missing, onboarding runs first.
-2. **Onboarding** (first run only). Seven steps, about five minutes. You paste samples, answer questions about goals and platforms, do one timed freewrite, and confirm five voice adjectives. The result is written to `core/voice-profile.md`.
-3. **References check.** Any `.md` file you drop in `references/` is read and takes precedence over sub-skill defaults.
-4. **Dispatch.** The sub-skill reads `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then `core/voice-profile.md`, then your reference files, then its own instructions, and only then writes.
+1. **Voice resolution.** `core/voice-profile.md` is a resolver, not a profile — it points at the active voice under `~/.everyday-writer/`. If no voices exist, onboarding runs first. If resolution is ambiguous, EW stops and asks rather than guessing.
+2. **Onboarding** (first run, and whenever you add a voice). Seven steps, about five minutes. You paste samples, answer questions about goals and platforms, do one freewrite, and confirm five voice adjectives. The result is written to `~/.everyday-writer/voices/<name>/voice-profile.md`.
+3. **References check.** Any `.md` file you drop in that voice's `references/` folder is read and takes precedence over sub-skill defaults.
+4. **Dispatch.** The sub-skill reads `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then the resolved voice profile, then that voice's reference files, then its own instructions, and only then writes.
 5. **Two-pass loop.** No first draft is ever presented. The draft gets interrogated against three questions, revised, and run through two checklists before you see it.
 
 ### Three rules that govern everything
@@ -144,11 +192,14 @@ EW/
 │   ├── anti-ai-rules.md               ← The operating standard, precedence, fabrication
 │   │                                    rule, banned patterns, checklists, restraint
 │   ├── ai_slop_commandments.md        ← Mechanism reference + era-indexed slop vocabulary
-│   └── voice-profile.md               ← Your voice fingerprint (written during onboarding)
+│   ├── voice-profile.md               ← RESOLVER. Not a profile — points at the active
+│   │                                    voice under ~/.everyday-writer/
+│   └── voice-profile-template.md      ← Blank fingerprint each new voice is stamped from
 │
 ├── onboarding/
-│   ├── ONBOARDING.md                  ← Environment detection and routing
-│   ├── claude-code-mode.md            ← 7-step active onboarding (file-based)
+│   ├── ONBOARDING.md                  ← Environment detection and voice routing
+│   ├── claude-code-mode.md            ← 7-step active onboarding, your own voice
+│   ├── subject-mode.md                ← Sample-only onboarding, someone else's voice
 │   └── claude-ai-cowork-mode.md       ← Memory-based onboarding (Claude.ai)
 │
 ├── skills/
@@ -167,17 +218,33 @@ EW/
 │   │   └── skeleton-template.md       ← World bible output template
 │   ├── audit/SKILL.md
 │   ├── outline/SKILL.md
-│   └── failure-library/SKILL.md
+│   ├── failure-library/SKILL.md
+│   └── voice/SKILL.md                 ← Voice management (/ew:voice)
 │
-├── cowork/                            ← Claude.ai Cowork port (15 files, YAML frontmatter)
+├── cowork/                            ← Claude.ai Cowork port (16 files, YAML frontmatter)
 │   ├── README.md
 │   ├── ew-master.md                   ← Whole system in one file
 │   └── ew-*.md                        ← One file per sub-skill
 │
-├── references/                        ← Drop your own .md instruction files here
-│   └── DROP-MD-FILES-HERE.md
+├── references/                        ← Deprecated drop zone. Redirect note only —
+│   └── DROP-MD-FILES-HERE.md            reference files now live per-voice
 │
 └── resources/                         ← Background reference material, not part of dispatch
+```
+
+Your voices live outside the repo, so plugin updates can't wipe them and git never sees them:
+
+```
+~/.everyday-writer/                    Windows: %USERPROFILE%\.everyday-writer\
+├── active-voice                       One line: the voice currently in effect
+└── voices/
+    ├── kaguura/
+    │   ├── voice-profile.md           The fingerprint
+    │   ├── references/                Brand docs, style guides for this voice
+    │   ├── drafts/                    File-mode output
+    │   └── samples/                   Writing the profile was built from
+    └── client-acme/
+        └── ...
 ```
 
 ---
@@ -211,8 +278,10 @@ Pushing a version tag publishes to npm. Bump the version in `.claude-plugin/plug
 - **The manifest lives in `.claude-plugin/`**, which is where Claude Code looks. A root-level `plugin.json` is ignored.
 - **Every skill file carries YAML frontmatter.** Without `name` and `description`, Claude Code does not register the skill at all.
 - **`core/` files are dependencies, not skills.** Every sub-skill reads all three; none of them is invoked directly.
-- **`references/` is a user drop zone.** Never put system instructions there.
-- **Onboarding splits by environment** — active and file-based in Claude Code, memory-based in Claude.ai.
+- **`core/voice-profile.md` is a resolver, not a profile.** All 13 sub-skills hardcode that path and the validator errors when it's missing from any of them, so redirecting at that one file adds multi-voice without touching a single sub-skill.
+- **Voices live in `~/.everyday-writer/`, not in the plugin.** The plugin directory is a cache that updates replace wholesale, and this repo is public. A client profile stored in `core/` would be destroyed on upgrade and one commit from publication.
+- **Reference material is per-voice.** A shared folder means a client's brand guidelines and yours get read together on every invocation. Per-voice folders make that impossible rather than merely unlikely.
+- **Onboarding splits twice** — by environment (file-based in Claude Code, memory-based in Claude.ai) and by subject (your own voice gets a freewrite; someone else's can't have one).
 - **The anti-AI rules include a restraint half.** A banlist applied without judgment produces prose stripped of whatever made it a person's. Sections 9 and 10 exist to stop that.
 
 ---

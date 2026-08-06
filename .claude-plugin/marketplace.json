@@ -9,7 +9,7 @@
     {
       "name": "ew",
       "description": "13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "source": "./",
       "author": {
         "name": "deupaxx",

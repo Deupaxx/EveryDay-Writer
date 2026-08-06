@@ -142,6 +142,23 @@ for (const rel of CORE) {
   if (!exists(rel)) errors.push('Missing core file: ' + rel);
 }
 
+// core/voice-profile.md is the resolver, not a profile. The blank fingerprint it
+// stamps new voices from must ship alongside it, or onboarding has nothing to copy.
+if (!exists('core/voice-profile-template.md')) {
+  errors.push(
+    'Missing core/voice-profile-template.md. Onboarding copies it into each voice directory; without it no voice can be created.'
+  );
+}
+
+// A filled-in profile in core/ means someone wrote a voice into the plugin directory.
+// That directory is a cache the plugin replaces on update, and it is tracked by a
+// public repository — so this is both data loss waiting to happen and a privacy leak.
+if (exists('core/voice-profile.md') && /^\s*\*\*Completed:\*\*\s*Yes/m.test(read('core/voice-profile.md'))) {
+  errors.push(
+    'core/voice-profile.md contains a completed voice profile. It must stay a resolver; voices belong in ~/.everyday-writer/voices/. Move it out before committing.'
+  );
+}
+
 for (const rel of files.filter((f) => f !== 'SKILL.md')) {
   const text = read(rel);
   for (const core of CORE) {

@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Cowork Folder Guide
 description: Instructions for uploading Everyday Writer skills to Claude.ai Cowork (Projects). Lists all available files and explains how to use them.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — CLAUDE.AI COWORK FOLDER
@@ -18,7 +18,7 @@ All files have YAML frontmatter so Claude.ai accepts them without errors.
 
 Upload **all `.md` files** from this folder to a single Claude.ai Project. You get:
 - The full anti-AI rules engine
-- Voice profile onboarding and memory
+- Multi-voice onboarding and memory — your own voice, plus a separate profile per ghostwriting client
 - All 13 sub-skills available in one project
 - The failure library for teaching and diagnosis
 
@@ -42,7 +42,7 @@ Upload `ew-master.md` plus any specific skill files you want. Each micro-skill f
 
 | File | What it does |
 |---|---|
-| `ew-master.md` | **The one-above-all file.** Contains the complete system: all anti-AI rules, voice profiling, all 13 sub-skills, and both diagnostic checklists. Upload this if you only upload one file. |
+| `ew-master.md` | **The one-above-all file.** Contains the complete system: all anti-AI rules, multi-voice profiling, all 13 sub-skills, and both diagnostic checklists. Upload this if you only upload one file. |
 | `ew-linkedin.md` | LinkedIn posts and articles |
 | `ew-newsletter-creative.md` | Story-driven newsletters, personal essays, narrative-first issues |
 | `ew-newsletter-technical.md` | Technical newsletters, tutorials, analysis, how-tos |
@@ -56,6 +56,7 @@ Upload `ew-master.md` plus any specific skill files you want. Each micro-skill f
 | `ew-audit.md` | Before/after rewrite with failure analysis |
 | `ew-outline.md` | Idea-to-outline engine for any format |
 | `ew-failure-library.md` | Real AI writing failure patterns with dissection |
+| `ew-voice.md` | Multi-voice management — switch voices, add a ghostwriting client, recalibrate |
 
 ---
 

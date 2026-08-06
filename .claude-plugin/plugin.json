@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "ew",
   "description": "Everyday Writer — 13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "deupaxx",
     "email": "105633652+Deupaxx@users.noreply.github.com"

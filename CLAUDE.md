@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-**Everyday Writer (EW)** is a Claude Code skill plugin for professional writers. It provides 13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules. Invoked via `/ew:ew` or any of the sub-skill commands.
+**Everyday Writer (EW)** is a Claude Code skill plugin for professional writers. It provides 13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules, plus a 14th skill that manages voices. Invoked via `/ew:ew` or any of the sub-skill commands.
+
+The system holds any number of voices — the writer's own, plus one per ghostwriting client — with one active at a time.
 
 Plugin identity is defined in `.claude-plugin/plugin.json` (name: `ew`).
 
@@ -22,7 +24,7 @@ Run `npm run check` before any commit that touches manifests or skill frontmatte
 ## Entry Points
 
 - `SKILL.md` — master dispatcher, registered as skill `ew`
-- `onboarding/ONBOARDING.md` — environment router (Claude Code vs Claude.ai Cowork)
+- `onboarding/ONBOARDING.md` — environment router (Claude Code vs Claude.ai Cowork), then voice router (own voice vs subject)
 - `.claude-plugin/plugin.json` — plugin manifest
 - `.claude-plugin/marketplace.json` — marketplace manifest
 
@@ -43,7 +45,8 @@ Direct invocation (`/ew:linkedin`) bypasses step 4's routing but not steps 1–3
 |---|---|
 | `core/anti-ai-rules.md` | The primary standard. Sections 0–10. |
 | `core/ai_slop_commandments.md` | Technical companion: mechanism behind each failure pattern, era-indexed slop vocabulary, diagnostic checklist. |
-| `core/voice-profile.md` | Writer's voice fingerprint. Set during onboarding; gates all output. |
+| `core/voice-profile.md` | **The resolver, not a profile.** Points at the active voice. |
+| `core/voice-profile-template.md` | Blank fingerprint each new voice is stamped from. |
 
 Key sections of `anti-ai-rules.md`:
 
@@ -77,6 +80,7 @@ skills/
   audit/SKILL.md                 # Before/after rewrite comparison
   outline/SKILL.md               # Idea-to-outline engine
   failure-library/SKILL.md       # Annotated AI-slop failure patterns
+  voice/SKILL.md                 # Voice management: list, switch, new, import, edit, delete
 ```
 
 ## Developing Skills
@@ -93,11 +97,33 @@ skills/
 
 When a core rule changes, it must be updated in **both** `core/anti-ai-rules.md` and `cowork/ew-master.md`. The cowork files are copies, not references. Nothing keeps them in sync automatically.
 
-## Voice Profile
+## Multi-Voice Architecture
 
-`core/voice-profile.md` contains 9 sections: sentence patterns, voice register, structural habits, tone axes, 5 confirmed voice adjectives, platforms, goals, and what NOT to write. When `Completed: Yes` is present, the profile is active and gates all skill output.
+**`core/voice-profile.md` is a resolver, not a profile.** Anyone opening it expecting a fingerprint will be confused, so this is the most important non-obvious fact in the repo.
 
-Per §0.1, the profile outranks the style rules in `anti-ai-rules.md`. If a writer's confirmed voice uses a pattern the rules discourage, the voice wins.
+All 13 sub-skills hardcode `core/voice-profile.md` in their dependency chains, and `check.js` hard-errors when that filename is missing from any of them. Redirecting at that single file adds multi-voice without editing a single sub-skill and without touching the validator's rules. Do not "fix" this by rewriting the sub-skills to point at a new path.
+
+Voices live outside the plugin:
+
+```
+~/.everyday-writer/
+  active-voice                  one line: the active slug
+  voices/<slug>/
+    voice-profile.md            the actual fingerprint
+    references/                 per-voice drop-zone
+    drafts/                     file-mode output
+    samples/                    provenance
+```
+
+Two reasons they cannot live in `core/`: the plugin directory is a cache that updates replace wholesale, and this repo is public. A client profile in `core/` would be destroyed on upgrade and one commit from publication. `check.js` fails the build if a completed profile appears there.
+
+**Resolution rules, every failure case, and the inline-override behavior are in `core/voice-profile.md` itself.** The governing principle is: stop and ask, never guess. Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error.
+
+**The plugin's `references/` folder is no longer scanned.** Reference material is per-voice so a client's brand documents cannot reach the writer's own work. `references/DROP-MD-FILES-HERE.md` is kept only as a redirect note for upgraders.
+
+**Two onboarding flows.** `onboarding/claude-code-mode.md` builds the user's own voice, freewrite included. `onboarding/subject-mode.md` builds someone else's from samples alone — no freewrite is obtainable, confirmation is second-hand, and §0.2 governs every field. Subject profiles record `Confirmed by: ghostwriter, not subject`.
+
+Per §0.1, a voice profile outranks the style rules in `anti-ai-rules.md`. If a confirmed voice uses a pattern the rules discourage, the voice wins. Stored `samples/` are the exception — they are provenance, not a live override, because §0.1's precedence belongs to a sample pasted in the current conversation.
 
 ## Versioning
 

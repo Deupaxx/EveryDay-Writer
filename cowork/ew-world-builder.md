@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — World Builder Skill
 description: Build a usable world bible for fiction, screenplays, games, and serialized narrative through a layered questioning process. Extracts premise, protagonist, conflict, world rules, society, history, and supporting cast, then generates a structured reference document with open questions named explicitly.
-version: 0.2.0
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — WORLD BUILDER SKILL

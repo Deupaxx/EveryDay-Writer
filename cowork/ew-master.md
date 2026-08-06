@@ -1,7 +1,7 @@
 ---
 name: Everyday Writer — Master Skill
-description: Complete Everyday Writer writing system. Anti-AI rules, voice profiling, and all 13 sub-skills in one file. Upload this to Claude.ai Cowork to activate the full EW system.
-version: 0.2.0
+description: Complete Everyday Writer writing system. Anti-AI rules, multi-voice profiling, and all 13 sub-skills in one file. Upload this to Claude.ai Cowork to activate the full EW system.
+version: 0.3.0
 ---
 
 # EVERYDAY WRITER — MASTER SKILL
@@ -11,7 +11,7 @@ This file is the entire Everyday Writer (EW) system in one document. It contains
 - The A-Player operating standard
 - The full anti-AI writing rules engine (banned words, sentence patterns, tone patterns, structural patterns, checklist)
 - The AI Slop Commandments (fine-tuning reference — mechanisms, era-indexed vocabulary, diagnostic checklist)
-- Voice profile onboarding
+- Multi-voice profiling and onboarding — the writer's own voice, plus a separate profile per ghostwriting client
 - All 13 sub-skills: newsletter (creative + technical), LinkedIn, tweets/X, Substack Notes, web copy, sales copy, scene structure, script writing, world builder, audit, outline, failure library
 
 **How to use:** Upload this file to a Claude.ai Project. Then type `/ew` followed by your request, or name the sub-skill directly (e.g., "use the LinkedIn skill", "run the audit skill on this text").
@@ -24,9 +24,9 @@ This file is the entire Everyday Writer (EW) system in one document. It contains
 
 When the user types `/ew`, starts a message with "ew:", or asks you to use "the writing skill" or "Everyday Writer":
 
-1. **Check for voice profile** — search memory for any entry tagged "EW Voice Profile". If found and complete, proceed to step 3.
-2. **Run onboarding** — if no profile exists, run the onboarding process in Part 3 before doing anything else.
-3. **Check for references** — if the user has uploaded any additional `.md` reference files to this Project, read them for platform-specific instructions or tone preferences.
+1. **Resolve the voice** — read the "EW Active Voice" memory to get the active voice name, then load the "EW Voice Profile — [Name]" memory for it. If the request names a different voice for this piece ("as kaguura", "in client-acme's voice"), use that one for this invocation only and leave the active voice unchanged.
+2. **Run onboarding** — if no voice profiles exist at all, run Part 3 before doing anything else. If resolution fails for any other reason — no active voice set with several to choose from, an active voice whose profile is missing, an override naming a voice that doesn't exist — **stop and ask.** Never guess. Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error.
+3. **Check for references** — read any `.md` reference files uploaded to this Project **that belong to the resolved voice**. Files are per-voice: a ghostwriting client's brand guidelines must not shape the writer's own work, and vice versa. If an uploaded file's voice is unclear, ask which voice it belongs to rather than applying it to everything.
 4. **Dispatch** — identify the task type and apply the appropriate sub-skill from Part 5.
 
 ## Dispatch Map
@@ -46,12 +46,13 @@ When the user types `/ew`, starts a message with "ew:", or asks you to use "the 
 | Audit / rewrite / before-after comparison | Audit (Part 5.11) |
 | Idea → outline / stuck on structure | Outline Engine (Part 5.12) |
 | What does AI writing look like / failure examples | Failure Library (Part 5.13) |
+| Switch voice / add a client / list voices / "who am I writing as?" | Voice (Part 3) |
 
 **Every sub-skill invocation follows this mandatory sequence:**
 1. Apply all rules from Part 2 (Anti-AI Rules), including Section 0.1 on precedence and Section 0.2 on fabrication
 2. Apply all rules from Part 2B (AI Slop Commandments)
-3. Apply the voice profile from memory (Part 3)
-4. Apply any uploaded reference files
+3. Apply the resolved voice's profile from memory (Part 3)
+4. Apply any uploaded reference files belonging to that voice
 5. Execute the sub-skill
 6. Run the two-pass loop (Part 2 Section 7.1) — never present a first draft
 7. Run both checklists (Part 2 Section 7.2 and Part 2B Section 6), then check the result against Part 2 Sections 8 and 9 to confirm nothing was over-corrected
@@ -513,9 +514,65 @@ Do not speculatively fill information gaps with hedged disclaimers presented as 
 
 ---
 
-# PART 3: VOICE PROFILE ONBOARDING
+# PART 3: VOICES AND ONBOARDING
 
-*Run this the first time `/ew` is invoked without an existing voice profile in memory.*
+*Run onboarding the first time `/ew` is invoked with no voice profiles in memory, and any time the user adds a voice.*
+
+## MULTI-VOICE
+
+EW holds any number of voices: the writer's own, plus one per ghostwriting client. Each has its own fingerprint and its own reference material.
+
+**Memory layout:**
+
+| Memory | Holds |
+|---|---|
+| `EW Active Voice` | The name of the voice currently in effect |
+| `EW Voice Profile — [Name]` | One per voice |
+
+**One voice is active at a time**, and it persists until changed.
+
+**Voice commands:**
+
+| The user says | Do this |
+|---|---|
+| "list my voices", "who am I writing as?" | List every `EW Voice Profile` memory, mark the active one, show each type (Self/Subject) |
+| "switch to [name]" | Confirm that profile exists, then update `EW Active Voice`. If it doesn't exist, stop and list what does — never create one as a side effect of a switch |
+| "new voice", "add a client" | Run onboarding below, asking whose voice it is first |
+| "recalibrate", "this doesn't sound like me" | Update the active profile's affected fields, log the change with date and reason |
+| "delete [name]" | Refuse if it's the active voice — tell them to switch away first. Otherwise require them to type the name to confirm |
+
+**A single piece can be written in another voice without switching.** "Write this as kaguura" applies to that invocation only.
+
+**Nothing bleeds between voices.** Reference material is per-voice.
+
+**Tag interactive output with the voice:**
+
+```
+Voice: client-acme
+
+[draft follows]
+```
+
+One line, no prompt, no waiting. Omit it when another skill or task is calling EW for prose. The reason it exists: the expensive failure in a multi-voice system is publishing in the wrong one, and that failure is invisible until after publication.
+
+---
+
+## WHOSE VOICE
+
+Ask before running onboarding. The answer changes which questions are askable at all.
+
+> "Whose voice is this?
+>
+> 1. **Mine** — your own writing voice.
+> 2. **Someone else's** — a ghostwriting client, or any voice that isn't yours."
+
+**If Mine** → run the three phases below in full.
+
+**If Someone else's** → run Subject Mode below instead. The differences are not cosmetic: the person is not in the conversation, so there is no freewrite, confirmation is second-hand, and Section 0.2 governs every field.
+
+**On the very first run**, when no voices exist at all, skip the question and build the user's own voice. They can add clients afterwards.
+
+---
 
 ## How Onboarding Works in Claude.ai Cowork
 
@@ -539,9 +596,34 @@ Then proceed through required fields one at a time:
 4. Tone axes (propose based on what you've learned, ask for confirmation)
 
 **Phase 3 — Confirm and store:**
-When all required fields are filled, present the complete profile for confirmation, then store as a named memory: **"EW Voice Profile — [name/identifier]"**
+When all required fields are filled, present the complete profile for confirmation, then store as a named memory: **"EW Voice Profile — [name/identifier]"**. If this is the first voice, also store `EW Active Voice` holding that name.
 
-Then say: "Profile saved. Every EW skill will use it going forward. What are we writing?"
+Then say: "Profile saved as [name]. Every EW skill will use it going forward. If you ever write for someone else, say so and I'll build them their own profile so nothing bleeds between the two. What are we writing?"
+
+---
+
+## SUBJECT MODE (Ghostwriting)
+
+For building a profile for someone who is **not** in the conversation — a client, an executive whose LinkedIn the user runs.
+
+**What's different.** In self-mode the writer is present: you can ask what they want, hear them hedge, check every adjective against the person who owns the voice. Here you have prose and a proxy.
+
+1. **No freewrite.** It cannot be obtained. Published work is the only evidence.
+2. **Confirmation is second-hand.** The ghostwriter confirms as proxy, and the profile records that.
+3. **Section 0.2 does the heavy lifting.** Writing about an absent person is where a model invents biography, motive and opinion — and everything it invents sounds plausible.
+
+**The flow:**
+
+1. Ask for 3–5 pieces of the subject's published writing, more if available. Without a freewrite, sample volume is the only thing standing in for range. Say up front: "I can only profile what's on the page — how they build a sentence, where they land a paragraph. I can't tell you what they want to be better at or why they write."
+2. Analyse the samples for the same markers as self-mode. Two cautions: *edited copy is not voice* — if one sample reads flatter or more uniform, ask whether it went through an editor. And *if the samples disagree with each other, say so* rather than averaging them into a voice that matches none of them.
+3. Ask the ghostwriter for platforms and goals. Mark anything they're guessing at as `[assumed]`.
+4. Propose 5 adjectives with evidence, then press once: "Any of these feel like a stretch — or like something you'd say about their category rather than about them specifically?" If the adjectives would fit any of the client's competitors, they calibrate nothing. Start over.
+5. State tone-axis positions the samples support and ask for correction. If the samples don't support a position, ask rather than inventing one.
+6. Store with `Voice type: Subject`, `Confirmed by: ghostwriter, not subject`, `Freewrite basis: None — subject not present`.
+
+**Every field the samples do not support stays in visible `[brackets]`.** Prose shows how a person writes. It does not show what they want. If a Subject profile contains a sentence you could not point to a passage to justify, it is invention — cut it or bracket it.
+
+Never record `Confirmed by: the writer` on a profile the subject did not personally confirm.
 
 ## Required Profile Fields
 
@@ -556,6 +638,9 @@ Then say: "Profile saved. Every EW skill will use it going forward. What are we 
 
 ```
 EW Voice Profile — [Name]
+Voice type: [Self / Subject]
+Confirmed by: [the writer / ghostwriter, not subject]
+Freewrite basis: [Included / None — subject not present / None — declined]
 Voice adjectives: [list — confirmed by user]
 Platforms: [list]
 Goals: [brief statement]
@@ -1436,9 +1521,11 @@ When new failure patterns are identified, add them using this format:
 
 Real examples only. No invented examples.
 
-## Updating the Voice Profile
+## Updating a Voice Profile
 
-When the writer asks to update the profile, locate the "EW Voice Profile" memory and update the relevant fields. Log the change with the date and reason.
+When the writer asks to update a profile, locate the "EW Voice Profile — [Name]" memory for the voice in question — the active one unless they name another — and update the relevant fields. Log the change with the date and reason.
+
+Change only the fields that answer to the complaint. Do not re-run onboarding and do not rewrite untouched fields. "This doesn't sound like me" needs a specific first: which piece, which line, what it should have sounded like.
 
 Recalibrate when:
 - The user says "this doesn't sound like me"
@@ -1447,4 +1534,4 @@ Recalibrate when:
 
 ---
 
-*End of Everyday Writer Master Skill. Version 0.1.0.*
+*End of Everyday Writer Master Skill. Version 0.3.0.*

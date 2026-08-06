@@ -1,6 +1,8 @@
 # EW Onboarding — Claude.ai Cowork Mode (Passive / Memory-First)
 
-**When to use this:** Claude.ai environment with memory enabled. Persistent context available across sessions.
+**When to use this:** Claude.ai environment with memory enabled, and the voice being built is **the user's own**. Persistent context available across sessions.
+
+**When not to use this:** the voice belongs to someone who is not in the conversation — a ghostwriting client. Memory inference tells you about the user, not about their client, so Phase 1 has nothing to work with. Use the Subject Mode flow in `cowork/ew-voice.md` instead.
 
 ---
 
@@ -86,7 +88,9 @@ When all required fields are filled, confirm the complete profile before storing
 >
 > Anything to adjust before I lock this in?"
 
-After confirmation, store as a named memory: **"EW Voice Profile — [first name or identifier]"** with all fields populated.
+After confirmation, store as a named memory: **"EW Voice Profile — [first name or identifier]"** with all fields populated, including `Voice type: Self`, `Confirmed by: the writer`, and the `Freewrite basis`.
+
+If this is the first voice, also store a separate memory **"EW Active Voice"** holding that name. It is how every later invocation knows which voice to write in.
 
 Then say:
 
