@@ -2,7 +2,7 @@
   "name": "everyday-writer",
   "version": "0.2.0",
   "description": "A Claude Code skill plugin for professional writers. Enforces voice consistency, anti-AI writing rules, and 13 specialized writing sub-skills.",
-  "author": "deupaxx <uuradigital@gmail.com>",
+  "author": "deupaxx <105633652+Deupaxx@users.noreply.github.com>",
   "license": "MIT",
   "bin": {
     "everyday-writer": "./bin/install.js"

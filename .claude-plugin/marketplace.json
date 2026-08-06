@@ -3,7 +3,7 @@
   "description": "Everyday Writer — a Claude Code skill plugin for professional writers",
   "owner": {
     "name": "deupaxx",
-    "email": "uuradigital@gmail.com"
+    "email": "105633652+Deupaxx@users.noreply.github.com"
   },
   "plugins": [
     {
@@ -13,7 +13,7 @@
       "source": "./",
       "author": {
         "name": "deupaxx",
-        "email": "uuradigital@gmail.com"
+        "email": "105633652+Deupaxx@users.noreply.github.com"
       }
     }
   ]
