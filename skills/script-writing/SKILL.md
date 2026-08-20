@@ -1,9 +1,10 @@
 ---
 name: script-writing
 description: |
-  Write screenplays and scripts for film, television, and short-form video. Use for scripted
-  scenes, sketches, video essays, and screenplay formatting. Enforces format discipline, visual
-  writing standards, and the EW anti-AI rules.
+  Write screenplays and scripts for film, television, YouTube, video essays, documentaries,
+  sketches, and short-form social video. Use for scripted scenes, screenplay formatting,
+  audience-retention scripting, and format-specific revision. Enforces format discipline,
+  visual writing standards, and the EW anti-AI rules.
 license: MIT
 metadata:
   version: "0.3.0"
@@ -22,11 +23,23 @@ This chain applies on direct invocation (`/ew:script-writing`) exactly as it doe
 
 Also read `skills/scene-structure/SKILL.md`. The scene mechanics apply here, filtered through the constraints of the screen format.
 
+For serious script work, also read `skills/script-writing/craft-reference.md`. It contains the mode selector and advanced craft diagnostics for feature screenplays, TV, shorts, YouTube long-form, short-form social video, video essays, and documentaries.
+
 ---
 
 ## WHAT THIS SKILL IS FOR
 
-Screenplays and scripts for film, television, and short-form video. The format exists to serve one purpose: communicate a story that will be realized by other people — directors, actors, cinematographers. Your job is not to write the movie. Your job is to make the movie inevitable on the page.
+Screenplays and scripts for film, television, YouTube, video essays, documentaries, sketches, and short-form video.
+
+First identify the output mode:
+
+- **Screenplay / TV / short film:** write production-readable pages where story is seen and heard.
+- **YouTube / video essay / documentary:** write an attention-safe script that confirms the title promise, sustains curiosity, and creates viewer satisfaction.
+- **Short-form social / sketch:** compress setup, turn, and payoff into the smallest possible shape.
+
+For screenplays, the format exists to communicate a story that will be realized by other people — directors, actors, cinematographers. Your job is not to write the movie. Your job is to make the movie inevitable on the page.
+
+For YouTube and social video, the format exists to plan attention. Your job is not only to say useful things; it is to make each beat earn the next beat.
 
 Script writing is the most constrained form of fiction writing. Every constraint is a discipline. Master the constraints before you break them.
 
@@ -43,6 +56,11 @@ Can this be filmed? Can a camera capture it? Can an actor perform it? If the ans
 ✅ "She stops at the doorway. Looks at the space where the couch used to be. Doesn't move."
 
 The second version is filmable. The first is not.
+
+For YouTube and video essays, apply a related test:
+
+**The viewer-value test:**
+Does this line help the viewer understand why they clicked, what they will get, why it matters, or why they should keep watching? If not, cut it or move it.
 
 ---
 
@@ -177,6 +195,10 @@ Every protagonist has a surface want (what they're actively pursuing) and a deep
 
 **Short-form (5–15 min):** One scene, one conflict, one turn. The luxury of setup does not exist. Start at the conflict. One turn in the middle. Land the payoff. Every short film that fails is a feature trying to be short — not a story designed at this scale.
 
+**YouTube long-form / video essay:** Title promise first. Confirm the click immediately, name the viewer's problem or curiosity, introduce a sharper angle, then structure the body around novel points, examples, rehooks, and a satisfying payoff.
+
+**Short-form social video:** One hook, one idea, one turn, one payoff. Do not write a preamble.
+
 ---
 
 ## POST-GENERATION REVIEW
@@ -188,6 +210,7 @@ Action lines with AI phrasing read as amateur on the page. A script that passes 
 ## PRE-DRAFT CHECKLIST
 
 - [ ] Is every action filmable — can a camera capture it, can an actor perform it?
+- [ ] If this is YouTube/social video, does the opening confirm and beat the title/premise expectation?
 - [ ] Do slug lines follow the format: INT/EXT. LOCATION - TIME OF DAY?
 - [ ] Are action blocks 4 lines or fewer?
 - [ ] Are parentheticals used only where the reading is genuinely ambiguous?
@@ -196,5 +219,6 @@ Action lines with AI phrasing read as amateur on the page. A script that passes 
 - [ ] Does every scene do at least two functions (plot, character, world, conflict)?
 - [ ] Is the inciting incident on screen by page 12–15?
 - [ ] Does the protagonist make an active choice at each act break?
+- [ ] For video essays or YouTube scripts, does every section answer context, application, and why-this-matters?
 - [ ] Have you run the relevant sections of `core/anti-ai-rules.md`?
 - [ ] Read every dialogue exchange aloud — does it move at speed?

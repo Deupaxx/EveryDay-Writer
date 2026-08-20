@@ -1,5 +1,6 @@
 drafts/
 node_modules/
+resources/Untitled document*.md
 
 # Voice profiles belong in ~/.everyday-writer/, never in the repo. This is a
 # backstop in case a path ever resolves relative to the working directory —

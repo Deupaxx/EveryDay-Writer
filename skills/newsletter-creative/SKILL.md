@@ -20,6 +20,8 @@ metadata:
 
 This chain applies on direct invocation (`/ew:newsletter-creative`) exactly as it does on dispatch through `/ew`. Direct invocation skips routing, not constraints.
 
+For internet essays that should feel especially voice-led, cinematic, or easy to keep reading, also read `skills/newsletter-creative/scripted-essay-reference.md`. Use it to borrow script craft — hook discipline, rehooks, spoken cadence, scene pressure, and payoff — without using screenplay formatting.
+
 ---
 
 ## WHAT THIS SKILL IS FOR
@@ -27,6 +29,8 @@ This chain applies on direct invocation (`/ew:newsletter-creative`) exactly as i
 Story-driven newsletters. Personal essays. Narrative-first issues where the writing itself is the product, not just the information inside it. This is the format where your voice either builds an audience or disappears.
 
 The creative newsletter lives or dies on one thing: does the reader feel something? Not think — feel. Information can be found anywhere. A story that moves someone cannot.
+
+For this system, a creative newsletter is often treated as a script with no speaker labels: the reader hears the writer's voice, moves through beats, meets turns and rehooks, and arrives at a payoff. The piece should feel effortless to read because the structure underneath it is doing serious work.
 
 ---
 
@@ -105,6 +109,12 @@ Don't write "and then this happened, and then this happened." Write: "This happe
 **The re-engagement rule.**
 After every 300–400 words, give the reader a reason to stay. A new turn. A specific detail that surprises. A complication that raises the stakes. If someone can stop reading at any point without feeling they'd miss something, the pacing is broken.
 
+**The silent-script rule.**
+Every beat must change what the reader feels, knows, expects, fears, or wants. If a paragraph only repeats the current emotional state, it is dead air. Cut it or make it turn.
+
+**Read it aloud.**
+Creative newsletters are silent on the page but auditory in the reader's head. If a sentence cannot be spoken cleanly, it probably will not read cleanly either. Preserve the writer's natural cadence, but compress rambling into rhythm.
+
 **Paragraph as unit of thought.**
 Each paragraph goes somewhere. It opens with a premise, complicates or advances it, and arrives somewhere the reader didn't quite expect. A paragraph that opens and closes in the same place is not a paragraph — it's a sentence dressed up.
 
@@ -160,4 +170,6 @@ Do not present a draft and note that it "may have some areas to refine." Fix the
 - [ ] Have you run Section 1–7 of `core/anti-ai-rules.md`?
 - [ ] Does every paragraph go somewhere, or do some just occupy space?
 - [ ] Is there a re-engagement moment every 300–400 words?
+- [ ] Does every beat change what the reader feels, knows, expects, fears, or wants?
+- [ ] Has the issue been read aloud for cadence?
 - [ ] What is the one-sentence takeaway? If you can't say it, rewrite the issue.

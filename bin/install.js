@@ -129,6 +129,7 @@ function uninstallClaude() {
 
 function copyRecursive(src, dest) {
   if (!fs.existsSync(src)) return;
+  if (shouldSkipCopy(src)) return;
 
   const stat = fs.statSync(src);
 
@@ -138,6 +139,11 @@ function copyRecursive(src, dest) {
       copyRecursive(path.join(src, child), path.join(dest, child));
     }
   } else {
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(src, dest);
   }
+}
+
+function shouldSkipCopy(src) {
+  return path.basename(src).toLowerCase().startsWith('untitled document');
 }

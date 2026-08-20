@@ -11,6 +11,21 @@ Hold as many voices as you need — your own, plus a separate profile for every 
 
 ---
 
+## Creative writing and storytelling
+
+Everyday Writer is also a **Claude creative writing skill**, **Claude script writing skill**, and **Claude storytelling skill** for people who want more than a prompt that says "write better." It gives Claude Code, Codex, or Claude.ai Cowork a full fiction workflow:
+
+- **Storytelling:** turn a premise into an outline, pressure-test the conflict, and keep the character want/need visible
+- **Creative writing:** draft fiction scenes and chapters with scene mechanics, point of view discipline, sensory grounding, and subtext
+- **Creative newsletters:** write internet essays like silent scripts, with hooks, scene pressure, rehooks, spoken cadence, and payoff
+- **Script writing:** write screenplay, TV, short film, YouTube, documentary, video essay, sketch, and short-form scripts with format rules, filmable action, hooks, dialogue, pacing, and viewer retention
+- **World-building:** build a world bible, then capture new towns, factions, religions, rules, and lore into Obsidian-ready Markdown notes
+- **Revision:** audit a draft against the voice profile and anti-AI writing rules before showing the final version
+
+Searchers looking for a "creative writing skills Claude" setup usually want one of three things: a repeatable storytelling process, a script-writing skill with real screenplay constraints, or a worldbuilding memory that does not lose niche lore. EW now routes those requests directly instead of treating creative writing as one generic writing mode.
+
+---
+
 ## Installation
 
 Everyday Writer supports three environments:
@@ -176,11 +191,11 @@ Voice: client-acme
 | `/ew:substack-notes` | Substack Notes |
 | `/ew:web-copy` | Landing pages, homepages, product marketing |
 | `/ew:sales-copy` | Sales pages, email sequences, direct response |
+| `/ew:outline` | Premise, idea, or story concept to usable structure |
 | `/ew:scene-structure` | Fiction scenes, chapters, prose |
-| `/ew:script-writing` | Screenplays and scripts |
+| `/ew:script-writing` | Screenplays, TV, YouTube, documentary, video essay, sketch, and short-form scripts |
 | `/ew:world-builder` | World bible questioner, generator, and Obsidian graph notes |
 | `/ew:audit` | Before/after rewrite with failure analysis |
-| `/ew:outline` | Idea to outline, for any format |
 | `/ew:voice` | List, switch, add, import, recalibrate, or delete voices |
 | `/ew:failure-library` | Annotated AI-slop failure patterns |
 
@@ -189,6 +204,16 @@ You do not have to use the slash commands. Each skill carries a description, so 
 In Codex, use the same names with `$` instead of `/`, for example `$ew` or `$ew:world-builder`.
 
 Direct invocation skips routing, not constraints. Every sub-skill still reads the full core chain before writing.
+
+### Storytelling workflow
+
+For broad creative writing requests, EW routes across the fiction tools instead of guessing:
+
+1. `outline` shapes the premise and story structure.
+2. `world-builder` captures setting, factions, places, rules, religions, cultures, and lore.
+3. `scene-structure` writes prose fiction scenes and chapters.
+4. `script-writing` writes screenplays, TV scripts, YouTube scripts, video essays, documentaries, sketches, and short-form video.
+5. `audit` revises existing drafts before final output.
 
 ---
 
@@ -253,6 +278,7 @@ EW/
 │
 ├── skills/
 │   ├── newsletter-creative/SKILL.md
+│   ├── newsletter-creative/scripted-essay-reference.md
 │   ├── newsletter-technical/SKILL.md
 │   ├── linkedin/SKILL.md
 │   ├── tweets/SKILL.md
@@ -260,7 +286,10 @@ EW/
 │   ├── web-copy/SKILL.md
 │   ├── sales-copy/SKILL.md
 │   ├── scene-structure/SKILL.md
-│   ├── script-writing/SKILL.md
+│   ├── script-writing/
+│   │   ├── SKILL.md
+│   │   └── craft-reference.md         ← Feature, TV, YouTube, video essay,
+│   │                                    documentary, sketch, short-form rules
 │   ├── world-builder/
 │   │   ├── SKILL.md
 │   │   ├── questioner.md              ← Layered question sequence

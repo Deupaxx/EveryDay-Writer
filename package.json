@@ -1,7 +1,7 @@
 {
   "name": "everyday-writer",
   "version": "0.3.0",
-  "description": "A Codex-compatible AI companion writing skill for professional writers. Enforces voice consistency, anti-AI writing rules, and 13 specialized writing sub-skills.",
+  "description": "A Codex- and Claude-compatible AI writing skill for creative writing, storytelling, script writing, voice consistency, and anti-AI revision.",
   "author": "deupaxx <105633652+Deupaxx@users.noreply.github.com>",
   "license": "MIT",
   "bin": {
@@ -19,7 +19,9 @@
     "onboarding/",
     "skills/",
     "references/",
-    "resources/",
+    "resources/Everyday Writer — Anti-AI Rules Rundown.md",
+    "resources/General Writing Commandments_ The Foundation of Clarity.md",
+    "resources/General Writing Directives_ The Laws of Construction.md",
     "cowork/",
     "assets/",
     "SKILL.md",
@@ -36,7 +38,17 @@
     "plugin",
     "newsletter",
     "copywriting",
-    "fiction"
+    "fiction",
+    "creative-writing",
+    "storytelling",
+    "script-writing",
+    "youtube-script",
+    "video-essay",
+    "documentary-script",
+    "short-form-video",
+    "screenwriting",
+    "worldbuilding",
+    "claude-skill"
   ],
   "repository": {
     "type": "git",

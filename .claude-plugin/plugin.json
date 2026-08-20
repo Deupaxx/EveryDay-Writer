@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "ew",
-  "description": "Everyday Writer — 13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules.",
+  "description": "Everyday Writer — Claude creative writing, storytelling, script writing, and publication skills constrained by a voice fingerprint and anti-AI writing rules.",
   "version": "0.3.0",
   "author": {
     "name": "deupaxx",
@@ -16,6 +16,16 @@
     "newsletter",
     "copywriting",
     "fiction",
+    "creative-writing",
+    "storytelling",
+    "script-writing",
+    "youtube-script",
+    "video-essay",
+    "documentary-script",
+    "short-form-video",
+    "screenwriting",
+    "worldbuilding",
+    "claude-skill",
     "voice",
     "editing"
   ]

@@ -4,8 +4,9 @@ description: |
   Everyday Writer master dispatcher for an AI writing companion. Use when the user invokes $ew,
   /ew, or asks for help writing
   anything for publication: newsletters, LinkedIn posts, tweets, Substack Notes, landing pages,
-  sales copy, fiction scenes, screenplays, outlines, or a rewrite of existing text. Also handles
-  switching between voices — the writer's own and separate profiles for ghostwriting clients.
+  sales copy, creative writing, storytelling, fiction scenes, screenplays, outlines, story
+  development, or a rewrite of existing text. Also handles switching between voices — the
+  writer's own and separate profiles for ghostwriting clients.
   Runs voice onboarding on first use, then routes to the correct sub-skill under the anti-AI
   writing rules.
 license: MIT
@@ -90,6 +91,7 @@ Use this table to route requests to the correct sub-skill file.
 | Substack Note | `skills/substack-notes/SKILL.md` |
 | Website copy, landing page, homepage | `skills/web-copy/SKILL.md` |
 | Sales page, email sequence, direct response | `skills/sales-copy/SKILL.md` |
+| Broad creative writing, storytelling, story development, premise to draft | Use the Storytelling Workflow below |
 | Fiction scene, chapter, or prose | `skills/scene-structure/SKILL.md` |
 | Screenplay or script | `skills/script-writing/SKILL.md` |
 | World-building for fiction | `skills/world-builder/SKILL.md` |
@@ -102,6 +104,22 @@ Use this table to route requests to the correct sub-skill file.
 **If the request is ambiguous:** Ask one clarifying question before routing. "Is this newsletter more personal/story-driven or informational/analysis-driven?" is a routing question. Ask it directly and wait for the answer.
 
 **If the request spans multiple sub-skills** (e.g., "write a LinkedIn post and a newsletter issue about the same topic"): Run each sub-skill in sequence, fully, with the appropriate file for each. Do not blend the rules.
+
+---
+
+## STORYTELLING WORKFLOW
+
+Use this workflow when the user asks for creative writing help, storytelling help, story development, fiction coaching, a premise-to-draft process, or a general "Claude creative writing skill" / "Claude storytelling skill" style request.
+
+Route by the writer's actual need:
+
+1. If the idea is vague, shapeless, or stuck at premise level, use `skills/outline/SKILL.md`.
+2. If the idea depends on setting, factions, cultures, religions, places, history, or magic/technology rules, use `skills/world-builder/SKILL.md`.
+3. If the writer is drafting prose fiction, use `skills/scene-structure/SKILL.md`.
+4. If the writer is drafting film, television, YouTube, sketch, or screenplay pages, use `skills/script-writing/SKILL.md`.
+5. If the writer has a draft and wants it improved, use `skills/audit/SKILL.md` first, then the relevant writing sub-skill.
+
+For multi-step creative work, keep the outputs connected: world facts go into the world bible or Obsidian story folder, structure decisions go into the outline, and scene/script drafts should check both before writing.
 
 ---
 
