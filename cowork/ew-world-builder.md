@@ -1,6 +1,6 @@
 ---
 name: Everyday Writer — World Builder Skill
-description: Build a usable world bible for fiction, screenplays, games, and serialized narrative through a layered questioning process. Extracts premise, protagonist, conflict, world rules, society, history, and supporting cast, then generates a structured reference document with open questions named explicitly.
+description: Build a usable world bible for fiction, screenplays, games, and serialized narrative through a layered questioning process or by reverse-mapping existing drafts. Extracts premise, protagonist, conflict, world rules, society, history, supporting cast, characters, places, factions, timeline events, objects, continuity facts, and graph relationships, then generates a structured reference document with open questions named explicitly.
 version: 0.3.0
 ---
 
@@ -24,9 +24,11 @@ This skill does not write prose. It builds the scaffold the prose hangs on. For 
 
 ## WHEN TO USE IT
 
-Before the first scene, not after. The most expensive mistake in fiction is building the world while drafting, which means making contradictory decisions in different scenes and then spending revision fixing inconsistencies instead of improving the prose.
+Before the first scene whenever possible. Also after drafting has already begun. Many writers discover the world by writing into it first; when that happens, reverse-map what the draft already implies and turn those discoveries into a usable bible or graph.
 
-You do not need to answer every question before starting. You need to answer the ones whose answers affect the first chapter. Everything else can develop as you go, provided it gets recorded when decided rather than trusted to memory.
+The expensive mistake is leaving the world only inside scattered pages and memory, which means making contradictory decisions in different scenes and then spending revision fixing inconsistencies instead of improving the prose.
+
+You do not need to answer every question before starting. You need to answer the ones whose answers affect the first chapter. Everything else can develop as you go, provided it gets recorded when decided rather than trusted to memory. If the writer already has pages, use those pages as the first source of truth and mark missing decisions as open questions.
 
 ---
 
@@ -198,6 +200,83 @@ Most likely betrayer and their motive. Most trusted and whether it is warranted.
 Decisions made during drafting that were not in the original bible.
 | Date | Decision | Scene where it was established |
 ```
+
+---
+
+## DRAFT CARTOGRAPHY MODE: EXISTING WORK TO WORLD MAP
+
+Use this mode when the writer has already drafted chapters, scenes, a screenplay, notes, or a full manuscript and wants the world mapped from what is already on the page.
+
+Do not run the questioner first. The draft is the source of truth.
+
+Extract:
+
+- Characters: names, aliases, titles, roles, relationships, loyalties, goals, secrets, first appearances
+- Places: locations, regions, buildings, routes, recurring settings, controlling powers
+- Factions: houses, governments, companies, crews, cults, families, armies, guilds, movements
+- Rules: magic, technology, law, taboo, social codes, geography constraints, supernatural limits
+- Objects: weapons, relics, documents, devices, symbols, heirlooms, medicines, currencies
+- Timeline events: backstory events, scene events, promises, betrayals, deaths, discoveries, reveals
+- Cultures and religions: beliefs, rituals, ancestry, customs, taboos, conflicts
+- Mysteries and open threads: unanswered questions the draft creates
+- Continuity risks: contradictions, renamed entities, timeline confusion, impossible geography, unstable rules
+
+Classify every extracted fact:
+
+- **Confirmed:** directly stated or unambiguously shown in the draft.
+- **Strong inference:** not stated, but strongly implied by repeated context.
+- **Question:** possible, ambiguous, contradictory, or under-supported.
+
+Never invent missing lore. Do not invent surnames, ages, powers, geography, faction hierarchy, backstory causes, relationships, dates, or motivations. Use `[OPEN: ...]` for gaps.
+
+### Mapping passes
+
+1. **Source inventory.** List the chapters, scenes, files, or sections read; note POV/focal character, major entities introduced, and major events.
+2. **Entity extraction.** Canonicalize names, record aliases, first appearances, confirmed facts, inferences, and open questions.
+3. **Relationship extraction.** Capture graph edges: family, affiliation, power, place, conflict, dependency, knowledge, and causality. Mark each edge `confirmed`, `inferred`, or `question`.
+4. **Continuity extraction.** Record durable facts future writing must respect: dates, ages, travel times, who knows what, who has met whom, injuries, deaths, promises, rule limits, geography facts, and object transfers.
+5. **Conflict and gap audit.** Flag contradictions, possible duplicate entities, rule instability, timeline issues, unexplained relationship changes, and unresolved threads.
+
+### Report format
+
+```markdown
+# Draft Cartography Report: [Story Title]
+
+## Source Coverage
+[What was read, what was not read, and any limits.]
+
+## Character Map
+| Character | Role | First seen | Key links | Open questions |
+
+## Place Map
+| Place | Type | First seen | Connected entities | Open questions |
+
+## Faction / Group Map
+| Faction | Function | Members | Territory / influence | Open questions |
+
+## Rule / System Map
+| Rule | What is confirmed | Cost / limit | Contradictions |
+
+## Object Map
+| Object | Owner / location | Story function | Transfers |
+
+## Timeline
+| Order | Event | Source | Involved |
+
+## Relationship Edges
+- [[Entity A]] -> relationship -> [[Entity B]] (confirmed/inferred/question; source)
+
+## Continuity Facts
+- [Source] Fact.
+
+## Contradictions and Open Threads
+- [Issue] Sources, problem, possible resolution.
+
+## Recommended Next Questions
+1. [The highest-leverage question to answer before drafting further.]
+```
+
+If the user wants Obsidian or graph output, create linked Markdown notes rather than only a report: story hub, world bible, continuity log, open questions, idea box, draft map report, and entity notes for characters, places, factions, rules, cultures, religions, timeline events, and important objects. Use wiki links for graph edges and preserve user-written notes when updating an existing folder.
 
 ---
 

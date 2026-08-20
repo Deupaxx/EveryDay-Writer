@@ -19,7 +19,7 @@ Everyday Writer is also a **Claude creative writing skill**, **Claude script wri
 - **Creative writing:** draft fiction scenes and chapters with scene mechanics, point of view discipline, sensory grounding, and subtext
 - **Creative newsletters:** write internet essays like silent scripts, with hooks, scene pressure, rehooks, spoken cadence, and payoff
 - **Script writing:** write screenplay, TV, short film, YouTube, documentary, video essay, sketch, and short-form scripts with format rules, filmable action, hooks, dialogue, pacing, and viewer retention
-- **World-building:** build a world bible, then capture new towns, factions, religions, rules, and lore into Obsidian-ready Markdown notes
+- **World-building:** build a world bible, reverse-map existing drafts into characters and world facts, then capture new towns, factions, religions, rules, and lore into Obsidian-ready Markdown notes
 - **Revision:** audit a draft against the voice profile and anti-AI writing rules before showing the final version
 
 Searchers looking for a "creative writing skills Claude" setup usually want one of three things: a repeatable storytelling process, a script-writing skill with real screenplay constraints, or a worldbuilding memory that does not lose niche lore. EW now routes those requests directly instead of treating creative writing as one generic writing mode.
@@ -194,7 +194,7 @@ Voice: client-acme
 | `/ew:outline` | Premise, idea, or story concept to usable structure |
 | `/ew:scene-structure` | Fiction scenes, chapters, prose |
 | `/ew:script-writing` | Screenplays, TV, YouTube, documentary, video essay, sketch, and short-form scripts |
-| `/ew:world-builder` | World bible questioner, generator, and Obsidian graph notes |
+| `/ew:world-builder` | World bible questioner, draft cartography, generator, and Obsidian graph notes |
 | `/ew:audit` | Before/after rewrite with failure analysis |
 | `/ew:voice` | List, switch, add, import, recalibrate, or delete voices |
 | `/ew:failure-library` | Annotated AI-slop failure patterns |
@@ -210,7 +210,7 @@ Direct invocation skips routing, not constraints. Every sub-skill still reads th
 For broad creative writing requests, EW routes across the fiction tools instead of guessing:
 
 1. `outline` shapes the premise and story structure.
-2. `world-builder` captures setting, factions, places, rules, religions, cultures, and lore.
+2. `world-builder` captures setting, factions, places, rules, religions, cultures, lore, and existing draft evidence.
 3. `scene-structure` writes prose fiction scenes and chapters.
 4. `script-writing` writes screenplays, TV scripts, YouTube scripts, video essays, documentaries, sketches, and short-form video.
 5. `audit` revises existing drafts before final output.
@@ -234,6 +234,8 @@ Every invocation runs the same sequence:
 The graph is plain Markdown: notes use Obsidian wiki links like `[[Maren Vale]]`, frontmatter properties and tags for filtering, and backlinks between people, places, factions, cultures, religions, rules, and events. No Obsidian plugin is required.
 
 Fast capture is built for mid-draft ideas. Drop a fragment like "add a town called Trojan Scape in the North, under the Starks, where the old religion was practiced" and world-builder will create or update the town note, preserve the raw thought in `04 - Idea Box.md`, link it to notes like `[[The North]]`, `[[House Stark]]`, and `[[Old Gods]]`, and add useful tags such as `ew/place/town` and `ew/region/north`. In Obsidian graph view, those wiki links create the visible lines.
+
+Draft cartography is built for writers who already have pages. Give `$ew:world-builder` chapters, scenes, scripts, or a manuscript file and ask it to map the draft; it will extract characters, places, factions, rules, objects, timeline events, relationships, continuity facts, contradictions, and open threads. If you provide an Obsidian story folder, it also writes `05 - Draft Map Report.md`, updates the hub, and creates or updates linked entity notes from evidence in the draft.
 
 ### Three rules that govern everything
 
@@ -294,7 +296,8 @@ EW/
 │   │   ├── SKILL.md
 │   │   ├── questioner.md              ← Layered question sequence
 │   │   ├── skeleton-template.md       ← World bible output template
-│   │   └── obsidian-output.md         ← Obsidian folder, note, and graph rules
+│   │   ├── obsidian-output.md         ← Obsidian folder, note, and graph rules
+│   │   └── manuscript-ingest.md       ← Existing draft to world graph mapping
 │   ├── audit/SKILL.md
 │   ├── outline/SKILL.md
 │   ├── failure-library/SKILL.md

@@ -95,7 +95,7 @@ Use this table to route requests to the correct sub-skill file.
 | Fiction scene, chapter, or prose | `skills/scene-structure/SKILL.md` |
 | Screenplay or script | `skills/script-writing/SKILL.md` |
 | World-building for fiction | `skills/world-builder/SKILL.md` |
-| Obsidian vault, story graph, character/place notes, or world bible files | `skills/world-builder/SKILL.md` |
+| Existing draft to world map, manuscript entity extraction, Obsidian vault, story graph, character/place notes, or world bible files | `skills/world-builder/SKILL.md` |
 | Audit / rewrite comparison / before-after | `skills/audit/SKILL.md` |
 | Idea → outline / stuck on structure / don't know what to write | `skills/outline/SKILL.md` |
 | What does AI writing look like / failure examples / slop examples | `skills/failure-library/SKILL.md` |
@@ -114,7 +114,7 @@ Use this workflow when the user asks for creative writing help, storytelling hel
 Route by the writer's actual need:
 
 1. If the idea is vague, shapeless, or stuck at premise level, use `skills/outline/SKILL.md`.
-2. If the idea depends on setting, factions, cultures, religions, places, history, or magic/technology rules, use `skills/world-builder/SKILL.md`.
+2. If the idea depends on setting, factions, cultures, religions, places, history, magic/technology rules, or mapping an existing draft into story entities and continuity facts, use `skills/world-builder/SKILL.md`.
 3. If the writer is drafting prose fiction, use `skills/scene-structure/SKILL.md`.
 4. If the writer is drafting film, television, YouTube, sketch, or screenplay pages, use `skills/script-writing/SKILL.md`.
 5. If the writer has a draft and wants it improved, use `skills/audit/SKILL.md` first, then the relevant writing sub-skill.

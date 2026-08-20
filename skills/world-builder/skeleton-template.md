@@ -19,6 +19,11 @@ The bible is a living document. It begins with what's known and grows as the wri
 **Version:** [date of last update]
 **Status:** [In progress / Complete for draft / Under revision]
 
+**Source basis:** [Questioner / Existing draft / Mixed]
+
+**Draft coverage, if imported:**
+[Files, chapters, scenes, or sections used to generate this bible. If no draft was imported, omit this line.]
+
 ---
 
 ## 1. PREMISE
@@ -247,3 +252,20 @@ Example:
 - [Ch. 5, pg. 63] — Established that Maren has never been to the capital before
 
 This log prevents contradictions. Every time a new world fact is established in the prose, it goes here immediately.
+
+---
+
+## 12. DRAFT CARTOGRAPHY NOTES
+
+[Use this section only when the bible was generated or updated from existing written work.]
+
+**Draft map report:** [Link or path to the draft cartography report, if one exists]
+
+**Confirmed from draft:**
+- [Source] — [Fact confirmed by the manuscript]
+
+**Strong inferences:**
+- [Source] — [Inference that is likely but not directly confirmed]
+
+**Contradictions and open threads surfaced by the draft:**
+- [Issue] — [Sources and why it matters]

@@ -31,6 +31,7 @@ Create this structure inside the main story folder. Use existing folders if they
 |-- 02 - Continuity Log.md
 |-- 03 - Open Questions.md
 |-- 04 - Idea Box.md
+|-- 05 - Draft Map Report.md   Optional, created when mapping existing written work
 |-- Characters/
 |-- Places/
 |-- Factions/
@@ -43,6 +44,8 @@ Create this structure inside the main story folder. Use existing folders if they
 ```
 
 Only create `Objects/` when the project has important artifacts, weapons, technologies, texts, relics, or other story objects. The other folders are part of the core Obsidian layout.
+
+Only create `05 - Draft Map Report.md` when using Draft Cartography Mode from `manuscript-ingest.md`, or when the user explicitly asks to map an existing draft.
 
 ---
 
@@ -333,6 +336,27 @@ When a question is answered, move the answer into the relevant note and keep a s
 
 Create this as a capture log, not a junk drawer. Every entry should point to the note it created or updated. If an idea is too raw to classify, keep it here with `Type: raw` and add one open question that would let it become a note later.
 
+### `05 - Draft Map Report.md`
+
+Create this when importing or mapping existing written work. It is the top-level report for what the draft already contains.
+
+Include:
+
+- Source coverage: files, chapters, scenes, or sections read
+- Character map
+- Place map
+- Faction / group map
+- Rule / system map
+- Object map
+- Timeline event map
+- Relationship edges
+- Confirmed continuity facts
+- Strong inferences
+- Contradictions and open threads
+- Recommended next questions
+
+Every entity name in the report should link to its note. Confirmed facts, inferences, and questions must stay separated.
+
 ---
 
 ## Entity Note Templates
@@ -367,6 +391,15 @@ Create this as a capture log, not a junk drawer. Every entry should point to the
 ## Source Captures
 
 - [[04 - Idea Box]] - [date/short label]
+
+## Draft Evidence
+
+- [Source] Confirmed: [fact]. Evidence: "short phrase"
+- [Source] Inferred: [inference]. Evidence: "short phrase"
+
+## Graph Edges
+
+- [[Other Entity]] - [relationship type and certainty]. Source: [source].
 
 ## Open Questions
 

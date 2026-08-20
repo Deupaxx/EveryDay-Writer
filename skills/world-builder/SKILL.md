@@ -3,9 +3,10 @@ name: world-builder
 description: |
   Build the world a story hangs on: characters, locations, factions, rules, and history. Use
   before or alongside fiction and screenwriting work when the setting needs to be consistent. Runs
-  a layered questioner and generates a structured world bible, including Obsidian-ready story
-  folders, character/place notes, fast idea capture, and graph links when the user wants vault
-  integration.
+  a layered questioner, generates a structured world bible, and can reverse-map existing drafts
+  into characters, places, factions, rules, timelines, continuity facts, and graph links.
+  Includes Obsidian-ready story folders, character/place notes, fast idea capture, draft
+  cartography, and graph links when the user wants vault integration.
 license: MIT
 metadata:
   version: "0.3.0"
@@ -34,7 +35,7 @@ Elaborate is not the goal. Usable is the goal.
 
 ---
 
-## THE TWO-PHASE PROCESS
+## THE CORE PROCESSES
 
 **Phase 1 — Questioning (`questioner.md`):**
 The AI companion conducts a structured, layered dialogue with the writer to extract the world's essential elements. The questions move from the large (what kind of world is this?) to the specific (what does someone eat for breakfast in the capital city?). Not every question applies to every project — the sequence adapts to genre and scope.
@@ -48,13 +49,18 @@ When the user mentions Obsidian, a vault, a graph, Markdown notes, character fil
 **Fast Capture Mode — Idea Box to Graph (`obsidian-output.md`):**
 When the user gives a small worldbuilding fragment and asks to add, store, capture, remember, or note it, do not run the full questioner. Read `obsidian-output.md`, identify the entity and its implied connections, create or update the right note, append the raw thought to `04 - Idea Box.md`, and add wiki links plus tags/properties so Obsidian connects it to relevant existing notes. Ask only when the target story folder is unknown or a name collision would create the wrong note.
 
+**Draft Cartography Mode - Existing Work to Graph (`manuscript-ingest.md`):**
+When the user has already written chapters, scenes, scripts, notes, or a full manuscript and wants the world mapped from the draft, do not start with the questioner. Read `manuscript-ingest.md`; if the user wants Obsidian, also read `obsidian-output.md`. Extract the entities and relationships already present in the text, separate confirmed facts from inferences and open questions, capture continuity risks, and create or update graph notes from evidence in the draft. This is for writers who discovered the world by writing first.
+
 ---
 
 ## WHEN TO USE WORLD BUILDER
 
-Use it before writing the first scene. Not after. The single most expensive mistake in fiction is building a world as you write — which means making contradictory decisions in different scenes, then spending revision fixing the inconsistencies instead of improving the prose.
+Use it before writing the first scene whenever possible. Also use it after drafting has already begun. Many writers discover the world by writing into it first; when that happens, the world builder reverse-maps what the draft already implies, then turns those discoveries into a usable bible and graph.
 
-The world bible is a living document. It starts minimal and grows. But it must exist before the writing begins.
+The single most expensive mistake in fiction is leaving the world only inside scattered pages and memory, which means making contradictory decisions in different scenes, then spending revision fixing the inconsistencies instead of improving the prose.
+
+The world bible is a living document. It starts minimal and grows. Ideally it exists before the writing begins. If the writer already has pages, build the first bible from those pages and keep going.
 
 **Minimum viable world bible:** You do not need to answer every question before you start. You need to answer the questions whose answers will affect the first chapter. Everything else can be developed as you go — but it must be recorded in the bible when it's decided, not trusted to memory.
 
@@ -92,12 +98,16 @@ When an Obsidian story folder exists, the graph notes are also reference documen
 
 Fast capture should feel nearly frictionless. The writer should be able to toss in a niche idea mid-flow and get a linked note back without having to fill out a form.
 
+Draft cartography should feel like switching on the lights inside a manuscript. The writer gives the pages they already have; the world builder returns the characters, places, factions, rules, timeline events, objects, relationships, confirmed continuity facts, contradictions, and open threads that are already present. It must cite where facts came from and avoid inventing missing lore.
+
 The bible is not a creative constraint. It is the creative foundation that makes freedom possible. You can only improvise well when you know the rules deeply.
 
 ---
 
 ## STARTING THE PROCESS
 
-To begin, invoke `questioner.md`. The AI companion will run Phase 1 — the layered question sequence. Bring whatever you have: a premise, an image, a character name, a conflict you know you want to explore. The questioner works with fragments. You do not need a complete vision to begin.
+To begin a new world from fragments, invoke `questioner.md`. The AI companion will run Phase 1 — the layered question sequence. Bring whatever you have: a premise, an image, a character name, a conflict you know you want to explore. The questioner works with fragments. You do not need a complete vision to begin.
 
 When Phase 1 is complete, invoke `skeleton-template.md` to generate the bible.
+
+To map an existing draft, invoke `manuscript-ingest.md` first. Use the draft as the source of truth, then generate a report, update the world bible, or create Obsidian graph files depending on what the user asked for.
