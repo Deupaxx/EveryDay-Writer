@@ -38,7 +38,7 @@ Voices live outside the plugin directory, under the user's home:
 ~/.everyday-writer/                 Windows: %USERPROFILE%\.everyday-writer\
   active-voice                      one line: the active voice slug
   voices/
-    kaguura/
+    writer-main/
       voice-profile.md
       references/                   brand docs, style guides, constraints
       drafts/                       file-mode output
@@ -82,7 +82,7 @@ Consequences:
 
 The resolver instructs the reader to, in order:
 
-1. **Check for an inline override in the user's request** — "as kaguura", "in client-acme's voice", "write this as <name>". If present, use that voice for this invocation only. Do not modify `active-voice`.
+1. **Check for an inline override in the user's request** — "as writer-main", "in client-acme's voice", "write this as <name>". If present, use that voice for this invocation only. Do not modify `active-voice`.
 2. Otherwise read `~/.everyday-writer/active-voice` and trim it to get the slug.
 3. Read `~/.everyday-writer/voices/<slug>/voice-profile.md`. That file is the voice profile, and everything downstream treats it as `core/voice-profile.md` was previously treated.
 4. Load `~/.everyday-writer/voices/<slug>/references/` as the references drop-zone.

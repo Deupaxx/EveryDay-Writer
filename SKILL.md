@@ -133,7 +133,7 @@ EW holds any number of voices: the writer's own, plus one per ghostwriting clien
 
 **One voice is active at a time.** It persists across sessions until changed. `/ew:voice` lists what exists and which is active; `/ew:voice <name>` switches.
 
-**A single piece can be written in another voice without switching.** If the request names one — "write this as kaguura", "in client-acme's voice" — that voice applies to this invocation only and the active voice is untouched.
+**A single piece can be written in another voice without switching.** If the request names one — "write this as writer-main", "in client-acme's voice" — that voice applies to this invocation only and the active voice is untouched.
 
 **Nothing bleeds between voices.** Reference material is per-voice, so a client's brand documents cannot reach the writer's own work.
 

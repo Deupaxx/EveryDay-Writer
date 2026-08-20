@@ -139,7 +139,7 @@ If this is the first voice, write the slug to `~/.everyday-writer/active-voice`.
 
 After writing, confirm with the user:
 
-> "Profile saved as `kaguura`. Every sub-skill will now use it.
+> "Profile saved as `writer-main`. Every sub-skill will now use it.
 >
 > Two things worth knowing. If EW ever stops sounding like you, say so — `/ew:voice edit` recalibrates, and the profile gets better over time. And if you ever write for someone else, `/ew:voice new` builds them their own profile so nothing bleeds between the two.
 >

@@ -40,7 +40,7 @@ This chain applies on direct invocation (`/ew:voice`) exactly as it does on disp
 
 Create any part of this tree that is missing, whenever a command needs it.
 
-**Slug rules:** lowercase, kebab-case, `[a-z0-9-]+` only, and identical to the directory name. If the user gives a name that is not a valid slug ("Client Acme", "Kaguura's Voice"), derive one, show it, and confirm before creating:
+**Slug rules:** lowercase, kebab-case, `[a-z0-9-]+` only, and identical to the directory name. If the user gives a name that is not a valid slug ("Client Acme", "Writer Main Voice"), derive one, show it, and confirm before creating:
 
 > "I'll store this as `client-acme`. Good, or would you rather call it something else?"
 
@@ -68,7 +68,7 @@ Read `active-voice` and every directory under `voices/`. For each, read its prof
 ```
 Voices
 
-  * kaguura        self      updated 2026-07-14
+  * writer-main    self      updated 2026-07-14
     client-acme    subject   updated 2026-08-02
     client-bolt    subject   updated 2026-06-30   INCOMPLETE
 
@@ -112,7 +112,7 @@ Set `Voice type`, `Confirmed by`, and `Freewrite basis` in the profile according
 
 **After creating**, ask before switching rather than assuming:
 
-> "Created `client-acme`. Switch to it now, or stay on `kaguura`?"
+> "Created `client-acme`. Switch to it now, or stay on `writer-main`?"
 
 A ghostwriter setting up a client at the start of a week is not necessarily about to write for them.
 

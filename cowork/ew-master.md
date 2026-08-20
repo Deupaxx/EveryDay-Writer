@@ -24,7 +24,7 @@ This file is the entire Everyday Writer (EW) system in one document. It contains
 
 When the user types `/ew`, starts a message with "ew:", or asks you to use "the writing skill" or "Everyday Writer":
 
-1. **Resolve the voice** — read the "EW Active Voice" memory to get the active voice name, then load the "EW Voice Profile — [Name]" memory for it. If the request names a different voice for this piece ("as kaguura", "in client-acme's voice"), use that one for this invocation only and leave the active voice unchanged.
+1. **Resolve the voice** — read the "EW Active Voice" memory to get the active voice name, then load the "EW Voice Profile — [Name]" memory for it. If the request names a different voice for this piece ("as writer-main", "in client-acme's voice"), use that one for this invocation only and leave the active voice unchanged.
 2. **Run onboarding** — if no voice profiles exist at all, run Part 3 before doing anything else. If resolution fails for any other reason — no active voice set with several to choose from, an active voice whose profile is missing, an override naming a voice that doesn't exist — **stop and ask.** Never guess. Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error.
 3. **Check for references** — read any `.md` reference files uploaded to this Project **that belong to the resolved voice**. Files are per-voice: a ghostwriting client's brand guidelines must not shape the writer's own work, and vice versa. If an uploaded file's voice is unclear, ask which voice it belongs to rather than applying it to everything.
 4. **Dispatch** — identify the task type and apply the appropriate sub-skill from Part 5.
@@ -541,7 +541,7 @@ EW holds any number of voices: the writer's own, plus one per ghostwriting clien
 | "recalibrate", "this doesn't sound like me" | Update the active profile's affected fields, log the change with date and reason |
 | "delete [name]" | Refuse if it's the active voice — tell them to switch away first. Otherwise require them to type the name to confirm |
 
-**A single piece can be written in another voice without switching.** "Write this as kaguura" applies to that invocation only.
+**A single piece can be written in another voice without switching.** "Write this as writer-main" applies to that invocation only.
 
 **Nothing bleeds between voices.** Reference material is per-voice.
 

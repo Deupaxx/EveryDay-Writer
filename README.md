@@ -133,7 +133,7 @@ One voice is active at a time and persists across sessions.
 
 ```
 /ew:voice                     List voices, show which is active
-/ew:voice kaguura             Switch — everything writes in this voice until changed
+/ew:voice writer-main         Switch — everything writes in this voice until changed
 /ew:voice new                 Add a voice (yours, or a ghostwriting client's)
 /ew:voice edit                Recalibrate the active voice
 /ew:voice import <path>       Bring in a profile you already have
@@ -288,7 +288,7 @@ Your voices live outside the repo, so plugin updates can't wipe them and git nev
 ~/.everyday-writer/                    Windows: %USERPROFILE%\.everyday-writer\
 ├── active-voice                       One line: the voice currently in effect
 └── voices/
-    ├── kaguura/
+    ├── writer-main/
     │   ├── voice-profile.md           The fingerprint
     │   ├── references/                Brand docs, style guides for this voice
     │   ├── drafts/                    File-mode output

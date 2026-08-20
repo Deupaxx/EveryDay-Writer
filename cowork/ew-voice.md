@@ -37,7 +37,7 @@ One voice is active at a time, and it persists until changed.
 
 Run this before any EW writing task.
 
-1. **Check for an inline override.** If the request names a voice for this piece — "as kaguura", "in client-acme's voice" — use that one **for this invocation only**. Do not update `EW Active Voice`.
+1. **Check for an inline override.** If the request names a voice for this piece — "as writer-main", "in client-acme's voice" — use that one **for this invocation only**. Do not update `EW Active Voice`.
 2. **Otherwise read `EW Active Voice`** and load `EW Voice Profile — [that name]`.
 
 **When resolution fails, stop and ask.** Never guess:
@@ -63,7 +63,7 @@ Read every `EW Voice Profile` memory. Show name, type, and last-updated. Mark th
 ```
 Voices
 
-  * kaguura        self      updated 2026-07-14
+  * writer-main    self      updated 2026-07-14
     client-acme    subject   updated 2026-08-02
     client-bolt    subject   updated 2026-06-30   INCOMPLETE
 
@@ -95,7 +95,7 @@ Update `EW Active Voice`. Confirm in one line:
 
 After creating, ask before switching rather than assuming:
 
-> "Created `client-acme`. Switch to it now, or stay on `kaguura`?"
+> "Created `client-acme`. Switch to it now, or stay on `writer-main`?"
 
 A ghostwriter setting up a client at the start of a week is not necessarily about to write for them.
 

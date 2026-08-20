@@ -37,7 +37,7 @@ Slugs are lowercase kebab-case and match their directory name.
 
 **Step 1 — Check for an inline override.**
 
-If the user's request names a voice for this piece of writing — "as kaguura", "in client-acme's voice", "write this one as <name>" — that voice wins **for this invocation only**.
+If the user's request names a voice for this piece of writing — "as writer-main", "in client-acme's voice", "write this one as <name>" — that voice wins **for this invocation only**.
 
 Do not write `active-voice`. Do not treat the override as a switch. The next invocation goes back to the active voice.
 
