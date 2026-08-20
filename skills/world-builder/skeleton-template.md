@@ -6,7 +6,7 @@
 
 ## HOW TO USE THIS TEMPLATE
 
-Claude populates every section below from the answers gathered in the questioner phase. Sections with insufficient information are marked with `[OPEN: description of what's missing]` — not left blank, not filled with placeholder text.
+The AI companion populates every section below from the answers gathered in the questioner phase. Sections with insufficient information are marked with `[OPEN: description of what's missing]` — not left blank, not filled with placeholder text.
 
 The bible is a living document. It begins with what's known and grows as the writer makes new decisions during drafting. Every new decision that affects world consistency must be added to the relevant section immediately — not remembered, not trusted to continuity in the prose.
 

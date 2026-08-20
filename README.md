@@ -2,7 +2,7 @@
 
 ![Everyday Writer](assets/typing%20anime.gif)
 
-A Claude Code / Claude Cowork skill system for professional writers.
+A writing skill system for professional writers, compatible with Codex, Claude Code, and Claude.ai Cowork.
 Built on an A-Player standard: results over hours, own the outcome, no coinflipping critical components.
 
 13 specialized writing sub-skills, all constrained by a voice fingerprint taken from your own writing and a set of anti-AI rules that get applied before anything ships.
@@ -12,6 +12,35 @@ Hold as many voices as you need — your own, plus a separate profile for every 
 ---
 
 ## Installation
+
+Everyday Writer supports three environments:
+
+- **Codex:** install as a local skill and invoke with `$ew`
+- **Claude Code:** install through Claude's plugin marketplace or npm and invoke with `/ew`
+- **Claude.ai Cowork:** upload the packaged cowork Markdown files to Project knowledge
+
+The npm default install targets Codex. The Claude Code install path is still supported through `install:claude` and the `.claude-plugin/` marketplace manifests remain in the package.
+
+### Codex
+
+Install the skill into your local Codex skills folder:
+
+```bash
+npx everyday-writer install
+```
+
+Or globally:
+
+```bash
+npm install -g everyday-writer
+everyday-writer install
+```
+
+This copies the skill into `~/.codex/skills/everyday-writer/`. Voice profiles still live in `~/.everyday-writer/`, so reinstalling the skill never overwrites your writing calibration.
+
+Use `$ew` to start, or call a sub-skill directly with `$ew:world-builder`, `$ew:scene-structure`, `$ew:linkedin`, and so on.
+
+---
 
 ### Claude Code
 
@@ -43,24 +72,26 @@ Cowork stores your voice profiles in Claude.ai memory rather than on disk — on
 
 ---
 
-### npm (manual fallback)
+### Claude Code npm install
 
-For installs outside Claude Code's plugin system:
+For installs outside Claude Code's marketplace system, but still targeting Claude's plugin folder:
 
 ```bash
-npx everyday-writer install
+npx everyday-writer install:claude
 ```
 
 Or globally:
 
 ```bash
 npm install -g everyday-writer
-everyday-writer install
+everyday-writer install:claude
 ```
 
-This copies the plugin into `~/.claude/plugins/ew/`. Note that a manual copy is not registered with the plugin system, so use the marketplace method above unless you have a reason not to.
+This copies the plugin into `~/.claude/plugins/ew/`. Note that a manual copy is not registered with the marketplace update flow, so use the marketplace method above unless you have a reason not to.
 
-**Uninstall:** `everyday-writer uninstall`
+**Uninstall from Codex:** `everyday-writer uninstall`
+
+**Uninstall from Claude Code:** `everyday-writer uninstall:claude`
 
 ---
 
@@ -74,9 +105,14 @@ The plugin is copied to your machine at install time and does not auto-update.
 /plugin update ew@everyday-writer
 ```
 
-**npm install:**
+**Codex npm install:**
 ```bash
 npm install -g everyday-writer@latest && everyday-writer install
+```
+
+**Claude npm install:**
+```bash
+npm install -g everyday-writer@latest && everyday-writer install:claude
 ```
 
 Check your installed version with `everyday-writer --version`.
@@ -142,13 +178,15 @@ Voice: client-acme
 | `/ew:sales-copy` | Sales pages, email sequences, direct response |
 | `/ew:scene-structure` | Fiction scenes, chapters, prose |
 | `/ew:script-writing` | Screenplays and scripts |
-| `/ew:world-builder` | World bible questioner and generator |
+| `/ew:world-builder` | World bible questioner, generator, and Obsidian graph notes |
 | `/ew:audit` | Before/after rewrite with failure analysis |
 | `/ew:outline` | Idea to outline, for any format |
 | `/ew:voice` | List, switch, add, import, recalibrate, or delete voices |
 | `/ew:failure-library` | Annotated AI-slop failure patterns |
 
 You do not have to use the slash commands. Each skill carries a description, so asking for "a LinkedIn post about X" routes to the right one on its own.
+
+In Codex, use the same names with `$` instead of `/`, for example `$ew` or `$ew:world-builder`.
 
 Direct invocation skips routing, not constraints. Every sub-skill still reads the full core chain before writing.
 
@@ -163,6 +201,14 @@ Every invocation runs the same sequence:
 3. **References check.** Any `.md` file you drop in that voice's `references/` folder is read and takes precedence over sub-skill defaults.
 4. **Dispatch.** The sub-skill reads `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then the resolved voice profile, then that voice's reference files, then its own instructions, and only then writes.
 5. **Two-pass loop.** No first draft is ever presented. The draft gets interrogated against three questions, revised, and run through two checklists before you see it.
+
+### Obsidian story folders
+
+`$ew:world-builder` can create Obsidian-ready Markdown inside a story folder or vault. When you give it a target folder, it writes a story hub, world bible, continuity log, open questions note, idea box, and linked entity notes for characters, places, factions, cultures, religions, rules, timeline events, and important objects.
+
+The graph is plain Markdown: notes use Obsidian wiki links like `[[Maren Vale]]`, frontmatter properties and tags for filtering, and backlinks between people, places, factions, cultures, religions, rules, and events. No Obsidian plugin is required.
+
+Fast capture is built for mid-draft ideas. Drop a fragment like "add a town called Trojan Scape in the North, under the Starks, where the old religion was practiced" and world-builder will create or update the town note, preserve the raw thought in `04 - Idea Box.md`, link it to notes like `[[The North]]`, `[[House Stark]]`, and `[[Old Gods]]`, and add useful tags such as `ew/place/town` and `ew/region/north`. In Obsidian graph view, those wiki links create the visible lines.
 
 ### Three rules that govern everything
 
@@ -179,6 +225,9 @@ EW/
 ├── README.md
 ├── CLAUDE.md                          ← Guidance for Claude Code when editing this repo
 ├── SKILL.md                           ← Master dispatcher (skill name: ew)
+│
+├── agents/
+│   └── openai.yaml                    ← Codex UI metadata and invocation policy
 │
 ├── .claude-plugin/
 │   ├── plugin.json                    ← Plugin manifest
@@ -215,7 +264,8 @@ EW/
 │   ├── world-builder/
 │   │   ├── SKILL.md
 │   │   ├── questioner.md              ← Layered question sequence
-│   │   └── skeleton-template.md       ← World bible output template
+│   │   ├── skeleton-template.md       ← World bible output template
+│   │   └── obsidian-output.md         ← Obsidian folder, note, and graph rules
 │   ├── audit/SKILL.md
 │   ├── outline/SKILL.md
 │   ├── failure-library/SKILL.md
@@ -274,7 +324,8 @@ Pushing a version tag publishes to npm. Bump the version in `.claude-plugin/plug
 
 ## Design decisions
 
-- **Plugin name is `ew`**, not `everyday-writer`, for a shorter invocation path.
+- **Skill name is `ew`**, not `everyday-writer`, for a shorter invocation path.
+- **Codex installs to `~/.codex/skills/everyday-writer/`** and reads `agents/openai.yaml` for UI metadata.
 - **The manifest lives in `.claude-plugin/`**, which is where Claude Code looks. A root-level `plugin.json` is ignored.
 - **Every skill file carries YAML frontmatter.** Without `name` and `description`, Claude Code does not register the skill at all.
 - **`core/` files are dependencies, not skills.** Every sub-skill reads all three; none of them is invoked directly.

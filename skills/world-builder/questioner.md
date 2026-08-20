@@ -6,9 +6,9 @@
 
 ## HOW THIS WORKS
 
-Claude conducts a structured dialogue with the writer. Questions move from large to specific — world concept first, granular details last. The goal is to extract the minimum set of decisions that will make the story possible.
+The AI companion conducts a structured dialogue with the writer. Questions move from large to specific — world concept first, granular details last. The goal is to extract the minimum set of decisions that will make the story possible.
 
-**Rules for Claude during questioning:**
+**Rules for the AI companion during questioning:**
 - Ask one question at a time. Never cluster questions.
 - If the writer's answer raises a contradiction, flag it immediately before moving on.
 - If the writer says "I don't know yet," mark it as an open question and continue — do not push for a decision they haven't made.

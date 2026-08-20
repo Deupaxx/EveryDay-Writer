@@ -3,7 +3,9 @@ name: world-builder
 description: |
   Build the world a story hangs on: characters, locations, factions, rules, and history. Use
   before or alongside fiction and screenwriting work when the setting needs to be consistent. Runs
-  a layered questioner and generates a structured world bible.
+  a layered questioner and generates a structured world bible, including Obsidian-ready story
+  folders, character/place notes, fast idea capture, and graph links when the user wants vault
+  integration.
 license: MIT
 metadata:
   version: "0.3.0"
@@ -35,10 +37,16 @@ Elaborate is not the goal. Usable is the goal.
 ## THE TWO-PHASE PROCESS
 
 **Phase 1 — Questioning (`questioner.md`):**
-Claude conducts a structured, layered dialogue with the writer to extract the world's essential elements. The questions move from the large (what kind of world is this?) to the specific (what does someone eat for breakfast in the capital city?). Not every question applies to every project — the sequence adapts to genre and scope.
+The AI companion conducts a structured, layered dialogue with the writer to extract the world's essential elements. The questions move from the large (what kind of world is this?) to the specific (what does someone eat for breakfast in the capital city?). Not every question applies to every project — the sequence adapts to genre and scope.
 
 **Phase 2 — Skeleton Generation (`skeleton-template.md`):**
-Claude takes the answers from Phase 1 and produces a formatted world bible. Every section of the bible is populated from the questioning. Open questions — things the writer hasn't decided yet — are captured as explicit blanks, not left as gaps that will surprise the writer mid-draft.
+The AI companion takes the answers from Phase 1 and produces a formatted world bible. Every section of the bible is populated from the questioning. Open questions — things the writer hasn't decided yet — are captured as explicit blanks, not left as gaps that will surprise the writer mid-draft.
+
+**Phase 3 — Obsidian Graph Output (`obsidian-output.md`):**
+When the user mentions Obsidian, a vault, a graph, Markdown notes, character files, place files, factions, maps, or a main story folder, read `obsidian-output.md` after `skeleton-template.md`. Create or update a folder of linked `.md` files inside the story folder the user provides. If the user has not provided a story folder path, ask for it before writing files.
+
+**Fast Capture Mode — Idea Box to Graph (`obsidian-output.md`):**
+When the user gives a small worldbuilding fragment and asks to add, store, capture, remember, or note it, do not run the full questioner. Read `obsidian-output.md`, identify the entity and its implied connections, create or update the right note, append the raw thought to `04 - Idea Box.md`, and add wiki links plus tags/properties so Obsidian connects it to relevant existing notes. Ask only when the target story folder is unknown or a name collision would create the wrong note.
 
 ---
 
@@ -80,12 +88,16 @@ Every rule in your world must have a consequence if broken or avoided. A world w
 
 When using `scene-structure.md` or `script-writing.md`, the world bible is the reference document. Before writing any scene set in a new location, check the bible. Before introducing a new faction, character, or rule — check whether it contradicts anything already established.
 
+When an Obsidian story folder exists, the graph notes are also reference documents. Character, place, faction, object, rule, and timeline notes must be checked before drafting scenes that touch them. If the draft establishes a durable fact, add it to the relevant note and to the continuity log.
+
+Fast capture should feel nearly frictionless. The writer should be able to toss in a niche idea mid-flow and get a linked note back without having to fill out a form.
+
 The bible is not a creative constraint. It is the creative foundation that makes freedom possible. You can only improvise well when you know the rules deeply.
 
 ---
 
 ## STARTING THE PROCESS
 
-To begin, invoke `questioner.md`. Claude will run Phase 1 — the layered question sequence. Bring whatever you have: a premise, an image, a character name, a conflict you know you want to explore. The questioner works with fragments. You do not need a complete vision to begin.
+To begin, invoke `questioner.md`. The AI companion will run Phase 1 — the layered question sequence. Bring whatever you have: a premise, an image, a character name, a conflict you know you want to explore. The questioner works with fragments. You do not need a complete vision to begin.
 
 When Phase 1 is complete, invoke `skeleton-template.md` to generate the bible.

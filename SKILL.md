@@ -1,7 +1,8 @@
 ---
 name: ew
 description: |
-  Everyday Writer master dispatcher. Use when the user invokes /ew or asks for help writing
+  Everyday Writer master dispatcher for an AI writing companion. Use when the user invokes $ew,
+  /ew, or asks for help writing
   anything for publication: newsletters, LinkedIn posts, tweets, Substack Notes, landing pages,
   sales copy, fiction scenes, screenplays, outlines, or a rewrite of existing text. Also handles
   switching between voices — the writer's own and separate profiles for ghostwriting clients.
@@ -15,15 +16,18 @@ metadata:
 # EW — Everyday Writer
 ## Master Entry Point
 
+Everyday Writer turns the AI companion into a disciplined writing partner: voice-aware,
+anti-slop, and useful for both publication drafts and creative-development work.
+
 ---
 
 ## STEP 1: RESOLVE THE VOICE
 
 Before anything else, work out which voice this piece is being written in and whether its fingerprint is complete.
 
-**In Claude Code:** Read `core/voice-profile.md`. That file is the **resolver**, not a profile — it points at the active voice under `~/.everyday-writer/`. Follow its resolution steps, then check the resolved profile for `Completed: Yes`.
+**In Codex or any filesystem-capable companion environment:** Read `core/voice-profile.md`. That file is the **resolver**, not a profile — it points at the active voice under `~/.everyday-writer/`. Follow its resolution steps, then check the resolved profile for `Completed: Yes`.
 
-**In Claude.ai Cowork:** Read the "EW Active Voice" memory to get the active name, then the "EW Voice Profile — [Name]" memory for that voice.
+**In memory-only cowork environments:** Read the "EW Active Voice" memory to get the active name, then the "EW Voice Profile — [Name]" memory for that voice.
 
 **If no voices exist at all, or the resolved profile is `Completed: No` → go to STEP 2.**
 **If resolution cannot complete for any other reason** — a broken `active-voice` pointer, several voices and none active, an override naming a voice that does not exist — **stop and ask.** Do not guess. Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error.
@@ -89,6 +93,7 @@ Use this table to route requests to the correct sub-skill file.
 | Fiction scene, chapter, or prose | `skills/scene-structure/SKILL.md` |
 | Screenplay or script | `skills/script-writing/SKILL.md` |
 | World-building for fiction | `skills/world-builder/SKILL.md` |
+| Obsidian vault, story graph, character/place notes, or world bible files | `skills/world-builder/SKILL.md` |
 | Audit / rewrite comparison / before-after | `skills/audit/SKILL.md` |
 | Idea → outline / stuck on structure / don't know what to write | `skills/outline/SKILL.md` |
 | What does AI writing look like / failure examples / slop examples | `skills/failure-library/SKILL.md` |
@@ -102,23 +107,23 @@ Use this table to route requests to the correct sub-skill file.
 
 ## DIRECT INVOCATION
 
-When the user invokes a sub-skill directly (e.g., `/ew:linkedin`), skip the dispatch step and go straight to the sub-skill. Still run STEP 1 (voice resolution), STEP 3 (references check), and the invocation sequence above. Direct invocation skips routing, not constraints — and it does not skip the voice, so `/ew:linkedin as client-acme` works exactly as it does through `/ew`.
+When the user invokes a sub-skill directly (e.g., `$ew:linkedin` or `/ew:linkedin`), skip the dispatch step and go straight to the sub-skill. Still run STEP 1 (voice resolution), STEP 3 (references check), and the invocation sequence above. Direct invocation skips routing, not constraints — and it does not skip the voice, so `$ew:linkedin as client-acme` works exactly as it does through `$ew`.
 
 Direct invocation paths:
-- `/ew:newsletter-creative` → `skills/newsletter-creative/SKILL.md`
-- `/ew:newsletter-technical` → `skills/newsletter-technical/SKILL.md`
-- `/ew:linkedin` → `skills/linkedin/SKILL.md`
-- `/ew:tweets` → `skills/tweets/SKILL.md`
-- `/ew:substack-notes` → `skills/substack-notes/SKILL.md`
-- `/ew:web-copy` → `skills/web-copy/SKILL.md`
-- `/ew:sales-copy` → `skills/sales-copy/SKILL.md`
-- `/ew:scene-structure` → `skills/scene-structure/SKILL.md`
-- `/ew:script-writing` → `skills/script-writing/SKILL.md`
-- `/ew:world-builder` → `skills/world-builder/SKILL.md`
-- `/ew:audit` → `skills/audit/SKILL.md`
-- `/ew:outline` → `skills/outline/SKILL.md`
-- `/ew:failure-library` → `skills/failure-library/SKILL.md`
-- `/ew:voice` → `skills/voice/SKILL.md`
+- `$ew:newsletter-creative` or `/ew:newsletter-creative` → `skills/newsletter-creative/SKILL.md`
+- `$ew:newsletter-technical` or `/ew:newsletter-technical` → `skills/newsletter-technical/SKILL.md`
+- `$ew:linkedin` or `/ew:linkedin` → `skills/linkedin/SKILL.md`
+- `$ew:tweets` or `/ew:tweets` → `skills/tweets/SKILL.md`
+- `$ew:substack-notes` or `/ew:substack-notes` → `skills/substack-notes/SKILL.md`
+- `$ew:web-copy` or `/ew:web-copy` → `skills/web-copy/SKILL.md`
+- `$ew:sales-copy` or `/ew:sales-copy` → `skills/sales-copy/SKILL.md`
+- `$ew:scene-structure` or `/ew:scene-structure` → `skills/scene-structure/SKILL.md`
+- `$ew:script-writing` or `/ew:script-writing` → `skills/script-writing/SKILL.md`
+- `$ew:world-builder` or `/ew:world-builder` → `skills/world-builder/SKILL.md`
+- `$ew:audit` or `/ew:audit` → `skills/audit/SKILL.md`
+- `$ew:outline` or `/ew:outline` → `skills/outline/SKILL.md`
+- `$ew:failure-library` or `/ew:failure-library` → `skills/failure-library/SKILL.md`
+- `$ew:voice` or `/ew:voice` → `skills/voice/SKILL.md`
 
 ---
 

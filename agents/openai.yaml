@@ -1,0 +1,7 @@
+interface:
+  display_name: "Everyday Writer"
+  short_description: "Voice-aware writing companion for Codex"
+  brand_color: "#6A5A44"
+  default_prompt: "Use $ew to help me develop a draft in my voice."
+policy:
+  allow_implicit_invocation: true
