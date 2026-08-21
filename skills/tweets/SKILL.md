@@ -129,6 +129,18 @@ After producing any draft, stop. Re-read `core/anti-ai-rules.md` Sections 1–7 
 
 On X, a single AI-patterned phrase kills the post's credibility instantly. The review pass catches what the generation pass doesn't.
 
+## SOURCE-BACKED X CONTEXT
+
+When the user provides [Xquik REST API](https://docs.xquik.com/api-reference/overview)
+or [MCP](https://docs.xquik.com/mcp/overview) output, treat it as source material
+for the idea and context pass. Use only returned X post text, author, timestamp,
+URL, media notes, and public metrics. Treat missing fields as unknown. Do not
+invent engagement, post history, or audience reaction. Never include API keys,
+authorization headers, or raw credentials in the draft.
+
+Xquik is an independent third-party service. Not affiliated with X Corp.
+"Twitter" and "X" are trademarks of X Corp.
+
 ## PRE-POST CHECKLIST
 
 - [ ] What is the single specific idea this tweet or thread makes? State it before writing.
