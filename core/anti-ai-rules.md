@@ -39,7 +39,7 @@ When two constraints in this system conflict, resolve in this order. Higher numb
 
 1. **This file's style rules.** The default floor.
 2. **`core/ai_slop_commandments.md`.** Same authority as this file; where the two overlap, they agree. Where the commandments are more specific, follow the more specific one.
-3. **Files in `references/`.** The writer dropped these there deliberately.
+3. **Files in the active voice's references folder.** These are resolved by `core/voice-profile.md`. The plugin-level `references/` folder is deprecated and is not scanned.
 4. **`core/voice-profile.md`.** The writer's confirmed voice fingerprint.
 5. **A writing sample the user supplies in the current session.** Direct evidence of how this person actually writes.
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-**Everyday Writer (EW)** is a Claude Code skill plugin for professional writers. It provides 13 specialized writing sub-skills constrained by a voice fingerprint and anti-AI writing rules, plus a 14th skill that manages voices. Invoked via `/ew:ew` or any of the sub-skill commands.
+**Everyday Writer (EW)** is a Claude Code skill plugin for professional writers. It has one root dispatcher, 13 writing sub-skills, and one voice management skill, all constrained by a voice fingerprint and anti-AI writing rules. Invoked via `/ew:ew` or any of the sub-skill commands.
 
 The system holds any number of voices — the writer's own, plus one per ghostwriting client — with one active at a time.
 
@@ -19,7 +19,7 @@ These are not style preferences. Getting any of them wrong makes skills silently
 3. **There is no `entry` field in the manifest schema.** Skills are discovered by directory convention: root `SKILL.md` plus each `skills/<name>/SKILL.md`.
 4. **Skill names must be lowercase kebab-case** and should match their directory name.
 
-Run `npm run check` before any commit that touches manifests or skill frontmatter. It validates all four rules plus version parity and the core dependency chain.
+Run `npm run check` before any commit that touches manifests, skill frontmatter, dependency chains, reference loading, or package contents. It validates discovery rules plus version parity, runtime/core dependencies, per-voice references, and resource packaging guards.
 
 ## Entry Points
 
@@ -34,8 +34,8 @@ Every `/ew` invocation in `SKILL.md` follows this sequence:
 
 1. **Profile Check** — look for `Completed: Yes` in `core/voice-profile.md`. If absent, trigger onboarding.
 2. **Onboarding** — route through `onboarding/ONBOARDING.md` → either `claude-code-mode.md` (7-step, file-based) or `claude-ai-cowork-mode.md` (memory-based).
-3. **References Check** — scan `references/` for user-dropped `.md` files. These override sub-skill defaults.
-4. **Dispatch** — route to the sub-skill. Every sub-skill reads in this order: `core/anti-ai-rules.md` → `core/ai_slop_commandments.md` → `core/voice-profile.md` → `references/` files → sub-skill file → write.
+3. **References Check** — scan the active voice's references folder, as resolved by `core/voice-profile.md`. These override sub-skill defaults.
+4. **Dispatch** — route to the sub-skill. Every sub-skill reads in this order: `core/runtime-contract.md` → `core/anti-ai-rules.md` → `core/ai_slop_commandments.md` → `core/voice-profile.md` → active voice reference files → sub-skill file → write.
 
 Direct invocation (`/ew:linkedin`) bypasses step 4's routing but not steps 1–3 or the read order.
 
@@ -43,6 +43,7 @@ Direct invocation (`/ew:linkedin`) bypasses step 4's routing but not steps 1–3
 
 | File | Purpose |
 |---|---|
+| `core/runtime-contract.md` | Short operating contract: read order, precedence, fabrication rule, two-pass loop, final checklist. |
 | `core/anti-ai-rules.md` | The primary standard. Sections 0–10. |
 | `core/ai_slop_commandments.md` | Technical companion: mechanism behind each failure pattern, era-indexed slop vocabulary, diagnostic checklist. |
 | `core/voice-profile.md` | **The resolver, not a profile.** Points at the active voice. |
@@ -86,8 +87,8 @@ skills/
 ## Developing Skills
 
 - Skills are markdown instruction files, not code. No build, no tests, no linting. `npm run check` is the only validation.
-- Every skill must open with YAML frontmatter, then an H1, then its dependency chain block naming all three core files. This is non-negotiable — direct invocation bypasses the dispatcher, so a skill that omits a core file simply never reads it.
-- The `references/` folder is a user drop-zone — never add instructions there; only `DROP-MD-FILES-HERE.md` belongs there by default.
+- Every skill must open with YAML frontmatter, then an H1, then its dependency chain block naming `runtime-contract.md` and the three full core files. This is non-negotiable — direct invocation bypasses the dispatcher, so a skill that omits a core file simply never reads it.
+- The root `references/` folder is deprecated and must not be scanned. User reference files live per voice at `~/.everyday-writer/voices/<slug>/references/`, resolved by `core/voice-profile.md`; only `references/DROP-MD-FILES-HERE.md` belongs in the root folder by default.
 - `resources/` holds background reference material (writing commandments, rules rundowns), not part of the dispatch system.
 - When adding a section to `anti-ai-rules.md`, check whether the skills' dependency-chain blocks or `SKILL.md`'s standards section reference section numbers that need updating.
 
@@ -101,7 +102,7 @@ When a core rule changes, it must be updated in **both** `core/anti-ai-rules.md`
 
 **`core/voice-profile.md` is a resolver, not a profile.** Anyone opening it expecting a fingerprint will be confused, so this is the most important non-obvious fact in the repo.
 
-All 13 sub-skills hardcode `core/voice-profile.md` in their dependency chains, and `check.js` hard-errors when that filename is missing from any of them. Redirecting at that single file adds multi-voice without editing a single sub-skill and without touching the validator's rules. Do not "fix" this by rewriting the sub-skills to point at a new path.
+All 13 writing sub-skills and the voice management skill hardcode `core/voice-profile.md` in their dependency chains, and `check.js` hard-errors when that filename is missing from any of them. Redirecting at that single file adds multi-voice without editing every skill path. Do not "fix" this by rewriting the sub-skills to point at a new path.
 
 Voices live outside the plugin:
 

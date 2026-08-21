@@ -1,6 +1,6 @@
 ---
 name: Everyday Writer — Master Skill
-description: Complete Everyday Writer writing system. Anti-AI rules, multi-voice profiling, and all 13 sub-skills in one file. Upload this to Claude.ai Cowork to activate the full EW system.
+description: Complete Everyday Writer writing system. Anti-AI rules, multi-voice profiling, 13 writing sub-skills, and voice management in one file. Upload this to Claude.ai Cowork to activate the full EW system.
 version: 0.3.0
 ---
 
@@ -12,7 +12,7 @@ This file is the entire Everyday Writer (EW) system in one document. It contains
 - The full anti-AI writing rules engine (banned words, sentence patterns, tone patterns, structural patterns, checklist)
 - The AI Slop Commandments (fine-tuning reference — mechanisms, era-indexed vocabulary, diagnostic checklist)
 - Multi-voice profiling and onboarding — the writer's own voice, plus a separate profile per ghostwriting client
-- All 13 sub-skills: newsletter (creative + technical), LinkedIn, tweets/X, Substack Notes, web copy, sales copy, scene structure, script writing, world builder, audit, outline, failure library
+- 13 writing sub-skills plus voice management: newsletter (creative + technical), LinkedIn, tweets/X, Substack Notes, web copy, sales copy, scene structure, script writing, world builder, audit, outline, failure library, and voice
 
 **How to use:** Upload this file to a Claude.ai Project. Then type `/ew` followed by your request, or name the sub-skill directly (e.g., "use the LinkedIn skill", "run the audit skill on this text").
 

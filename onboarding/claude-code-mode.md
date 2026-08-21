@@ -8,7 +8,7 @@
 
 ## THE PROCESS
 
-Six steps. Done in one conversation. The user pastes samples; Claude reads them, extracts what it can, confirms with the user, and writes the profile.
+Seven steps. Done in one conversation. The user pastes samples; Claude reads them, extracts what it can, confirms with the user, and writes the profile.
 
 ---
 

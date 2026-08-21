@@ -16,10 +16,11 @@ metadata:
 
 **Dependency chain. Read these in order before starting:**
 
-1. `core/anti-ai-rules.md` (Section 0 especially)
-2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-3. `core/voice-profile.md` (this writer's voice fingerprint; if `Completed: No`, stop and run onboarding)
-4. Any `.md` files the user has dropped in `references/`
+1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
+2. `core/anti-ai-rules.md` (full standard)
+3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+4. `core/voice-profile.md` (voice resolver; if the resolved profile has `Completed: No`, stop and run onboarding)
+5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
 
 This sub-system serves the fiction skills. It does not write prose directly. It builds the scaffold the prose will hang on.
 

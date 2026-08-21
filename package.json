@@ -9,6 +9,8 @@
   },
   "scripts": {
     "check": "node bin/check.js",
+    "package:claude-skill": "node bin/package-claude-skill.js",
+    "check:claude-skill": "node bin/package-claude-skill.js --check",
     "prepublishOnly": "node bin/check.js"
   },
   "files": [
@@ -22,6 +24,7 @@
     "resources/Everyday Writer — Anti-AI Rules Rundown.md",
     "resources/General Writing Commandments_ The Foundation of Clarity.md",
     "resources/General Writing Directives_ The Laws of Construction.md",
+    "docs/distribution.md",
     "cowork/",
     "assets/",
     "SKILL.md",

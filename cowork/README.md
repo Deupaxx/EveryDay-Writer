@@ -19,7 +19,7 @@ All files have YAML frontmatter so Claude.ai accepts them without errors.
 Upload **all `.md` files** from this folder to a single Claude.ai Project. You get:
 - The full anti-AI rules engine
 - Multi-voice onboarding and memory — your own voice, plus a separate profile per ghostwriting client
-- All 13 sub-skills available in one project
+- 13 writing sub-skills plus the voice management flow in one project
 - The failure library for teaching and diagnosis
 
 Then type `/ew [your request]` in the chat, or ask Claude to use a specific skill by name.
@@ -42,7 +42,7 @@ Upload `ew-master.md` plus any specific skill files you want. Each micro-skill f
 
 | File | What it does |
 |---|---|
-| `ew-master.md` | **The one-above-all file.** Contains the complete system: all anti-AI rules, multi-voice profiling, all 13 sub-skills, and both diagnostic checklists. Upload this if you only upload one file. |
+| `ew-master.md` | **The one-above-all file.** Contains the complete system: all anti-AI rules, multi-voice profiling, 13 writing sub-skills, voice management, and both diagnostic checklists. Upload this if you only upload one file. |
 | `ew-linkedin.md` | LinkedIn posts and articles |
 | `ew-newsletter-creative.md` | Story-driven newsletters, personal essays, narrative-first issues |
 | `ew-newsletter-technical.md` | Technical newsletters, tutorials, analysis, how-tos |
@@ -66,7 +66,7 @@ These files **do not** replace the Claude Code version of Everyday Writer (`/ew`
 - File system access (reads and writes voice profiles to disk)
 - Full skill dispatch via `SKILL.md`
 - The world builder split across three files (`SKILL.md`, `questioner.md`, `skeleton-template.md`) rather than the single condensed `ew-world-builder.md` here
-- A `references/` drop zone where your own instruction files override skill defaults
+- Per-voice reference files under `~/.everyday-writer/voices/<slug>/references/`, resolved by `core/voice-profile.md`, where your own instruction files override skill defaults
 
 The Cowork files replicate the rules and sub-skills as faithfully as possible in a single-session context. Voice profiles are stored in Claude.ai memory between sessions rather than on disk.
 

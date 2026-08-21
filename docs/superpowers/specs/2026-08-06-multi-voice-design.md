@@ -1,20 +1,20 @@
 # Multi-Voice Profiles — Design
 
 **Date:** 2026-08-06
-**Status:** Approved design, not yet implemented
+**Status:** Implemented in v0.3.0; kept as historical design context
 **Target version:** 0.3.0
 
 ---
 
 ## Problem
 
-Everyday Writer supports exactly one voice. `core/voice-profile.md` holds a single writer's fingerprint, and all 13 sub-skills read it unconditionally.
+Before v0.3.0, Everyday Writer supported exactly one voice. `core/voice-profile.md` held a single writer's fingerprint, and all 13 writing sub-skills read it unconditionally.
 
 The writer needs more than one identity. Writing as themselves is one voice. Ghostwriting for a client is another, with its own fingerprint, its own brand documents, and its own output. Today the only way to switch is to overwrite the profile and lose the previous one.
 
 Two failure modes make this worse than a missing feature:
 
-1. **Contamination.** `references/` is a single global drop-zone. A client's brand guidelines sit in the same folder as the writer's own, and both get read on every invocation.
+1. **Contamination.** Before v0.3.0, the root `references/` folder behaved like a single global drop-zone. A client's brand guidelines could sit in the same folder as the writer's own, and both were read on every invocation.
 2. **Data loss and exposure.** `core/` lives inside the plugin directory. When EW is installed from the marketplace, that directory is a cache that is replaced on update. Profiles written there are destroyed on upgrade. In this repo, which is public and published to npm, a client profile written to `core/` is also a commit away from being published.
 
 ## Goal
@@ -64,17 +64,17 @@ This must be stated in the resolver and in §0.1's surrounding text so the disti
 
 ---
 
-## Resolution: how the 13 sub-skills find the active voice
+## Resolution: how the 13 writing sub-skills and voice management skill find the active voice
 
 This is the load-bearing decision.
 
-Every sub-skill hardcodes `core/voice-profile.md` in its dependency-chain block, and `bin/check.js` raises a hard error if any `skills/*/SKILL.md` fails to mention that filename. Changing the path in 13 files would mean 13 chances to introduce the silent-failure class of bug that CLAUDE.md exists to prevent.
+Every writing sub-skill and the voice management skill hardcode `core/voice-profile.md` in their dependency-chain blocks, and `bin/check.js` raises a hard error if any `skills/*/SKILL.md` fails to mention that filename. Changing the resolved voice path in every skill would create many chances to introduce the silent-failure class of bug that CLAUDE.md exists to prevent.
 
 Instead, **`core/voice-profile.md` stops being a profile and becomes a resolver.** Its content is replaced with a short instruction file that redirects to the active voice. The template it currently holds moves to `core/voice-profile-template.md`.
 
 Consequences:
 
-- No sub-skill files change. `check.js` passes unmodified.
+- Sub-skill files keep the shared resolver path.
 - Voice-selection logic exists in exactly one place.
 - The inline override works on every sub-skill for free, because every sub-skill already reads the resolver.
 
@@ -85,7 +85,7 @@ The resolver instructs the reader to, in order:
 1. **Check for an inline override in the user's request** — "as writer-main", "in client-acme's voice", "write this as <name>". If present, use that voice for this invocation only. Do not modify `active-voice`.
 2. Otherwise read `~/.everyday-writer/active-voice` and trim it to get the slug.
 3. Read `~/.everyday-writer/voices/<slug>/voice-profile.md`. That file is the voice profile, and everything downstream treats it as `core/voice-profile.md` was previously treated.
-4. Load `~/.everyday-writer/voices/<slug>/references/` as the references drop-zone.
+4. Load `~/.everyday-writer/voices/<slug>/references/` as the active voice references folder.
 
 ### Edge cases
 

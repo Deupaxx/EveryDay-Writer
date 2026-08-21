@@ -5,7 +5,7 @@
 A writing skill system for professional writers, compatible with Codex, Claude Code, and Claude.ai Cowork.
 Built on an A-Player standard: results over hours, own the outcome, no coinflipping critical components.
 
-13 specialized writing sub-skills, all constrained by a voice fingerprint taken from your own writing and a set of anti-AI rules that get applied before anything ships.
+One root dispatcher, 13 writing sub-skills, and one voice management skill, all constrained by a voice fingerprint taken from your own writing and a set of anti-AI rules that get applied before anything ships.
 
 Hold as many voices as you need — your own, plus a separate profile for every ghostwriting client. Switching is one command, and nothing bleeds between them.
 
@@ -35,6 +35,16 @@ Everyday Writer supports three environments:
 - **Claude.ai Cowork:** upload the packaged cowork Markdown files to Project knowledge
 
 The npm default install targets Codex. The Claude Code install path is still supported through `install:claude` and the `.claude-plugin/` marketplace manifests remain in the package.
+
+### Beginner install
+
+If you are technical, use the npm install path below. If you are not technical, use the Claude App custom-skill ZIP after it has been generated with `npm run package:claude-skill`, then upload it in Claude under **Customize → Skills** and enable Everyday Writer.
+
+Codex/OpenAI native skill installation depends on the environment. The current supported local path remains `npx everyday-writer install`.
+
+See [docs/distribution.md](docs/distribution.md) for the full distribution guide.
+
+---
 
 ### Codex
 
@@ -77,7 +87,7 @@ To browse before installing, run `/plugin` and pick the marketplace from the men
 Cowork does not support file-based plugins. Use the pre-packaged files in [`cowork/`](cowork/) instead. They carry the YAML frontmatter Claude.ai expects.
 
 1. Open the [`cowork/`](cowork/) folder in this repo
-2. Upload `cowork/ew-master.md` to your Claude.ai Project (Settings → Project knowledge). That single file contains the full system: all rules, voice profiling, and all 13 sub-skills.
+2. Upload `cowork/ew-master.md` to your Claude.ai Project (Settings → Project knowledge). That single file contains the full system: all rules, voice profiling, 13 writing sub-skills, and voice management.
 3. Optionally add the individual `ew-*.md` files for the skills you use most. Each is self-contained.
 4. Type `/ew [your request]` in the chat, or name the skill directly.
 
@@ -224,7 +234,7 @@ Every invocation runs the same sequence:
 1. **Voice resolution.** `core/voice-profile.md` is a resolver, not a profile — it points at the active voice under `~/.everyday-writer/`. If no voices exist, onboarding runs first. If resolution is ambiguous, EW stops and asks rather than guessing.
 2. **Onboarding** (first run, and whenever you add a voice). Seven steps, about five minutes. You paste samples, answer questions about goals and platforms, do one freewrite, and confirm five voice adjectives. The result is written to `~/.everyday-writer/voices/<name>/voice-profile.md`.
 3. **References check.** Any `.md` file you drop in that voice's `references/` folder is read and takes precedence over sub-skill defaults.
-4. **Dispatch.** The sub-skill reads `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then the resolved voice profile, then that voice's reference files, then its own instructions, and only then writes.
+4. **Dispatch.** The sub-skill reads `core/runtime-contract.md`, then `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then the resolved voice profile, then active voice reference files, then its own instructions, and only then writes.
 5. **Two-pass loop.** No first draft is ever presented. The draft gets interrogated against three questions, revised, and run through two checklists before you see it.
 
 ### Obsidian story folders
@@ -265,6 +275,7 @@ EW/
 │   └── check.js                       ← Package validator (npm run check)
 │
 ├── core/
+│   ├── runtime-contract.md             ← Short operating contract and read order
 │   ├── anti-ai-rules.md               ← The operating standard, precedence, fabrication
 │   │                                    rule, banned patterns, checklists, restraint
 │   ├── ai_slop_commandments.md        ← Mechanism reference + era-indexed slop vocabulary
@@ -360,8 +371,8 @@ Pushing a version tag publishes to npm. Bump the version in `.claude-plugin/plug
 - **Codex installs to `~/.codex/skills/everyday-writer/`** and reads `agents/openai.yaml` for UI metadata.
 - **The manifest lives in `.claude-plugin/`**, which is where Claude Code looks. A root-level `plugin.json` is ignored.
 - **Every skill file carries YAML frontmatter.** Without `name` and `description`, Claude Code does not register the skill at all.
-- **`core/` files are dependencies, not skills.** Every sub-skill reads all three; none of them is invoked directly.
-- **`core/voice-profile.md` is a resolver, not a profile.** All 13 sub-skills hardcode that path and the validator errors when it's missing from any of them, so redirecting at that one file adds multi-voice without touching a single sub-skill.
+- **`core/` files are dependencies, not skills.** Every sub-skill reads `runtime-contract.md` plus the three full core files; none of them is invoked directly.
+- **`core/voice-profile.md` is a resolver, not a profile.** All 13 writing sub-skills and the voice management skill hardcode that path, and the validator errors when it is missing from any of them, so redirecting at that one file adds multi-voice without touching every skill path.
 - **Voices live in `~/.everyday-writer/`, not in the plugin.** The plugin directory is a cache that updates replace wholesale, and this repo is public. A client profile stored in `core/` would be destroyed on upgrade and one commit from publication.
 - **Reference material is per-voice.** A shared folder means a client's brand guidelines and yours get read together on every invocation. Per-voice folders make that impossible rather than merely unlikely.
 - **Onboarding splits twice** — by environment (file-based in Claude Code, memory-based in Claude.ai) and by subject (your own voice gets a freewrite; someone else's can't have one).

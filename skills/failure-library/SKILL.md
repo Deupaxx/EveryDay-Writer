@@ -15,10 +15,11 @@ metadata:
 
 **When using it during generation or teaching, read the full chain first:**
 
-1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, 0.2 forbids fabrication, 9 and 10 stop over-correction)
-2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-3. `core/voice-profile.md` (this writer's voice fingerprint)
-4. Any `.md` files the user has dropped in `references/`
+1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
+2. `core/anti-ai-rules.md` (full standard)
+3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+4. `core/voice-profile.md` (voice resolver)
+5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
 
 **When used as a teaching tool during generation:** Read `core/anti-ai-rules.md` before pointing to examples from this library.
 

@@ -14,10 +14,11 @@ metadata:
 
 **Dependency chain. Read these in order before doing anything:**
 
-1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, **0.2 forbids fabrication and is the governing rule of this skill**, 9 and 10 stop over-correction)
-2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-3. `core/voice-profile.md` (the resolver — how the active voice is found)
-4. Any `.md` files in the active voice's `references/`
+1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
+2. `core/anti-ai-rules.md` (full standard; Section 0.2 governs every profile field this skill writes)
+3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+4. `core/voice-profile.md` (the resolver — how the active voice is found)
+5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
 
 This chain applies on direct invocation (`/ew:voice`) exactly as it does on dispatch through `/ew`.
 

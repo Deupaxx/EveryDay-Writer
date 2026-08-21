@@ -52,7 +52,7 @@ This step also runs when the user adds a voice later with `/ew:voice new` — fo
 
 ## STEP 3: CHECK REFERENCES
 
-Before dispatching to a sub-skill, scan the **active voice's** references folder — `~/.everyday-writer/voices/<slug>/references/` — for any `.md` files the user has dropped there.
+Before dispatching to a sub-skill, scan the active voice's references folder, as resolved by `core/voice-profile.md`: `~/.everyday-writer/voices/<slug>/references/`.
 
 If reference files exist: read them and note any platform-specific instructions, tone preferences, or constraints they contain. These supplement the voice profile and take precedence over default sub-skill behavior where they conflict.
 
@@ -67,12 +67,13 @@ If no reference files exist: proceed.
 Read the user's request. Identify the task type and route to the appropriate sub-skill. Read the sub-skill file fully before beginning any writing.
 
 **Every sub-skill invocation follows this sequence:**
-1. Read `core/anti-ai-rules.md` (all sections, Section 0 first)
-2. Read `core/ai_slop_commandments.md` (technical pattern reference — covers mechanisms anti-ai-rules.md doesn't)
-3. Read `core/voice-profile.md` — the resolver — and follow it to the active voice's fingerprint
-4. Read any `.md` files in that voice's `references/`
-5. Read the sub-skill file
-6. Write
+1. Read `core/runtime-contract.md`
+2. Read `core/anti-ai-rules.md` (all sections, Section 0 first)
+3. Read `core/ai_slop_commandments.md` (technical pattern reference — covers mechanisms anti-ai-rules.md doesn't)
+4. Read `core/voice-profile.md` — the resolver — and follow it to the active voice's fingerprint
+5. Read any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
+6. Read the sub-skill file
+7. Write
 
 Do not skip steps. The rules in `core/anti-ai-rules.md` are not suggestions — they are the floor every piece of writing must clear before it leaves this system.
 

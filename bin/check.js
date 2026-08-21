@@ -19,6 +19,22 @@ function exists(rel) {
   return fs.existsSync(path.join(ROOT, rel));
 }
 
+function walkMarkdown(relDir, out = []) {
+  const abs = path.join(ROOT, relDir);
+  if (!fs.existsSync(abs)) return out;
+
+  for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
+    const rel = path.join(relDir, entry.name).split(path.sep).join('/');
+    if (entry.isDirectory()) {
+      if (!['.git', 'node_modules'].includes(entry.name)) walkMarkdown(rel, out);
+    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      out.push(rel);
+    }
+  }
+
+  return out;
+}
+
 // --- Manifest location and shape -------------------------------------------
 
 if (exists('plugin.json')) {
@@ -137,7 +153,12 @@ for (const rel of files) {
 
 // --- Core dependency chain --------------------------------------------------
 
-const CORE = ['core/anti-ai-rules.md', 'core/ai_slop_commandments.md', 'core/voice-profile.md'];
+const CORE = [
+  'core/runtime-contract.md',
+  'core/anti-ai-rules.md',
+  'core/ai_slop_commandments.md',
+  'core/voice-profile.md',
+];
 for (const rel of CORE) {
   if (!exists(rel)) errors.push('Missing core file: ' + rel);
 }
@@ -167,6 +188,107 @@ for (const rel of files.filter((f) => f !== 'SKILL.md')) {
       errors.push(rel + ': does not reference ' + base + ' in its dependency chain.');
     }
   }
+
+  if (
+    !/(active voice's references folder|active voice reference files|voice references|voice's references folder|per-voice reference)/i.test(
+      text
+    )
+  ) {
+    errors.push(
+      rel +
+        ': dependency chain must mention active voice references or voice references resolved by core/voice-profile.md.'
+    );
+  }
+}
+
+// --- Reference-folder drift -------------------------------------------------
+
+const referenceScanFiles = [
+  'SKILL.md',
+  'README.md',
+  'CLAUDE.md',
+  ...walkMarkdown('skills'),
+  ...walkMarkdown('core'),
+  ...walkMarkdown('cowork'),
+  ...walkMarkdown('onboarding'),
+  ...walkMarkdown('docs'),
+].filter((rel) => rel !== 'references/DROP-MD-FILES-HERE.md');
+
+const deprecatedReferencePatterns = [
+  { label: 'deprecated phrase "dropped in `references/`"', re: /dropped in\s+`references\/`/i },
+  { label: 'deprecated phrase "plugin\'s references"', re: /plugin['\u2019]s references/i },
+  {
+    label: 'root references scan/load wording',
+    re: /\b(scan|read|load|loads|loaded|loading|apply|applies|applied)\b[^.\n]*`?references\/`?/i,
+  },
+  {
+    label: 'root references drop-zone wording',
+    re: /`?references\/`?[^.\n]*(drop-?zone|single global)/i,
+  },
+];
+
+function explicitlyDeprecatedReferenceLine(line) {
+  return /\b(deprecated|no longer|not scanned|must not|do not|redirect|upgrader|kept only|not a drop-zone|before v0\.3\.0|used to|historical|cannot)\b/i.test(
+    line
+  );
+}
+
+function canonicalVoiceReferenceLine(line) {
+  return /(active voice's references folder|active voice reference files|voice references|voice's references folder|per-voice reference|per-voice drop-zone|this voice's drop-zone|~\/\.everyday-writer\/voices\/<slug>\/references\/)/i.test(
+    line
+  );
+}
+
+for (const rel of [...new Set(referenceScanFiles)]) {
+  if (!exists(rel)) continue;
+  const lines = read(rel).split(/\r?\n/);
+  lines.forEach((line, idx) => {
+    for (const { label, re } of deprecatedReferencePatterns) {
+      if (
+        re.test(line) &&
+        !explicitlyDeprecatedReferenceLine(line) &&
+        !canonicalVoiceReferenceLine(line)
+      ) {
+        errors.push(
+          rel +
+            ':' +
+            (idx + 1) +
+            ': ' +
+            label +
+            '. User references must be active-voice files resolved by core/voice-profile.md; root references/ is deprecated.'
+        );
+      }
+    }
+  });
+}
+
+// --- Resource package boundary ---------------------------------------------
+
+const packageFiles = JSON.parse(read('package.json')).files || [];
+for (const entry of packageFiles) {
+  const normalized = entry.replace(/\\/g, '/');
+  if (
+    normalized === 'resources/' ||
+    /^resources\/Untitled document/i.test(normalized) ||
+    /^resources\/.*\*/.test(normalized)
+  ) {
+    errors.push(
+      'package.json files includes "' +
+        entry +
+        '". Private resources/Untitled document*.md files must never ship.'
+    );
+  }
+}
+
+const localUntitledResources = fs
+  .readdirSync(path.join(ROOT, 'resources'), { withFileTypes: true })
+  .filter((entry) => entry.isFile() && /^Untitled document.*\.md$/i.test(entry.name));
+if (localUntitledResources.length > 0) {
+  warnings.push(
+    'resources/ has ' +
+      localUntitledResources.length +
+      ' private Untitled document*.md file(s); validator confirms package.json does not ship them.'
+  );
 }
 
 // --- Report -----------------------------------------------------------------
@@ -174,14 +296,16 @@ for (const rel of files.filter((f) => f !== 'SKILL.md')) {
 console.log('');
 console.log('Everyday Writer package check');
 console.log('  version:      ' + (VERSION || 'UNKNOWN'));
-console.log('  skills found: ' + files.length);
+console.log('  skills found: root dispatcher + 13 writing sub-skills + voice management');
 console.log('');
 
 for (const w of warnings) console.log('  warn:  ' + w);
 for (const e of errors) console.log('  ERROR: ' + e);
 
 if (errors.length === 0) {
-  console.log('  ' + files.length + ' skills valid, manifests consistent, dependency chain intact.');
+  console.log(
+    '  root dispatcher + 13 writing sub-skills + voice management valid; manifests consistent; runtime chain intact.'
+  );
   console.log('');
   process.exit(0);
 }

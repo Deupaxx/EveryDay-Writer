@@ -14,10 +14,11 @@ metadata:
 
 **Dependency chain. Read these in order before writing anything:**
 
-1. `core/anti-ai-rules.md` (read fully; Section 0 sets the standard, 0.1 sets precedence, 0.2 forbids fabrication, 9 and 10 stop over-correction)
-2. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-3. `core/voice-profile.md` (this writer's voice fingerprint; if `Completed: No`, stop and run onboarding)
-4. Any `.md` files the user has dropped in `references/`
+1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
+2. `core/anti-ai-rules.md` (full standard)
+3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+4. `core/voice-profile.md` (voice resolver; if the resolved profile has `Completed: No`, stop and run onboarding)
+5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
 
 This chain applies on direct invocation (`/ew:script-writing`) exactly as it does on dispatch through `/ew`. Direct invocation skips routing, not constraints.
 
