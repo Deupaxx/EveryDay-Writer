@@ -1,7 +1,7 @@
 # Multi-Voice Profiles — Design
 
 **Date:** 2026-08-06
-**Status:** Implemented in v0.3.0; kept as historical design context
+**Status:** Historical and partially superseded. Multi-voice behavior remains implemented; all storage roots, containment, resolver bypass, and migration behavior are superseded by `2026-09-20-obsidian-second-brain-design.md` and the current core contracts.
 **Target version:** 0.3.0
 
 ---
@@ -97,7 +97,7 @@ The resolver instructs the reader to, in order:
 | Multiple voices, no `active-voice` | Stop. List the voices and ask which to activate. |
 | `active-voice` names a nonexistent voice | Stop. Report the broken pointer, list what exists, ask. |
 | Named override matches no voice | **Stop. List available voices and ask.** Never guess and never invent a voice — writing in a fabricated identity is the §0.2 failure mode applied to voice. |
-| Resolved profile has `Completed: No` | Run onboarding for that voice before writing. |
+| Resolved profile's `Completed:` field is missing or not exactly `Yes` | Run onboarding for that voice before writing. |
 
 ---
 

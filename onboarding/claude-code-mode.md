@@ -117,9 +117,13 @@ If the samples weren't clear on one axis, ask about that axis specifically. Don'
 
 ## STEP 7: WRITE AND SAVE THE PROFILE
 
-Ask what to call this voice if you do not already have a name, and derive a lowercase kebab-case slug from it.
+Ask what to call this voice if you do not already have a name, derive a slug, and validate the entire result against exactly `[a-z0-9]+(?:-[a-z0-9]+)*` before using it in any path.
 
-Create `~/.everyday-writer/voices/<slug>/` with `references/`, `drafts/`, and `samples/`. Copy `core/voice-profile-template.md` into it as `voice-profile.md`, then fill every field with the values derived from the samples and confirmed by the user.
+Resolve `<data-root>` through `core/obsidian-workspace.md`.
+
+Before creating anything, require that `<data-root>/voices/<slug>/` does not already exist and that no case-insensitive sibling slug collides. A matching, validated incomplete legacy profile may resume only under the recovery rule in `ONBOARDING.md`; otherwise route to switch, edit, or explicit repair. Never overwrite a voice during onboarding.
+
+After that check passes, use the transactional staging procedure in `ONBOARDING.md`: build the complete voice directory, child directories, fully populated profile, and samples in a unique sibling `.ew-stage-*` directory using exclusive/no-replace operations; verify all of it; then publish the whole directory to `voices/<slug>/` with an atomic exclusive/no-replace operation. Do not expose a partial final voice tree.
 
 **Do not write the profile into `core/`.** That directory is a cache the plugin replaces on update, and it is tracked by a public git repository. `core/voice-profile.md` is the resolver that finds voices, not a place to store one.
 
@@ -133,17 +137,23 @@ Completed:        Yes
 Last updated:     [today's date]
 ```
 
-Save the samples the user pasted to `samples/`, one file each, and say so in one line.
+Save the samples the user pasted to `samples/`, one file each, and say so in one line. Generate collision-safe filenames with the complete managed filename rules in `core/obsidian-workspace.md`; raw sample titles or sources never become filenames without normalization.
 
-If this is the first voice, write the slug to `~/.everyday-writer/active-voice`.
+If this is the first voice, create `<data-root>/active-voice` exclusively. If a pointer appeared concurrently, validate and re-read it; keep an identical value, otherwise stop and report the conflict. Never replace an existing pointer based on an earlier absence scan.
 
-After writing, confirm with the user:
+In connected mode, add the missing exact canonical link `[[Everyday Writer/voices/<slug>/voice-profile|<link-safe voice alias> Voice Profile]]` to `00 - Everyday Writer Home.md` using the link-safe alias and YAML escaping rules in `core/obsidian-workspace.md`. Never interpolate the raw voice name into link syntax. Preserve all existing home-note content, retain the read bytes/hash, re-read immediately before atomic replacement, and stop on concurrent change.
+
+After writing, confirm according to activation state. If this is the first voice, or the requested workflow explicitly activated this newly created voice, say:
 
 > "Profile saved as `writer-main`. Every sub-skill will now use it.
 >
 > Two things worth knowing. If EW ever stops sounding like you, say so — `/ew:voice edit` recalibrates, and the profile gets better over time. And if you ever write for someone else, `/ew:voice new` builds them their own profile so nothing bleeds between the two.
 >
 > What are we writing?"
+
+If this was an additional voice and it was **not** activated, do not claim that every sub-skill uses it. Say instead:
+
+> "Profile saved as `client-acme`, but it is not active. Your current active voice is unchanged. Use `/ew:voice client-acme` when you want to switch."
 
 That last line is not pleasantry. It is the signal that onboarding is complete and the system is operational. Get to work.
 

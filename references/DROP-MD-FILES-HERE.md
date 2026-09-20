@@ -3,10 +3,10 @@
 **Drop your files here instead:**
 
 ```
-~/.everyday-writer/voices/<your-voice>/references/
-
-Windows: %USERPROFILE%\.everyday-writer\voices\<your-voice>\references\
+<data-root>/voices/<your-voice>/references/
 ```
+
+The data root is resolved by `core/obsidian-workspace.md`: either EW's default private folder or the connected Obsidian workspace.
 
 Run `/ew:voice` if you're not sure which voice is active.
 
@@ -18,7 +18,7 @@ As of v0.3.0, EW supports multiple voices — your own, plus a separate profile 
 
 **Why it had to move.** A shared folder means a client's brand guidelines sit next to yours and both get read on every invocation. Their tone rules end up shaping your newsletter; yours end up shaping their LinkedIn. Per-voice folders make that impossible rather than merely unlikely.
 
-**The second reason** is that this folder is not somewhere you can reliably keep things. When EW is installed from the marketplace, the plugin directory is a cache that gets replaced wholesale on update — anything you dropped here would be deleted without warning. `~/.everyday-writer/` survives updates.
+**The second reason** is that this folder is not somewhere you can reliably keep things. When EW is installed from the marketplace, the plugin directory is a cache that gets replaced wholesale on update — anything you dropped here would be deleted without warning. The resolved external data root survives updates.
 
 ---
 

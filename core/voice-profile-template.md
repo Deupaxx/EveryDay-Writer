@@ -1,6 +1,6 @@
 # EW — Voice Fingerprint Template
 
-This is the blank template. Onboarding copies it to `~/.everyday-writer/voices/<slug>/voice-profile.md` and fills it in. Do not fill in this file — it is the source every new voice is stamped from.
+This is the blank template. Onboarding resolves the data root through `core/obsidian-workspace.md`, copies this file to `<data-root>/voices/<slug>/voice-profile.md`, and fills it in. Do not fill in this file — it is the source every new voice is stamped from.
 
 A filled copy of this template is the voice fingerprint for one identity. It is read at the start of every sub-skill invocation, after `core/anti-ai-rules.md`. It is not a form — it is a reference document that tells Claude how this specific voice sounds and what it is optimizing for.
 

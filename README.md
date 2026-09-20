@@ -5,7 +5,7 @@
 A writing skill system for professional writers, compatible with Codex, Claude Code, and Claude.ai Cowork.
 Built on an A-Player standard: results over hours, own the outcome, no coinflipping critical components.
 
-One root dispatcher, 13 writing sub-skills, and one voice management skill, all constrained by a voice fingerprint taken from your own writing and a set of anti-AI rules that get applied before anything ships.
+One root dispatcher, 13 writing sub-skills, one voice management skill, and one workspace management skill, all constrained by a voice fingerprint taken from your own writing and a set of anti-AI rules that get applied before anything ships.
 
 Hold as many voices as you need — your own, plus a separate profile for every ghostwriting client. Switching is one command, and nothing bleeds between them.
 
@@ -61,7 +61,7 @@ npm install -g everyday-writer
 everyday-writer install
 ```
 
-This copies the skill into `~/.codex/skills/everyday-writer/`. Voice profiles still live in `~/.everyday-writer/`, so reinstalling the skill never overwrites your writing calibration.
+This copies the skill into `~/.codex/skills/everyday-writer/`. User data lives outside that install: by default under the EW bootstrap directory, or inside an Obsidian vault when the user connects one during first-run onboarding. Reinstalling the skill never overwrites that writing calibration.
 
 Use `$ew` to start, or call a sub-skill directly with `$ew:world-builder`, `$ew:scene-structure`, `$ew:linkedin`, and so on.
 
@@ -87,7 +87,7 @@ To browse before installing, run `/plugin` and pick the marketplace from the men
 Cowork does not support file-based plugins. Use the pre-packaged files in [`cowork/`](cowork/) instead. They carry the YAML frontmatter Claude.ai expects.
 
 1. Open the [`cowork/`](cowork/) folder in this repo
-2. Upload `cowork/ew-master.md` to your Claude.ai Project (Settings → Project knowledge). That single file contains the full system: all rules, voice profiling, 13 writing sub-skills, and voice management.
+2. Upload `cowork/ew-master.md` to your Claude.ai Project (Settings → Project knowledge). That single file contains the Cowork system: all rules, voice profiling, 13 writing sub-skills, and memory-based voice management. Local workspace management is intentionally unavailable in Cowork.
 3. Optionally add the individual `ew-*.md` files for the skills you use most. Each is self-contained.
 4. Type `/ew [your request]` in the chat, or name the skill directly.
 
@@ -148,7 +148,7 @@ Check your installed version with `everyday-writer --version`.
 /ew:voice import <path-to-your-old-voice-profile.md>
 ```
 
-If you've already updated and lost it, onboarding rebuilds it in about five minutes. Profiles now live in `~/.everyday-writer/`, which updates cannot touch.
+If you've already updated and lost it, onboarding rebuilds it in about five minutes. Profiles now live under EW's resolved data root outside the plugin, which updates cannot touch.
 
 ---
 
@@ -163,7 +163,14 @@ One voice is active at a time and persists across sessions.
 /ew:voice edit                Recalibrate the active voice
 /ew:voice import <path>       Bring in a profile you already have
 /ew:voice delete <name>       Remove one
+/ew:voice repair <name>       Resume/repair a verified incomplete voice
 ```
+
+## Optional Obsidian workspace
+
+On the first local run, EW offers to connect an existing Obsidian vault before collecting writing samples. Declining keeps the default private bootstrap storage. Connecting creates a fixed `Everyday Writer/` workspace inside the vault, where voice profiles are viewable Markdown and finished interactive writing is organized into named topic projects with hubs, dated filenames, frontmatter, and real wiki links.
+
+Use `/ew:workspace status`, `/ew:workspace connect <vault>`, `/ew:workspace disconnect`, `/ew:workspace migrate <vault>`, `/ew:workspace topic new <name>`, and `/ew:workspace topic repair <name>` to manage it. EW never searches for vaults or creates `.obsidian/`. A missing or invalid configured workspace stops normal writing, while lifecycle commands remain available without requiring a working voice. Same-vault missing-workspace repair always inventories bootstrap first and warns that data may have been moved or lost; bootstrap data must go through explicit-source migration, while an empty replacement requires confirmation. Migration copies the complete selected managed workspace into an empty destination or exact byte-identical subset only—destination-only/different managed data stops because silent union/merge is unsupported.
 
 **Write a single piece in another voice without switching:**
 
@@ -204,16 +211,17 @@ Voice: client-acme
 | `/ew:outline` | Premise, idea, or story concept to usable structure |
 | `/ew:scene-structure` | Fiction scenes, chapters, prose |
 | `/ew:script-writing` | Screenplays, TV, YouTube, documentary, video essay, sketch, and short-form scripts |
-| `/ew:world-builder` | World bible questioner, draft cartography, generator, and Obsidian graph notes |
+| `/ew:world-builder` | World bible questioner, draft cartography, generator, Obsidian graph notes, and operation repair |
 | `/ew:audit` | Before/after rewrite with failure analysis |
-| `/ew:voice` | List, switch, add, import, recalibrate, or delete voices |
+| `/ew:voice` | List, switch, add, import, recalibrate, delete, or repair voices |
+| `/ew:workspace` | Inspect, connect, disconnect, migrate, organize, or repair the local Obsidian workspace |
 | `/ew:failure-library` | Annotated AI-slop failure patterns |
 
 You do not have to use the slash commands. Each skill carries a description, so asking for "a LinkedIn post about X" routes to the right one on its own.
 
 In Codex, use the same names with `$` instead of `/`, for example `$ew` or `$ew:world-builder`.
 
-Direct invocation skips routing, not constraints. Every sub-skill still reads the full core chain before writing.
+Direct invocation skips routing, not constraints. Writing sub-skills still read the full core chain. Applicable recovery commands—including `/ew:voice repair`, `/ew:workspace topic repair`, and `/ew:world-builder repair <operation-id>`—bypass normal resolution and perform command-local safe validation.
 
 ### Storytelling workflow
 
@@ -231,21 +239,22 @@ For broad creative writing requests, EW routes across the fiction tools instead 
 
 Every invocation runs the same sequence:
 
-1. **Voice resolution.** `core/voice-profile.md` is a resolver, not a profile — it points at the active voice under `~/.everyday-writer/`. If no voices exist, onboarding runs first. If resolution is ambiguous, EW stops and asks rather than guessing.
-2. **Onboarding** (first run, and whenever you add a voice). Seven steps, about five minutes. You paste samples, answer questions about goals and platforms, do one freewrite, and confirm five voice adjectives. The result is written to `~/.everyday-writer/voices/<name>/voice-profile.md`.
-3. **References check.** Any `.md` file you drop in that voice's `references/` folder is read and takes precedence over sub-skill defaults.
-4. **Dispatch.** The sub-skill reads `core/runtime-contract.md`, then `core/anti-ai-rules.md`, then `core/ai_slop_commandments.md`, then the resolved voice profile, then active voice reference files, then its own instructions, and only then writes.
-5. **Two-pass loop.** No first draft is ever presented. The draft gets interrogated against three questions, revised, and run through two checklists before you see it.
+1. **Workspace resolution.** `core/obsidian-workspace.md` resolves default storage or a connected Obsidian workspace. Status, connect, disconnect, migrate, and topic repair bypass voice resolution so broken storage can still be inspected, moved, reconnected, or safely completed. Before connect or migration, EW warns that a vault may sync or be shared and identifies the profiles, client material, references, samples, drafts, and projects that can move; nothing is copied before confirmation.
+2. **Voice resolution.** `core/voice-profile.md` is a resolver, not a profile — it points at the active voice beneath the resolved data root. If no voices exist, onboarding runs first. If resolution is ambiguous, EW stops and asks rather than guessing.
+3. **Onboarding** (first run, and whenever you add a voice). Seven steps, about five minutes. You paste samples, answer questions about goals and platforms, do one freewrite, and confirm five voice adjectives. EW builds and verifies the complete profile, samples, and child folders in private staging, then publishes the voice tree at once; an interruption cannot turn a temporary directory into a voice. Connected mode indexes the verified profile from the EW home note and reports a repairable pending state if that second publication races with another edit.
+4. **References check.** Any `.md` file in that voice's `references/` folder is read and takes precedence over sub-skill defaults.
+5. **Dispatch.** The sub-skill reads `core/runtime-contract.md`, `core/obsidian-workspace.md`, the anti-AI core, the resolved voice profile, active voice reference files, and its own instructions before it writes.
+6. **Two-pass loop and persistence.** No first draft is presented. In connected mode, completed interactive work is saved to its explicit or clearly matching topic; an explicitly requested new named topic can be created safely. Topic trees are staged before publication, and artifact-plus-hub and topic-plus-home updates are verified as recoverable pairs rather than claimed complete after only one file changes. Embedded output is never auto-saved.
 
 ### Obsidian story folders
 
-`$ew:world-builder` can create Obsidian-ready Markdown inside a story folder or vault. When you give it a target folder, it writes a story hub, world bible, continuity log, open questions note, idea box, and linked entity notes for characters, places, factions, cultures, religions, rules, timeline events, and important objects.
+`$ew:world-builder` can create Obsidian-ready Markdown when you give it both the explicit existing vault root and a contained story folder. It validates each path component and writes a story hub, world bible, continuity log, open questions note, idea box, and linked entity notes for characters, places, factions, cultures, religions, rules, timeline events, and important objects. A plain non-vault folder gets one portable `World Bible.md` with ordinary headings—no wiki links, frontmatter, entity-note tree, or graph/backlink promise.
 
-The graph is plain Markdown: notes use Obsidian wiki links like `[[Maren Vale]]`, frontmatter properties and tags for filtering, and backlinks between people, places, factions, cultures, religions, rules, and events. No Obsidian plugin is required.
+The graph is plain Markdown: notes use unambiguous vault-root folder-qualified links like `[[Fiction/The Glass City/Characters/Maren Vale|Maren Vale]]`, frontmatter properties and tags for filtering, and backlinks between people, places, factions, cultures, religions, rules, and events. No Obsidian plugin is required.
 
-Fast capture is built for mid-draft ideas. Drop a fragment like "add a town called Trojan Scape in the North, under the Starks, where the old religion was practiced" and world-builder will create or update the town note, preserve the raw thought in `04 - Idea Box.md`, link it to notes like `[[The North]]`, `[[House Stark]]`, and `[[Old Gods]]`, and add useful tags such as `ew/place/town` and `ew/region/north`. In Obsidian graph view, those wiki links create the visible lines.
+Fast capture is built for mid-draft ideas. Drop a fragment like "add a town called Trojan Scape in the North, under the Starks, where the old religion was practiced" and world-builder will transactionally create or update the town note, preserve one raw thought in `04 - Idea Box.md`, link it with full targets such as `[[Fiction/Example Story/Places/The North|The North]]`, `[[Fiction/Example Story/Factions/House Stark|House Stark]]`, and `[[Fiction/Example Story/Religions/Old Gods|Old Gods]]`, and add useful tags such as `ew/place/town` and `ew/region/north`. Multi-note changes preflight their full write set, use an operation journal and idempotent markers, and become complete only after graph/index verification; `/ew:world-builder repair <operation-id>` resumes a recoverable interruption without duplicating the Idea Box entry.
 
-Draft cartography is built for writers who already have pages. Give `$ew:world-builder` chapters, scenes, scripts, or a manuscript file and ask it to map the draft; it will extract characters, places, factions, rules, objects, timeline events, relationships, continuity facts, contradictions, and open threads. If you provide an Obsidian story folder, it also writes `05 - Draft Map Report.md`, updates the hub, and creates or updates linked entity notes from evidence in the draft.
+Draft cartography is built for writers who already have pages. Give `$ew:world-builder` chapters, scenes, scripts, or a manuscript file and ask it to map the draft; it will extract characters, places, factions, rules, objects, timeline events, relationships, continuity facts, contradictions, and open threads. If you provide the explicit Obsidian vault root and contained story folder, it also writes `05 - Draft Map Report.md`, updates the hub, and creates or updates linked entity notes from evidence in the draft.
 
 ### Three rules that govern everything
 
@@ -276,11 +285,12 @@ EW/
 │
 ├── core/
 │   ├── runtime-contract.md             ← Short operating contract and read order
+│   ├── obsidian-workspace.md           ← Storage resolution, topic layout, naming, links
 │   ├── anti-ai-rules.md               ← The operating standard, precedence, fabrication
 │   │                                    rule, banned patterns, checklists, restraint
 │   ├── ai_slop_commandments.md        ← Mechanism reference + era-indexed slop vocabulary
 │   ├── voice-profile.md               ← RESOLVER. Not a profile — points at the active
-│   │                                    voice under ~/.everyday-writer/
+│   │                                    voice under the resolved data root
 │   └── voice-profile-template.md      ← Blank fingerprint each new voice is stamped from
 │
 ├── onboarding/
@@ -312,7 +322,8 @@ EW/
 │   ├── audit/SKILL.md
 │   ├── outline/SKILL.md
 │   ├── failure-library/SKILL.md
-│   └── voice/SKILL.md                 ← Voice management (/ew:voice)
+│   ├── voice/SKILL.md                 ← Voice management (/ew:voice)
+│   └── workspace/SKILL.md             ← Vault, migration, and topic management
 │
 ├── cowork/                            ← Claude.ai Cowork port (16 files, YAML frontmatter)
 │   ├── README.md
@@ -325,7 +336,7 @@ EW/
 └── resources/                         ← Background reference material, not part of dispatch
 ```
 
-Your voices live outside the repo, so plugin updates can't wipe them and git never sees them:
+Your voices live outside the repo, so plugin updates cannot wipe them. With no vault connection, the resolved data root is the bootstrap directory shown below. In connected mode, the equivalent tree lives under `<vault>/Everyday Writer/`, alongside the home note and `writing/` topic tree.
 
 ```
 ~/.everyday-writer/                    Windows: %USERPROFILE%\.everyday-writer\
@@ -352,7 +363,7 @@ Before publishing, run the validator:
 npm run check
 ```
 
-It catches the failure modes that silently break plugin discovery: a skill file missing YAML frontmatter, a manifest in the wrong place, version drift between `package.json` / `plugin.json` / `marketplace.json`, and any sub-skill that has dropped one of the three core dependencies. It also runs automatically on `npm publish`.
+It catches the failure modes that silently break plugin discovery: a skill file missing YAML frontmatter, a manifest in the wrong place, version drift between `package.json` / `plugin.json` / `marketplace.json`, and any registered sub-skill that has dropped one of the five core contracts (runtime, workspace, anti-AI rules, slop-pattern diagnostics, and voice resolution). It also runs automatically on `npm publish`.
 
 **Releasing:**
 
@@ -371,9 +382,9 @@ Pushing a version tag publishes to npm. Bump the version in `.claude-plugin/plug
 - **Codex installs to `~/.codex/skills/everyday-writer/`** and reads `agents/openai.yaml` for UI metadata.
 - **The manifest lives in `.claude-plugin/`**, which is where Claude Code looks. A root-level `plugin.json` is ignored.
 - **Every skill file carries YAML frontmatter.** Without `name` and `description`, Claude Code does not register the skill at all.
-- **`core/` files are dependencies, not skills.** Every sub-skill reads `runtime-contract.md` plus the three full core files; none of them is invoked directly.
-- **`core/voice-profile.md` is a resolver, not a profile.** All 13 writing sub-skills and the voice management skill hardcode that path, and the validator errors when it is missing from any of them, so redirecting at that one file adds multi-voice without touching every skill path.
-- **Voices live in `~/.everyday-writer/`, not in the plugin.** The plugin directory is a cache that updates replace wholesale, and this repo is public. A client profile stored in `core/` would be destroyed on upgrade and one commit from publication.
+- **`core/` files are dependencies, not skills.** Every sub-skill names the runtime, workspace, anti-AI, slop-pattern, and voice contracts; none of them is invoked directly.
+- **`core/voice-profile.md` is a resolver, not a profile.** Registered sub-skills depend on it and `core/obsidian-workspace.md`; the validator errors when either dependency disappears.
+- **Voices live under the resolved data root, not in the plugin.** Default mode uses the EW bootstrap directory; connected mode uses `<vault>/Everyday Writer/`. The plugin directory is a replaceable public cache.
 - **Reference material is per-voice.** A shared folder means a client's brand guidelines and yours get read together on every invocation. Per-voice folders make that impossible rather than merely unlikely.
 - **Onboarding splits twice** — by environment (file-based in Claude Code, memory-based in Claude.ai) and by subject (your own voice gets a freewrite; someone else's can't have one).
 - **The anti-AI rules include a restraint half.** A banlist applied without judgment produces prose stripped of whatever made it a person's. Sections 9 and 10 exist to stop that.

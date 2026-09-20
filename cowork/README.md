@@ -64,11 +64,12 @@ Upload `ew-master.md` plus any specific skill files you want. Each micro-skill f
 
 These files **do not** replace the Claude Code version of Everyday Writer (`/ew` via the plugin). The Claude Code version has:
 - File system access (reads and writes voice profiles to disk)
+- Optional Obsidian connection, workspace repair, topic folders, automatic artifact persistence, and wiki-link indexes
 - Full skill dispatch via `SKILL.md`
 - The world builder split across three files (`SKILL.md`, `questioner.md`, `skeleton-template.md`) rather than the single condensed `ew-world-builder.md` here
-- Per-voice reference files under `~/.everyday-writer/voices/<slug>/references/`, resolved by `core/voice-profile.md`, where your own instruction files override skill defaults
+- Per-voice reference files under the local resolved data root, where your own instruction files override skill defaults
 
-The Cowork files replicate the rules and sub-skills as faithfully as possible in a single-session context. Voice profiles are stored in Claude.ai memory between sessions rather than on disk.
+The Cowork files replicate the writing rules and sub-skills as faithfully as possible in a single-session context. Voice profiles are stored in Claude.ai memory between sessions rather than on disk. Cowork does not simulate the local Obsidian workspace or automatic filesystem persistence.
 
 ---
 

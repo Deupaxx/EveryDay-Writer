@@ -12,14 +12,22 @@
 
 The plugin directory is a cache. When EW is installed from the marketplace, an update replaces it wholesale — anything written here is destroyed. This repository is also public and published to npm, so a client's voice profile stored here would be one commit away from publication.
 
-Voices live under the user's home directory instead. Plugin updates cannot touch them and git cannot see them.
+Voices live under the resolved external data root instead. Plugin updates cannot touch them and the plugin repository cannot see them.
 
 ---
 
-## THE VOICE HOME
+## RESOLVE THE DATA ROOT FIRST
 
-```
-~/.everyday-writer/                 Windows: %USERPROFILE%\.everyday-writer\
+Read `core/obsidian-workspace.md` and resolve the data root before touching a profile, reference, sample, draft, or `active-voice` pointer.
+
+- With no `~/.everyday-writer/config.json`, the data root is `~/.everyday-writer/`.
+- Only with a schema-valid locator, resolved vault locator, and fully resolved workspace is the data root `<canonical vault>/<workspaceFolder>`.
+- If any layer fails, stop and ask the user to repair with the workspace skill. Do not fall back to legacy storage, search for another vault, or rewrite configuration. The workspace lifecycle commands distinguish locator validity from full workspace resolution so they can repair missing structure without running this voice resolver.
+
+All paths below are relative to `<data-root>`:
+
+```text
+<data-root>/
   active-voice                      one line: the active voice slug
   voices/
     <slug>/
@@ -29,7 +37,7 @@ Voices live under the user's home directory instead. Plugin updates cannot touch
       samples/                      writing the profile was built from
 ```
 
-Slugs are lowercase kebab-case and match their directory name.
+Slugs are lowercase kebab-case, match exactly `[a-z0-9]+(?:-[a-z0-9]+)*`, and match their directory name.
 
 ---
 
@@ -41,21 +49,23 @@ If the user's request names a voice for this piece of writing — "as writer-mai
 
 Do not write `active-voice`. Do not treat the override as a switch. The next invocation goes back to the active voice.
 
-If the named voice does not exist, **stop**. List the voices that do exist and ask which was meant. Never guess at a near-match and never proceed in a voice you invented — writing under a fabricated identity is Section 0.2 of `core/anti-ai-rules.md` applied to the voice itself.
+Before using an inline-override slug in any path, validate it against exactly `[a-z0-9]+(?:-[a-z0-9]+)*`. An invalid value is not a near-match: stop before path access.
+
+Only after validation, safely test whether the named voice exists. If it does not, **stop**. List the safely enumerated voices that do exist and ask which was meant. Never guess at a near-match and never proceed in a voice you invented — writing under a fabricated identity is Section 0.2 of `core/anti-ai-rules.md` applied to the voice itself.
 
 **Step 2 — Otherwise, read the active voice.**
 
-Read `~/.everyday-writer/active-voice` and trim whitespace. That string is the slug.
+Read `<data-root>/active-voice` only after applying the managed-root path safety procedure. Trim whitespace, then validate the entire value against exactly `[a-z0-9]+(?:-[a-z0-9]+)*` **before constructing or probing any descendant path from it**. Reject embedded separators, `.`, `..`, absolute paths, controls, mixed case, and every other invalid value; report a broken pointer and stop.
 
 **Step 3 — Read the profile.**
 
-Read `~/.everyday-writer/voices/<slug>/voice-profile.md`. **This file is the voice fingerprint.** Everything downstream in the dependency chain treats it exactly as it would have treated a profile stored here.
+Resolve `<data-root>/voices/<slug>/voice-profile.md` only after the slug passes validation. Apply canonical containment, `lstat`/reparse-point checks to every existing component, and regular-file/directory type checks from `voices/` through the profile. Reject symlinks and junctions even when their canonical destination remains inside the data root. **This file is the voice fingerprint.** Everything downstream in the dependency chain treats it exactly as it would have treated a profile stored here.
 
 If its `Completed:` field is not `Yes`, stop and run onboarding for that voice before writing.
 
 **Step 4 — Load that voice's references.**
 
-Read every `.md` file in `~/.everyday-writer/voices/<slug>/references/`.
+Read every regular `.md` file in `<data-root>/voices/<slug>/references/` only after the same component-by-component redirect rejection and canonical containment proof. Never follow a linked reference file or directory.
 
 These are that voice's reference material and no other voice's. The plugin's own `references/` folder is **not** scanned — see the clean-room rule below.
 
@@ -65,12 +75,13 @@ These are that voice's reference material and no other voice's. The plugin's own
 
 | Condition | What to do |
 |---|---|
-| `~/.everyday-writer/` does not exist | First run. Route to `onboarding/ONBOARDING.md`, which creates the tree. |
+| No configuration and the default data root does not exist | First run. Route to `onboarding/ONBOARDING.md`, which offers optional Obsidian storage before creating the tree. |
+| Configuration schema is invalid, its vault is unavailable, or its workspace is not fully resolved | Stop before profile resolution. Report the exact layer that failed and offer `/ew:workspace connect <vault>`, `/ew:workspace migrate <vault>`, or `/ew:workspace disconnect`. |
 | `voices/` exists but is empty | Route to onboarding. |
-| Exactly one voice, no `active-voice` file | Set `active-voice` to that voice and continue. Do not prompt. |
+| Exactly one voice, no `active-voice` file | After validating the enumerated directory slug, profile type, redirects, and canonical containment, create `active-voice` exclusively (`wx`/`O_EXCL`) and continue. If it appears concurrently, re-read and validate it: continue only when it contains the same slug; otherwise stop. Never replace a pointer based on an earlier absence scan. |
 | Two or more voices, no `active-voice` file | Stop. List them and ask which to activate. |
 | `active-voice` names a voice that does not exist | Stop. Report the broken pointer, list what exists, ask. Do not silently pick one. |
-| Resolved profile has `Completed: No` | Run onboarding for that voice first. |
+| Resolved profile's `Completed:` field is missing or not exactly `Yes` | Run onboarding for that voice first. |
 | Inline override names an unknown voice | Stop and ask. See Step 1. |
 
 The pattern in every failing case is the same: **stop and ask, never guess.** Wrong-voice output is fluent and plausible, which makes it far harder to catch than an error message.
@@ -95,7 +106,9 @@ Files sitting in a voice's `samples/` folder are not that signal. They are prove
 
 ## WHERE DRAFTS GO
 
-When EW writes a draft to disk and the user has not given a path, write it to `~/.everyday-writer/voices/<slug>/drafts/` for the voice in effect.
+When default-mode EW writes a draft to disk and the user has not given a path, write it to `<data-root>/voices/<slug>/drafts/` for the voice in effect.
+
+In connected mode, completed interactive writing follows the topic workspace and persistence rules in `core/obsidian-workspace.md`. The per-voice `drafts/` directory remains only as a legacy-compatible fallback; do not use it to bypass topic routing.
 
 The `drafts/` folder inside the plugin directory is not used by this flow.
 

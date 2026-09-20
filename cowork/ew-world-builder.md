@@ -8,6 +8,8 @@ version: 0.3.0
 
 **Read the anti-AI rules and the voice profile in `ew-master.md` before generating any prose from this skill.** This file is self-contained for the questioning and bible-generation process, but any prose it produces is still governed by the master rules, including the fabrication limit.
 
+**Cowork output boundary:** This skill has no filesystem or Obsidian write capability. Never claim to create, update, preserve, save, sync, or persist a vault, folder, note, index, or graph. Deliver either one portable world bible in chat or a clearly labeled export bundle in chat whose sections name suggested filenames for the user to save elsewhere. Wiki-link-looking text in an export bundle is inert suggested content, not evidence that backlinks or files exist.
+
 ---
 
 ## WHAT THIS SKILL IS FOR
@@ -276,7 +278,7 @@ Never invent missing lore. Do not invent surnames, ages, powers, geography, fact
 1. [The highest-leverage question to answer before drafting further.]
 ```
 
-If the user wants Obsidian or graph output, create linked Markdown notes rather than only a report: story hub, world bible, continuity log, open questions, idea box, draft map report, and entity notes for characters, places, factions, rules, cultures, religions, timeline events, and important objects. Use wiki links for graph edges and preserve user-written notes when updating an existing folder.
+If the user wants Obsidian or graph-shaped output, return a clearly labeled **portable export bundle in chat**: story hub, world bible, continuity log, open questions, idea box, draft map report, and entity-note sections for characters, places, factions, rules, cultures, religions, timeline events, and important objects. Label every section with its suggested filename and use wiki links only as portable text. State plainly that nothing was written to or updated in Obsidian and that the user must save/import the bundle themselves.
 
 ---
 
@@ -286,6 +288,6 @@ The bible is a living document. Two rules keep it useful:
 
 **Read before writing.** Check the relevant sections before each session. This is faster than fixing contradictions in revision.
 
-**Write back after deciding.** Any world detail invented mid-scene goes into the Continuity Log the same session. A detail that lives only in a draft chapter will contradict something within three chapters.
+**Carry decisions forward.** Any world detail invented mid-scene should appear in the next portable Continuity Log output in chat. Do not claim that an existing file or memory was updated.
 
-When a new decision contradicts the bible, the writer chooses which one holds. Then update the bible so it stays the single source of truth. Never leave both versions standing.
+When a new decision contradicts the bible, the writer chooses which one holds. Then return a revised portable bible or export section in chat so the user can replace their own copy. Never claim persistence, and never leave both versions standing in the delivered artifact.

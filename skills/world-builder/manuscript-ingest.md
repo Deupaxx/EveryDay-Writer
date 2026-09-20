@@ -2,7 +2,7 @@
 
 Use this reference when the writer has already drafted chapters, scenes, a screenplay, notes, or a full manuscript and wants the world builder to map what is already on the page.
 
-Draft Cartography Mode turns existing written work into a world map: characters, places, factions, objects, rules, timeline events, mysteries, continuity facts, and the relationships between them. It can produce an ordinary report, an Obsidian story graph, or both.
+Draft Cartography Mode turns existing written work into a world map: characters, places, factions, objects, rules, timeline events, mysteries, continuity facts, and the relationships between them. It can produce an ordinary chat report or a single portable `World Bible.md`; linked multi-file output is available only as an Obsidian story graph in an explicit verified vault.
 
 This mode is for writers who discovered the world by writing it first. Do not scold them for not building a bible earlier. The job is to recover the implied world and make the next drafting session easier.
 
@@ -51,8 +51,10 @@ At minimum, the AI companion needs the manuscript text or a readable file path.
 If the user wants Obsidian graph files, also resolve the story folder using `obsidian-output.md`:
 
 - If they give a vault path and a story title, create or update a folder inside that vault.
-- If they give a main story folder path, use it directly.
-- If no path is given, ask for the target story folder before writing files.
+- If they give a story folder path, also require its explicit existing vault root and prove the folder is contained; never use a folder path alone as graph mode.
+- If either path is missing, ask for the explicit vault root and contained target story folder before writing graph files.
+
+If the target is a plain/non-vault folder, do not execute any graph-output section below. Consolidate the evidence, relationships, continuity risks, and open questions beneath ordinary headings in one `World Bible.md`, or return the report in chat. Use no frontmatter, wiki links, linked entity files, hub, logs, or backlinks.
 
 If the user only wants a report in chat, no folder is required.
 
@@ -152,7 +154,7 @@ Each edge should include a status:
 Use relationship phrasing that can become readable Obsidian prose:
 
 ```markdown
-- [[Mara Venn]] is hunted by [[The Ash Court]] after stealing [[The Salt Ledger]]. Source: Ch. 1.
+- [[<story>/Characters/Mara Venn|Mara Venn]] is hunted by [[<story>/Factions/The Ash Court|The Ash Court]] after stealing [[<story>/Objects/The Salt Ledger|The Salt Ledger]]. Source: Ch. 1.
 ```
 
 ### Pass 4: Continuity Extraction
@@ -170,7 +172,7 @@ Extract durable facts that future writing must respect:
 Write continuity facts in checkable language:
 
 ```markdown
-- [Ch. 4] [[Jonas Reed]] has never been inside [[The Bone Library]] before this scene.
+- [Ch. 4] [[<story>/Characters/Jonas Reed|Jonas Reed]] has never been inside [[<story>/Places/The Bone Library|The Bone Library]] before this scene.
 ```
 
 Avoid vague facts like "Mara is sad." Capture world and story-state facts that can break continuity later.
@@ -230,7 +232,7 @@ When the user does not request files, produce a concise draft map:
 | Order | Event | Source | Involved |
 
 ## Relationship Edges
-- [[Entity A]] -> relationship -> [[Entity B]] (confirmed/inferred/question; source)
+- [[<story>/<Entity Folder>/Entity A|Entity A]] -> relationship -> [[<story>/<Entity Folder>/Entity B|Entity B]] (confirmed/inferred/question; source)
 
 ## Continuity Facts
 - [Source] Fact.
@@ -287,7 +289,7 @@ Add these sections to entity notes created or updated from a draft:
 
 ## Graph Edges
 
-- [[Other Entity]] - [relationship type and status]. Source: [source].
+- [[<story>/<Entity Folder>/Other Entity|Other Entity]] - [relationship type and status]. Source: [source].
 ```
 
 If a note already has `Continuity Facts`, append confirmed facts there. Keep speculative items in `Open Questions`, not `Continuity Facts`.
@@ -309,7 +311,7 @@ Use `certainty: mixed` when a note has both confirmed facts and unresolved ident
 
 Update `00 - Story Hub.md`:
 
-- Add or refresh a `Draft Map` link to `[[05 - Draft Map Report]]`
+- Add or refresh a `Draft Map` link to `[[<story>/05 - Draft Map Report|Draft Map]]`
 - Add newly discovered entities to the Graph Index
 - Add top continuity risks under `Current Draft Focus` only if they affect near-term writing
 
@@ -318,7 +320,7 @@ Update `00 - Story Hub.md`:
 Append confirmed continuity facts to `02 - Continuity Log.md`:
 
 ```markdown
-- [Ch. 3] [[Entity]] fact. Links: [[Related Entity]], [[Rule]]
+- [Ch. 3] [[<story>/<Entity Folder>/Entity|Entity]] fact. Links: [[<story>/<Entity Folder>/Related Entity|Related Entity]], [[<story>/Rules/Rule|Rule]]
 ```
 
 Do not add inferred facts to the continuity log. Put them in `03 - Open Questions.md`.

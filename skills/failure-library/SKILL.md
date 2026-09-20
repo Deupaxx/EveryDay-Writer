@@ -16,10 +16,11 @@ metadata:
 **When using it during generation or teaching, read the full chain first:**
 
 1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
-2. `core/anti-ai-rules.md` (full standard)
-3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-4. `core/voice-profile.md` (voice resolver)
-5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
+2. `core/obsidian-workspace.md` (resolve storage and persistence rules)
+3. `core/anti-ai-rules.md` (full standard)
+4. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+5. `core/voice-profile.md` (voice resolver; during generation require the resolved profile's `Completed:` field to be exactly `Yes`, otherwise stop and run onboarding)
+6. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
 
 **When used as a teaching tool during generation:** Read `core/anti-ai-rules.md` before pointing to examples from this library.
 

@@ -14,10 +14,11 @@ metadata:
 **Dependency chain. Read these in order before writing anything:**
 
 1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
-2. `core/anti-ai-rules.md` (full standard)
-3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-4. `core/voice-profile.md` (voice resolver; if the resolved profile has `Completed: No`, stop and run onboarding)
-5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
+2. `core/obsidian-workspace.md` (resolve storage and persistence rules)
+3. `core/anti-ai-rules.md` (full standard)
+4. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+5. `core/voice-profile.md` (voice resolver; require the resolved profile's `Completed:` field to be exactly `Yes`, otherwise stop and run onboarding)
+6. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
 
 This chain applies on direct invocation (`/ew:newsletter-technical`) exactly as it does on dispatch through `/ew`. Direct invocation skips routing, not constraints.
 

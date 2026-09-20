@@ -362,13 +362,13 @@ Run this before anything goes out:
 
 ## SECTION 8 — VOICE PROFILE
 
-The voice profile for this installation is stored in `core/voice-profile.md`.
+`core/voice-profile.md` is a resolver, not the user's profile. In local filesystem mode, read `core/obsidian-workspace.md`, resolve the data root, then follow the resolver to `<data-root>/voices/<slug>/voice-profile.md`. In memory-only Cowork mode, use the named EW voice memories instead.
 
-Read that file fully before invoking any sub-skill. The profile is not optional context — it is the specification that makes the difference between output that sounds like this writer and output that sounds like a competent but generic writer.
+Read the resolved profile fully before invoking any sub-skill. The profile is not optional context — it is the specification that makes the difference between output that sounds like this writer and output that sounds like a competent but generic writer.
 
-If `core/voice-profile.md` contains `Completed: No` in the PROFILE STATUS section, stop. Run onboarding before writing anything.
+Unless a management command explicitly operates on incomplete profiles, require the resolved profile's `Completed:` field to be exactly `Yes`. A missing field, placeholder, malformed value, or any value other than `Yes` is incomplete: stop and run onboarding before writing anything.
 
-If `core/voice-profile.md` does not exist, stop. Run onboarding before writing anything.
+If no profile resolves, stop. Run onboarding or repair the active-voice pointer before writing anything.
 
 ---
 

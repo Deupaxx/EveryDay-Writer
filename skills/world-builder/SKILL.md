@@ -17,10 +17,13 @@ metadata:
 **Dependency chain. Read these in order before starting:**
 
 1. `core/runtime-contract.md` (short operating contract; does not replace the full rules)
-2. `core/anti-ai-rules.md` (full standard)
-3. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
-4. `core/voice-profile.md` (voice resolver; if the resolved profile has `Completed: No`, stop and run onboarding)
-5. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
+2. `core/obsidian-workspace.md` (resolve storage and persistence rules)
+3. `core/anti-ai-rules.md` (full standard)
+4. `core/ai_slop_commandments.md` (mechanism reference and diagnostic checklist)
+5. `core/voice-profile.md` (voice resolver; require the resolved profile's `Completed:` field to be exactly `Yes`, otherwise stop and run onboarding)
+6. Any `.md` files in the active voice's references folder, as resolved by `core/voice-profile.md`
+
+**Recovery exception:** For `/ew:world-builder repair <operation-id>` or `resume`, stop this chain after step 4, read `obsidian-output.md`, and perform only its command-local journal validation/recovery. Do not resolve a voice, load references, ask creative questions, or generate new content.
 
 This sub-system serves the fiction skills. It does not write prose directly. It builds the scaffold the prose will hang on.
 
@@ -44,14 +47,17 @@ The AI companion conducts a structured, layered dialogue with the writer to extr
 **Phase 2 — Skeleton Generation (`skeleton-template.md`):**
 The AI companion takes the answers from Phase 1 and produces a formatted world bible. Every section of the bible is populated from the questioning. Open questions — things the writer hasn't decided yet — are captured as explicit blanks, not left as gaps that will surprise the writer mid-draft.
 
-**Phase 3 — Obsidian Graph Output (`obsidian-output.md`):**
-When the user mentions Obsidian, a vault, a graph, Markdown notes, character files, place files, factions, maps, or a main story folder, read `obsidian-output.md` after `skeleton-template.md`. Create or update a folder of linked `.md` files inside the story folder the user provides. If the user has not provided a story folder path, ask for it before writing files.
+**Phase 3 — File output:**
+Read `obsidian-output.md` only when the user explicitly requests Obsidian graph output and supplies an existing vault root plus a contained story folder. Resolve both component by component, reject symlinks/junctions/reparse redirects, and use vault-root folder-qualified wiki links. A plain or non-vault folder is not graph mode: create at most one portable `World Bible.md` using ordinary headings, with no frontmatter, wiki links, backlink promises, entity folders, graph indexes, or `obsidian-output.md`/`manuscript-ingest.md` graph templates. If the user wants multi-file linked output, ask for an explicit existing Obsidian vault and contained story folder before writing.
 
 **Fast Capture Mode — Idea Box to Graph (`obsidian-output.md`):**
-When the user gives a small worldbuilding fragment and asks to add, store, capture, remember, or note it, do not run the full questioner. Read `obsidian-output.md`, identify the entity and its implied connections, create or update the right note, append the raw thought to `04 - Idea Box.md`, and add wiki links plus tags/properties so Obsidian connects it to relevant existing notes. Ask only when the target story folder is unknown or a name collision would create the wrong note.
+When the user gives a small worldbuilding fragment and asks to add, store, capture, remember, or note it, do not run the full questioner. In explicit Obsidian graph mode, read `obsidian-output.md`, identify the entity and its implied connections, and run its recoverable multi-note transaction protocol across the entity note, `04 - Idea Box.md`, hub/index, and all stubs or links. Outside a verified vault, add the fragment under the appropriate ordinary heading in the single portable `World Bible.md`; do not create entity notes or graph metadata. Ask when the target is unknown or a collision would update the wrong file.
+
+**Operation recovery (`/ew:world-builder repair <operation-id>` or `resume`):**
+Dispatch directly to `obsidian-output.md`'s journal recovery procedure. Do not begin the questioner, generate new lore, or run ordinary profile/reference resolution. Perform command-local validation of the explicit vault, story folder, operation ID, journal, and planned paths; resume only the recorded intent. Never create a new operation ID to hide or duplicate an incomplete one.
 
 **Draft Cartography Mode - Existing Work to Graph (`manuscript-ingest.md`):**
-When the user has already written chapters, scenes, scripts, notes, or a full manuscript and wants the world mapped from the draft, do not start with the questioner. Read `manuscript-ingest.md`; if the user wants Obsidian, also read `obsidian-output.md`. Extract the entities and relationships already present in the text, separate confirmed facts from inferences and open questions, capture continuity risks, and create or update graph notes from evidence in the draft. This is for writers who discovered the world by writing first.
+When the user has already written chapters, scenes, scripts, notes, or a full manuscript and wants the world mapped from the draft, do not start with the questioner. Read `manuscript-ingest.md`; read `obsidian-output.md` only for an explicit verified-vault request. Extract entities and relationships from evidence, separate confirmed facts from inferences and open questions, and capture continuity risks. Outside Obsidian graph mode, put the result in the single portable `World Bible.md` or return it in chat; do not create graph notes.
 
 ---
 
@@ -112,3 +118,5 @@ To begin a new world from fragments, invoke `questioner.md`. The AI companion wi
 When Phase 1 is complete, invoke `skeleton-template.md` to generate the bible.
 
 To map an existing draft, invoke `manuscript-ingest.md` first. Use the draft as the source of truth, then generate a report, update the world bible, or create Obsidian graph files depending on what the user asked for.
+
+For every Obsidian operation whose write set contains multiple notes, preflight and journal the whole set before the first mutation. Mark the operation complete only after re-reading and verifying the graph and indexes.

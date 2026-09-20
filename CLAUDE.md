@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Project Is
 
-**Everyday Writer (EW)** is a Claude Code skill plugin for professional writers. It has one root dispatcher, 13 writing sub-skills, and one voice management skill, all constrained by a voice fingerprint and anti-AI writing rules. Invoked via `/ew:ew` or any of the sub-skill commands.
+**Everyday Writer (EW)** is a Claude Code skill plugin for professional writers. It has one root dispatcher, 13 writing sub-skills, voice management, and local workspace management, all constrained by a voice fingerprint and anti-AI writing rules. Invoked via `/ew:ew` or any of the sub-skill commands.
 
 The system holds any number of voices — the writer's own, plus one per ghostwriting client — with one active at a time.
 
@@ -32,10 +32,10 @@ Run `npm run check` before any commit that touches manifests, skill frontmatter,
 
 Every `/ew` invocation in `SKILL.md` follows this sequence:
 
-1. **Profile Check** — look for `Completed: Yes` in `core/voice-profile.md`. If absent, trigger onboarding.
-2. **Onboarding** — route through `onboarding/ONBOARDING.md` → either `claude-code-mode.md` (7-step, file-based) or `claude-ai-cowork-mode.md` (memory-based).
-3. **References Check** — scan the active voice's references folder, as resolved by `core/voice-profile.md`. These override sub-skill defaults.
-4. **Dispatch** — route to the sub-skill. Every sub-skill reads in this order: `core/runtime-contract.md` → `core/anti-ai-rules.md` → `core/ai_slop_commandments.md` → `core/voice-profile.md` → active voice reference files → sub-skill file → write.
+1. **Workspace Check** — resolve default storage or the optional connected Obsidian workspace through `core/obsidian-workspace.md`. Status/connect/disconnect/migrate/topic repair, voice repair, and world-builder journal repair bypass normal resolution for command-local recovery validation.
+2. **Profile Check** — resolve the active profile through `core/voice-profile.md`; if no voice exists, trigger onboarding.
+3. **Onboarding** — route through `onboarding/ONBOARDING.md` → either `claude-code-mode.md` (7-step, file-based) or `claude-ai-cowork-mode.md` (memory-based).
+4. **References Check and dispatch** — load active-voice references, then the sub-skill. Direct writing skills read runtime → workspace → anti-AI core → voice resolver → references → sub-skill.
 
 Direct invocation (`/ew:linkedin`) bypasses step 4's routing but not steps 1–3 or the read order.
 
@@ -44,6 +44,7 @@ Direct invocation (`/ew:linkedin`) bypasses step 4's routing but not steps 1–3
 | File | Purpose |
 |---|---|
 | `core/runtime-contract.md` | Short operating contract: read order, precedence, fabrication rule, two-pass loop, final checklist. |
+| `core/obsidian-workspace.md` | Local data-root resolution, containment, topic layout, filenames, persistence, and graph links. |
 | `core/anti-ai-rules.md` | The primary standard. Sections 0–10. |
 | `core/ai_slop_commandments.md` | Technical companion: mechanism behind each failure pattern, era-indexed slop vocabulary, diagnostic checklist. |
 | `core/voice-profile.md` | **The resolver, not a profile.** Points at the active voice. |
@@ -77,18 +78,19 @@ skills/
   sales-copy/SKILL.md            # Direct response, sales pages
   scene-structure/SKILL.md       # Scene construction
   script-writing/SKILL.md        # Screenplays
-  world-builder/SKILL.md         # Multi-file world-building subsystem
+  world-builder/SKILL.md         # Journaled multi-file world-building and operation repair
   audit/SKILL.md                 # Before/after rewrite comparison
   outline/SKILL.md               # Idea-to-outline engine
   failure-library/SKILL.md       # Annotated AI-slop failure patterns
-  voice/SKILL.md                 # Voice management: list, switch, new, import, edit, delete
+  voice/SKILL.md                 # Voice management: list, switch, new, import, edit, delete, repair
+  workspace/SKILL.md             # Obsidian connection, migration, status, topic projects, repair
 ```
 
 ## Developing Skills
 
 - Skills are markdown instruction files, not code. No build, no tests, no linting. `npm run check` is the only validation.
-- Every skill must open with YAML frontmatter, then an H1, then its dependency chain block naming `runtime-contract.md` and the three full core files. This is non-negotiable — direct invocation bypasses the dispatcher, so a skill that omits a core file simply never reads it.
-- The root `references/` folder is deprecated and must not be scanned. User reference files live per voice at `~/.everyday-writer/voices/<slug>/references/`, resolved by `core/voice-profile.md`; only `references/DROP-MD-FILES-HERE.md` belongs in the root folder by default.
+- Every skill must open with YAML frontmatter, then an H1, then its dependency chain block naming the runtime, workspace, anti-AI, slop-pattern, and voice contracts. This is non-negotiable — direct invocation bypasses the dispatcher, so a skill that omits a core file simply never reads it.
+- The root `references/` folder is deprecated and must not be scanned. User reference files live at `<data-root>/voices/<slug>/references/`, resolved by the workspace and voice contracts; only `references/DROP-MD-FILES-HERE.md` belongs in the root folder by default.
 - `resources/` holds background reference material (writing commandments, rules rundowns), not part of the dispatch system.
 - When adding a section to `anti-ai-rules.md`, check whether the skills' dependency-chain blocks or `SKILL.md`'s standards section reference section numbers that need updating.
 
@@ -102,9 +104,9 @@ When a core rule changes, it must be updated in **both** `core/anti-ai-rules.md`
 
 **`core/voice-profile.md` is a resolver, not a profile.** Anyone opening it expecting a fingerprint will be confused, so this is the most important non-obvious fact in the repo.
 
-All 13 writing sub-skills and the voice management skill hardcode `core/voice-profile.md` in their dependency chains, and `check.js` hard-errors when that filename is missing from any of them. Redirecting at that single file adds multi-voice without editing every skill path. Do not "fix" this by rewriting the sub-skills to point at a new path.
+All registered sub-skills name both `core/obsidian-workspace.md` and `core/voice-profile.md` in their dependency chains, and `check.js` hard-errors when either contract disappears. Do not bypass these resolvers with literal storage paths.
 
-Voices live outside the plugin:
+Voices live outside the plugin under the resolved data root. Default mode uses the bootstrap tree below; connected mode uses the same voice tree under `<vault>/Everyday Writer/` and adds a human-readable home note plus topic projects.
 
 ```
 ~/.everyday-writer/

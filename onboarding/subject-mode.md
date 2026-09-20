@@ -114,7 +114,11 @@ If a sample set does not support a position on one axis, say so and ask directly
 
 ## STEP 6: SAVE THE SAMPLES
 
-Write each sample verbatim to `~/.everyday-writer/voices/<slug>/samples/`, one file per sample, with a one-line provenance header naming what it is and where it came from.
+Resolve `<data-root>` through `core/obsidian-workspace.md`. Validate the full slug against exactly `[a-z0-9]+(?:-[a-z0-9]+)*` before path construction. Write each sample verbatim to `<data-root>/voices/<slug>/samples/`, one file per sample, with a one-line provenance header naming what it is and where it came from. Generate collision-safe sample filenames with the complete managed filename rules in `core/obsidian-workspace.md`; never use a raw title, person name, or source as a filename or wiki-link component.
+
+Before writing any sample or creating the voice directory, require that `<data-root>/voices/<slug>/` does not already exist and that no case-insensitive sibling slug collides. A matching, validated incomplete legacy subject profile may resume only under the recovery rule in `ONBOARDING.md`; otherwise route to switch, edit, or explicit repair. Never overwrite a voice during onboarding.
+
+After that check passes, build the full subject voice in a uniquely named sibling `.ew-stage-*` directory as required by `ONBOARDING.md`: `references/`, `drafts/`, `samples/`, every sample, and the completed profile. Verify the complete staged tree and publish it to `voices/<slug>/` with one atomic exclusive/no-replace directory operation. If a destination appears after the scan, stop without replacing it. Interrupted staging directories are temporary entries, not voices.
 
 Tell the user this happened. Do not ask permission and do not do it silently:
 
@@ -126,7 +130,7 @@ Tell the user this happened. Do not ask permission and do not do it silently:
 
 ## STEP 7: WRITE THE PROFILE
 
-Copy `core/voice-profile-template.md` to `~/.everyday-writer/voices/<slug>/voice-profile.md` and fill it in.
+Populate `voice-profile.md` inside the staging tree before publication; do not publish the directory and fill the profile afterward.
 
 Set these exactly:
 
@@ -138,6 +142,8 @@ Profile basis:    Subject samples reviewed — [n] pieces
 Completed:        Yes
 Last updated:     [today]
 ```
+
+In connected mode, add the missing exact canonical link `[[Everyday Writer/voices/<slug>/voice-profile|<link-safe voice alias> Voice Profile]]` to `00 - Everyday Writer Home.md` using the link-safe alias and YAML escaping rules in `core/obsidian-workspace.md`. Never interpolate the raw voice name into link syntax. Preserve all existing home-note content.
 
 **Every field the samples do not support stays in visible `[brackets]`.** That is Section 0.2, and it is not optional because a bracket looks unfinished. A bracket is a known gap. An invented sentence is a lie the user cannot see.
 
