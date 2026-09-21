@@ -16,12 +16,14 @@ const REQUIRED_FILES = [
   'skill.md',
   'README.md',
   'core/anti-ai-rules.md',
+  'core/obsidian-workspace.md',
   'core/voice-profile.md',
+  'skills/workspace/SKILL.md',
   'skills/linkedin/SKILL.md',
   'references/DROP-MD-FILES-HERE.md',
 ];
 
-main();
+if (require.main === module) main();
 
 function main() {
   preparePackageSource();
@@ -137,14 +139,57 @@ function shouldSkip(absPath) {
   );
 }
 
-function resetDir(absDir) {
+function resetDir(absDir, repositoryRoot, stagingRoot) {
+  const repo = path.resolve(repositoryRoot || ROOT);
+  const staging = path.resolve(stagingRoot || STAGING_ROOT);
   const resolved = path.resolve(absDir);
-  const allowed = path.resolve(STAGING_ROOT);
-  if (!resolved.startsWith(allowed + path.sep)) {
-    fail('Refusing to reset unexpected path: ' + resolved);
+  const expected = path.resolve(staging, PACKAGE_NAME);
+  if (resolved !== expected) fail('Refusing to reset unexpected path: ' + resolved);
+
+  // Validate each path component without following it. A lexical containment
+  // check is not enough: dist (or the leaf itself) could be a junction/symlink.
+  const relative = path.relative(repo, resolved);
+  if (!relative || path.isAbsolute(relative) || relative === '..' || relative.startsWith('..' + path.sep)) {
+    fail('Refusing to reset a path outside the repository: ' + resolved);
+  }
+  const canonicalRepo = validateOrdinaryDirectory(repo, 'Repository root');
+  let current = repo;
+  for (const component of relative.split(path.sep)) {
+    current = path.join(current, component);
+    if (!lstatIfExists(current)) continue;
+    const canonical = validateOrdinaryDirectory(current, 'Package output component');
+    if (!isContained(canonicalRepo, canonical, true)) {
+      fail('Refusing to reset a package path that escapes the repository: ' + current);
+    }
   }
   fs.rmSync(resolved, { recursive: true, force: true });
   fs.mkdirSync(resolved, { recursive: true });
+}
+
+function lstatIfExists(target) {
+  try { return fs.lstatSync(target); }
+  catch (error) {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  }
+}
+
+function validateOrdinaryDirectory(target, label) {
+  const absolute = path.resolve(target);
+  const stat = fs.lstatSync(absolute);
+  if (!stat.isDirectory() || stat.isSymbolicLink()) fail(label + ' is redirected or is not an ordinary directory: ' + absolute);
+  const canonical = fs.realpathSync(absolute);
+  if (!samePath(canonical, absolute)) fail(label + ' is redirected by a symlink, junction, mount, or reparse point: ' + absolute);
+  return canonical;
+}
+
+function samePath(a, b) {
+  return process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
+}
+
+function isContained(parent, child, allowEqual) {
+  const rel = path.relative(parent, child);
+  return (allowEqual && rel === '') || (rel !== '' && !path.isAbsolute(rel) && rel !== '..' && !rel.startsWith('..' + path.sep));
 }
 
 function collectFiles(absDir) {
@@ -273,16 +318,21 @@ This ZIP installs Everyday Writer as a Claude custom skill.
 ## What is included
 
 - skill.md: the Everyday Writer dispatcher
-- core/: writing rules, runtime contract, and voice resolver
+- core/: writing rules, runtime contract, workspace resolver, and voice resolver
 - onboarding/: first-run voice setup
-- skills/: the writing sub-skills and voice management skill
+- skills/: the writing sub-skills plus voice and local-workspace management
 - references/DROP-MD-FILES-HERE.md: redirect note for per-voice references
 
-Everyday Writer stores voice profiles outside the skill when the environment provides file access. Do not put client voice profiles inside this package.
+Everyday Writer stores voice profiles outside the skill when the environment provides file access. Local users can optionally connect an existing Obsidian vault; Claude.ai Cowork continues to use memory and does not claim filesystem persistence. Do not put client voice profiles inside this package.
 `;
 }
 
 function fail(message) {
-  console.error('ERROR: ' + message);
-  process.exit(1);
+  if (require.main === module) {
+    console.error('ERROR: ' + message);
+    process.exit(1);
+  }
+  throw new Error(message);
 }
+
+module.exports = { resetDir };

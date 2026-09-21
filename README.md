@@ -54,6 +54,16 @@ Install the skill into your local Codex skills folder:
 npx everyday-writer install
 ```
 
+To connect a brand-new EW workspace in an existing Obsidian vault during installation:
+
+```bash
+npx everyday-writer install --vault "/absolute/path/to/My Vault"
+```
+
+The path must already be an Obsidian vault containing an ordinary, non-redirected `.obsidian/` directory. The vault, marker, and fixed `Everyday Writer/` child must resolve exactly where their lexical paths say they do. In an interactive terminal, the installer offers the same optional setup when `--vault` is omitted and storage is safe and empty; a yes followed by a blank path is rejected and re-prompted. Automated and piped installs, broken configuration, and existing bootstrap data never prompt. Existing bootstrap voices or writing are never hidden or merged.
+
+A malformed, unsupported, disconnected, or unsafe storage locator does not prevent a plain package install/update. EW preserves it byte-for-byte, installs the package transactionally, prints a storage warning, and directs Codex users to `$ew:workspace ...` or Claude users to `/ew:workspace ...`. Explicit `--vault` is a storage mutation and therefore stops on those conditions.
+
 Or globally:
 
 ```bash
@@ -114,9 +124,11 @@ everyday-writer install:claude
 
 This copies the plugin into `~/.claude/plugins/ew/`. Note that a manual copy is not registered with the marketplace update flow, so use the marketplace method above unless you have a reason not to.
 
-**Uninstall from Codex:** `everyday-writer uninstall`
+**Uninstall from Codex (npx install):** `npx everyday-writer uninstall`
 
-**Uninstall from Claude Code:** `everyday-writer uninstall:claude`
+**Uninstall from Claude Code (npx install):** `npx everyday-writer uninstall:claude`
+
+If you installed the CLI globally, the bare equivalents are `everyday-writer uninstall` and `everyday-writer uninstall:claude`.
 
 ---
 
@@ -169,6 +181,48 @@ One voice is active at a time and persists across sessions.
 ## Optional Obsidian workspace
 
 On the first local run, EW offers to connect an existing Obsidian vault before collecting writing samples. Declining keeps the default private bootstrap storage. Connecting creates a fixed `Everyday Writer/` workspace inside the vault, where voice profiles are viewable Markdown and finished interactive writing is organized into named topic projects with hubs, dated filenames, frontmatter, and real wiki links.
+
+The npm installer can do the same initial connection with `--vault <path>`. It only configures a new or empty EW workspace; it never performs migration or merges existing data. The bootstrap locator remains at `~/.everyday-writer/config.json` so EW can find the vault from any working directory. Its first publication is exclusive and no-clobber, with file and directory durability flushes where supported. Without that file, EW falls back to `~/.everyday-writer/`. A configured vault that is missing, disconnected, malformed, or unsafe stops normal writing rather than silently falling back to a second copy, but it does not block a plain package update.
+
+Package publication is transactional and recoverable, not a claim that an entire directory tree changes atomically. EW exclusively claims an absent destination directory, copies the validated staged tree, and writes the ownership receipt last. A failed or interrupted partial publication is quarantined; one verified prior backup is restored automatically, while multiple, malformed, redirected, or otherwise ambiguous recovery paths stop with their exact locations. Locks record a random token, PID, creation time, target, and operation. EW never breaks a lock by age: a live owner is preserved, a demonstrably dead owner is quarantined after identity-and-byte rechecks, and uncertain lock state fails closed with manual recovery guidance.
+
+```text
+<vault>/
+└── Everyday Writer/
+    ├── 00 - Everyday Writer Home.md
+    ├── active-voice
+    ├── voices/<voice-slug>/
+    │   ├── voice-profile.md
+    │   ├── references/
+    │   └── samples/
+    └── writing/<Readable Topic Name>/
+        ├── 00 - <Topic Name> Hub.md
+        ├── 01 - Project Brief.md
+        ├── 02 - Decision Log.md
+        ├── 03 - Open Questions.md
+        ├── 04 - Idea Box.md
+        ├── Drafts/
+        ├── Notes/
+        ├── Sources/
+        └── Published/
+```
+
+Artifacts use readable date-prefixed names such as `2026-09-20 - The Cost of Consistency.md`; collisions receive ` - 2`, ` - 3`, and so on. Each artifact links to its full vault-root topic hub target, and the hub indexes the artifact, giving Obsidian real backlinks without linking every noun. Stable hubs and core notes are not date-stamped.
+
+Privacy is a storage decision: Obsidian or another service may sync, back up, or share anything inside the vault. EW discloses that before an interactive connection. Uninstall disables the registered package path and keeps the verified package tree in the reported quarantine until you manually remove it; it also preserves `config.json`, legacy profiles, and all vault content.
+
+```mermaid
+flowchart TD
+    A[Local install or first run] --> B{Connect an existing vault?}
+    B -->|No| C[Default ~/.everyday-writer storage]
+    B -->|Yes, no EW data exists| D[Validate canonical vault and fixed child]
+    D --> E[Atomic config.json locator]
+    E --> F[Vault/Everyday Writer is canonical]
+    B -->|Yes, EW data already exists| G[Explicit workspace migration]
+    F --> H{Vault still resolves safely?}
+    H -->|Yes| I[Voice + topic writing workflow]
+    H -->|No| J[Stop normal writing; keep recovery commands available]
+```
 
 Use `/ew:workspace status`, `/ew:workspace connect <vault>`, `/ew:workspace disconnect`, `/ew:workspace migrate <vault>`, `/ew:workspace topic new <name>`, and `/ew:workspace topic repair <name>` to manage it. EW never searches for vaults or creates `.obsidian/`. A missing or invalid configured workspace stops normal writing, while lifecycle commands remain available without requiring a working voice. Same-vault missing-workspace repair always inventories bootstrap first and warns that data may have been moved or lost; bootstrap data must go through explicit-source migration, while an empty replacement requires confirmation. Migration copies the complete selected managed workspace into an empty destination or exact byte-identical subset only—destination-only/different managed data stops because silent union/merge is unsupported.
 
@@ -363,7 +417,7 @@ Before publishing, run the validator:
 npm run check
 ```
 
-It catches the failure modes that silently break plugin discovery: a skill file missing YAML frontmatter, a manifest in the wrong place, version drift between `package.json` / `plugin.json` / `marketplace.json`, and any registered sub-skill that has dropped one of the five core contracts (runtime, workspace, anti-AI rules, slop-pattern diagnostics, and voice resolution). It also runs automatically on `npm publish`.
+It catches the failure modes that silently break plugin discovery: a skill file missing YAML frontmatter, a manifest in the wrong place, version drift between `package.json` / `plugin.json` / `marketplace.json`, and any registered sub-skill that has dropped one of the five core contracts (runtime, workspace, anti-AI rules, slop-pattern diagnostics, and voice resolution). `npm test` exercises installer storage safety in isolated temporary homes. Both the tests and package checks run automatically on `npm publish`.
 
 **Releasing:**
 

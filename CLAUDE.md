@@ -19,12 +19,13 @@ These are not style preferences. Getting any of them wrong makes skills silently
 3. **There is no `entry` field in the manifest schema.** Skills are discovered by directory convention: root `SKILL.md` plus each `skills/<name>/SKILL.md`.
 4. **Skill names must be lowercase kebab-case** and should match their directory name.
 
-Run `npm run check` before any commit that touches manifests, skill frontmatter, dependency chains, reference loading, or package contents. It validates discovery rules plus version parity, runtime/core dependencies, per-voice references, and resource packaging guards.
+Run `npm test`, `npm run check`, and `npm run check:claude-skill` before any commit that touches installation, manifests, skill frontmatter, dependency chains, reference loading, or package contents. Installer tests use isolated temporary homes and vaults; never point them at a real user vault.
 
 ## Entry Points
 
 - `SKILL.md` — master dispatcher, registered as skill `ew`
-- `onboarding/ONBOARDING.md` — environment router (Claude Code vs Claude.ai Cowork), then voice router (own voice vs subject)
+- `onboarding/ONBOARDING.md` — environment and optional-storage router, then voice router (own voice vs subject)
+- `bin/install.js` — Node 16 installer, optional `--vault` bootstrap connection, and uninstall
 - `.claude-plugin/plugin.json` — plugin manifest
 - `.claude-plugin/marketplace.json` — marketplace manifest
 
@@ -88,7 +89,7 @@ skills/
 
 ## Developing Skills
 
-- Skills are markdown instruction files, not code. No build, no tests, no linting. `npm run check` is the only validation.
+- Skills are Markdown instruction files. Installer and packaging code is dependency-free Node 16 CommonJS. `npm test` covers installer behavior, `npm run check` validates the instruction graph, and `npm run check:claude-skill` validates the ZIP boundary.
 - Every skill must open with YAML frontmatter, then an H1, then its dependency chain block naming the runtime, workspace, anti-AI, slop-pattern, and voice contracts. This is non-negotiable — direct invocation bypasses the dispatcher, so a skill that omits a core file simply never reads it.
 - The root `references/` folder is deprecated and must not be scanned. User reference files live at `<data-root>/voices/<slug>/references/`, resolved by the workspace and voice contracts; only `references/DROP-MD-FILES-HERE.md` belongs in the root folder by default.
 - `resources/` holds background reference material (writing commandments, rules rundowns), not part of the dispatch system.
@@ -107,6 +108,8 @@ When a core rule changes, it must be updated in **both** `core/anti-ai-rules.md`
 All registered sub-skills name both `core/obsidian-workspace.md` and `core/voice-profile.md` in their dependency chains, and `check.js` hard-errors when either contract disappears. Do not bypass these resolvers with literal storage paths.
 
 Voices live outside the plugin under the resolved data root. Default mode uses the bootstrap tree below; connected mode uses the same voice tree under `<vault>/Everyday Writer/` and adds a human-readable home note plus topic projects.
+
+The installer accepts `--vault <existing-vault>`, or asks only when both stdin and stdout are TTYs and bootstrap storage is safe and empty. It may configure only a new/empty fixed direct child named `Everyday Writer`; existing bootstrap or destination data belongs to the runtime migration flow. `config.json` is published atomically with no-clobber semantics only after canonical vault and workspace validation. A plain install/update must continue with a target-specific recovery warning when storage configuration is broken; explicit `--vault` remains a hard stop. Package trees are staged, ownership-receipted, locked, quarantined, and atomically swapped so updates cannot overlay stale files. Uninstall must require the matching receipt and must never remove configuration, legacy voices, or vault knowledge.
 
 ```
 ~/.everyday-writer/

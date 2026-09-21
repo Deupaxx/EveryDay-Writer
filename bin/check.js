@@ -577,6 +577,11 @@ for (const rel of [...new Set(referenceScanFiles)]) {
 // --- Resource package boundary ---------------------------------------------
 
 const packageFiles = JSON.parse(read('package.json')).files || [];
+const publicResources = [
+  'resources/Everyday Writer — Anti-AI Rules Rundown.md',
+  'resources/General Writing Commandments_ The Foundation of Clarity.md',
+  'resources/General Writing Directives_ The Laws of Construction.md',
+];
 for (const entry of packageFiles) {
   const normalized = entry.replace(/\\/g, '/');
   if (
@@ -601,6 +606,44 @@ if (localUntitledResources.length > 0) {
       localUntitledResources.length +
       ' private Untitled document*.md file(s); validator confirms package.json does not ship them.'
   );
+}
+for (const resource of publicResources) {
+  if (!packageFiles.includes(resource)) errors.push('package.json files must explicitly include public resource: ' + resource);
+}
+if (!packageFiles.includes('!resources/README.md')) errors.push('package.json files must explicitly exclude resources/README.md from the packed artifact.');
+
+// --- Installer transaction boundary ----------------------------------------
+
+const installerSource = read('bin/install.js');
+const requiredInstallerGuards = [
+  ['exclusive randomized temporary files', "fs.openSync(temp, 'wx'"],
+  ['atomic no-clobber config publication', 'fs.linkSync(temp, target)'],
+  ['configuration file durability', 'fs.fsyncSync(fd)'],
+  ['install ownership receipt', "const INSTALL_RECEIPT = '.everyday-writer-install.json'"],
+  ['exclusive install/uninstall lock', "fs.openSync(lock, 'wx'"],
+  ['structured crash-recoverable lock', 'createdAt: new Date().toISOString()'],
+  ['ENOENT-aware lstat boundary checks', 'function lstatIfExists(target)'],
+  ['exclusive destination directory claim', 'fs.mkdirSync(dest); // Exclusive destination claim'],
+  ['receipt-last package publication', "fs.writeFileSync(path.join(dest, INSTALL_RECEIPT)"],
+  ['dead-lock no-replace quarantine', 'fs.linkSync(lock, quarantine)'],
+  ['sibling staged package tree', "'.ew-install-stage-'"],
+  ['quarantined prior package tree', "'.ew-install-backup-'"],
+  ['quarantined uninstall tree', "'.ew-uninstall-'"],
+  ['Codex recovery command syntax', "'$ew:workspace'"],
+  ['Claude recovery command syntax', "'/ew:workspace'"],
+  ['plain-install storage warning', "'STORAGE WARNING: '"],
+  ['redirect-aware canonical directory validation', 'assertOrdinaryCanonicalDirectory'],
+];
+for (const [label, fragment] of requiredInstallerGuards) {
+  if (!installerSource.includes(fragment)) errors.push('bin/install.js: missing installer safety guard: ' + label + '.');
+}
+
+const packageScripts = JSON.parse(read('package.json')).scripts || {};
+if (packageScripts.test !== 'node test/install.test.js') {
+  errors.push('package.json: test script must run the isolated installer regression suite.');
+}
+if (!/npm test/.test(packageScripts.prepublishOnly || '')) {
+  errors.push('package.json: prepublishOnly must run installer tests before packaging.');
 }
 
 // --- Report -----------------------------------------------------------------
